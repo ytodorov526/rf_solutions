@@ -1,14 +1,10 @@
-name: Deploy to Azure Web App
+name: Deploy to  Azure Web App
 
 on:
   push:
     branches:
       - master
   workflow_dispatch:
-
-permissions:
-  id-token: write  # Required for OIDC authentication
-  contents: read   # Required to checkout code
 
 jobs:
   build-and-deploy:
@@ -42,7 +38,9 @@ jobs:
     - name: Login to Azure
       uses: azure/login@v1
       with:
-        auth-type: oidc  # Use OpenID Connect for federated authentication
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
