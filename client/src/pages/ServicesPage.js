@@ -455,7 +455,12 @@ function ServicesPage() {
           <Typography variant="body1" paragraph>
             Contact us today to schedule a consultation with our expert engineering team.
           </Typography>
-          <Button variant="contained" color="primary" size="large">
+          <Button 
+            variant="contained" 
+            color="primary" 
+            size="large" 
+            onClick={handleScheduleConsultation}
+          >
             Schedule a Consultation
           </Button>
         </Box>

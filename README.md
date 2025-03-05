@@ -83,11 +83,31 @@ npm start
 
 ## Deployment
 
-### Backend
+### Azure Web App Deployment with GitHub Actions
+This project is configured for automated deployment to Azure Web App using GitHub Actions with user-assigned managed identity:
+
+1. **Prerequisites:**
+   - Create an Azure Web App service in your Azure Portal (with Node.js 22)
+   - Configure a user-assigned managed identity in Azure
+   - Set up the following GitHub repository secrets:
+     - `AZURE_CLIENT_ID`: The client ID of your user-assigned managed identity
+     - `AZURE_TENANT_ID`: Your Azure tenant ID
+     - `AZURE_SUBSCRIPTION_ID`: Your Azure subscription ID
+     - `AZURE_WEBAPP_NAME`: The name of your Azure Web App
+
+2. **Deployment Process:**
+   - Push or merge to the master branch will trigger automated deployment
+   - GitHub Actions will build the React client, install server dependencies, and deploy to Azure
+   - Authentication uses secure user-assigned managed identity instead of publish profiles
+   - The workflow configuration is located in `.github/workflows/azure-deploy.yml`
+
+### Manual Deployment
+
+#### Backend
 1. Set up your environment variables on your hosting platform
 2. Build and deploy the Node.js application
 
-### Frontend
+#### Frontend
 1. Build the production version:
 ```bash
 cd client

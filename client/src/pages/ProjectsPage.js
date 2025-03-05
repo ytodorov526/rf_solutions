@@ -292,7 +292,12 @@ function ProjectsPage() {
           <Typography paragraph>
             Our engineering team has the expertise to develop custom solutions for your unique requirements.
           </Typography>
-          <Button variant="contained" color="secondary" size="large">
+          <Button 
+            variant="contained" 
+            color="secondary" 
+            size="large"
+            onClick={() => window.location.href = '/contact?from=projects&action=discussion'}
+          >
             Discuss Your Project
           </Button>
         </Box>

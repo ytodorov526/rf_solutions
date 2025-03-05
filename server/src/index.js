@@ -120,10 +120,19 @@ app.post('/api/contacts', (req, res) => {
 });
 
 // Serve static assets in production or for demo
-app.use(express.static(path.join(__dirname, '../../client/build')));
+// Check if we're in Azure deployment (where client build is copied to server/public)
+// or in local development (where client build is in client/build)
+const staticPath = fs.existsSync(path.join(__dirname, '../public'))
+  ? path.join(__dirname, '../public')
+  : path.join(__dirname, '../../client/build');
+
+app.use(express.static(staticPath));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/build/index.html'));
+  const indexPath = fs.existsSync(path.join(staticPath, 'index.html'))
+    ? path.join(staticPath, 'index.html')
+    : path.join(__dirname, '../../client/build/index.html');
+  res.sendFile(indexPath);
 });
 
 // Error handling middleware
@@ -139,4 +148,6 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} (using mock data for demo)`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Static files served from: ${staticPath}`);
 });

@@ -132,7 +132,12 @@ function ProductsPage() {
           <Typography paragraph>
             Don't see exactly what you need? Our engineering team specializes in creating custom RF, antenna, and radar solutions tailored to your specific requirements. From concept to production, we can help bring your ideas to reality.
           </Typography>
-          <Button variant="contained" color="primary" size="large">
+          <Button 
+            variant="contained" 
+            color="primary" 
+            size="large" 
+            onClick={() => window.location.href = '/contact'}
+          >
             Discuss Your Custom Requirements
           </Button>
         </Box>

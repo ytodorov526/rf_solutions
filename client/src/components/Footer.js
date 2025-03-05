@@ -79,6 +79,9 @@ function Footer() {
           <Typography variant="body2" color="white" align="center">
             © {new Date().getFullYear()} RF Solutions, Inc. All rights reserved.
           </Typography>
+          <Typography variant="body2" color="white" align="center" sx={{ mt: 1 }}>
+            Design and Implementation by Yavor Todorov
+          </Typography>
         </Box>
       </Container>
     </Box>
