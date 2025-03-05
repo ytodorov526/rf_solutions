@@ -94,6 +94,7 @@ This project is configured for automated deployment to Azure Web App using GitHu
      - `AZURE_TENANT_ID`: Your Azure tenant ID
      - `AZURE_SUBSCRIPTION_ID`: Your Azure subscription ID
      - `AZURE_WEBAPP_NAME`: The name of your Azure Web App
+   - In GitHub repository settings, under Actions > General, ensure "Workflow permissions" has "Read and write permissions" enabled and "Allow GitHub Actions to create and approve pull requests" is checked
 
 2. **Deployment Process:**
    - Push or merge to the master branch will trigger automated deployment
