@@ -16,9 +16,24 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton
+  IconButton,
+  TextField,
+  MenuItem,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import SendIcon from '@mui/icons-material/Send';
+import { getApiUrl } from '../config/apiConfig';
+
+// Inquiry types for the request form
+const inquiryTypes = [
+  'Similar Solution Request',
+  'Product Information',
+  'Custom Engineering Services',
+  'Project Consultation',
+  'Technical Support'
+];
 
 // Sample project data
 const projects = [
@@ -107,6 +122,18 @@ const projects = [
 function ProjectsPage() {
   const [selectedTab, setSelectedTab] = useState('all');
   const [openProject, setOpenProject] = useState(null);
+  const [requestFormOpen, setRequestFormOpen] = useState(false);
+  const [formValues, setFormValues] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    inquiryType: 'Similar Solution Request',
+    message: ''
+  });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -118,6 +145,93 @@ function ProjectsPage() {
   
   const handleCloseProject = () => {
     setOpenProject(null);
+  };
+  
+  const handleOpenRequestForm = () => {
+    if (openProject) {
+      // Pre-fill the message with project details
+      setFormValues({
+        ...formValues,
+        message: `I'm interested in a solution similar to the "${openProject.title}" project. Please provide information about how we could adapt this for our needs.`
+      });
+      setRequestFormOpen(true);
+    }
+  };
+  
+  const handleCloseRequestForm = () => {
+    setRequestFormOpen(false);
+  };
+  
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value
+    });
+  };
+  
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Simple validation
+    if (!formValues.name || !formValues.email || !formValues.message) {
+      setSnackbarMessage('Please fill in all required fields');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
+      return;
+    }
+    
+    try {
+      // Set loading state
+      setSnackbarMessage('Sending your request...');
+      setSnackbarSeverity('info');
+      setOpenSnackbar(true);
+      
+      // Get API URL from config
+      const apiUrl = getApiUrl('/api/contacts');
+      
+      // Send data to backend API
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formValues,
+          projectId: openProject?.id,
+          projectTitle: openProject?.title
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      // Show success message
+      setSnackbarMessage('Your request has been sent successfully. Our team will contact you shortly!');
+      setSnackbarSeverity('success');
+      setOpenSnackbar(true);
+      
+      // Reset form and close dialog
+      setFormValues({
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        inquiryType: 'Similar Solution Request',
+        message: ''
+      });
+      setRequestFormOpen(false);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSnackbarMessage('There was an error sending your request. Please try again or contact us directly.');
+      setSnackbarSeverity('error');
+      setOpenSnackbar(true);
+    }
+  };
+  
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
   };
   
   // Get unique categories for tabs
@@ -279,10 +393,128 @@ function ProjectsPage() {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseProject}>Close</Button>
-              <Button variant="contained" color="primary">Request Similar Solution</Button>
+              <Button variant="contained" color="primary" onClick={handleOpenRequestForm}>Request Similar Solution</Button>
             </DialogActions>
           </Dialog>
         )}
+        
+        {/* Request Similar Solution Form Dialog */}
+        <Dialog
+          open={requestFormOpen}
+          onClose={handleCloseRequestForm}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogTitle sx={{ m: 0, p: 2 }}>
+            Request Similar Solution
+            <IconButton
+              aria-label="close"
+              onClick={handleCloseRequestForm}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent dividers>
+            <Typography variant="subtitle1" paragraph>
+              Please provide your contact information and details about your requirements. Our engineering team will contact you to discuss a similar solution tailored to your needs.
+            </Typography>
+            
+            <Box component="form" onSubmit={handleFormSubmit} sx={{ mt: 2 }}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Your Name"
+                    name="name"
+                    value={formValues.name}
+                    onChange={handleFormChange}
+                  />
+                </Grid>
+                
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Email Address"
+                    name="email"
+                    type="email"
+                    value={formValues.email}
+                    onChange={handleFormChange}
+                  />
+                </Grid>
+                
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Phone Number"
+                    name="phone"
+                    value={formValues.phone}
+                    onChange={handleFormChange}
+                  />
+                </Grid>
+                
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Company/Organization"
+                    name="company"
+                    value={formValues.company}
+                    onChange={handleFormChange}
+                  />
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    select
+                    label="Inquiry Type"
+                    name="inquiryType"
+                    value={formValues.inquiryType}
+                    onChange={handleFormChange}
+                  >
+                    {inquiryTypes.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    multiline
+                    rows={4}
+                    label="Additional Details"
+                    name="message"
+                    value={formValues.message}
+                    onChange={handleFormChange}
+                    helperText="Please provide any specific requirements or adaptations you need for your project."
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseRequestForm}>Cancel</Button>
+            <Button 
+              onClick={handleFormSubmit} 
+              variant="contained" 
+              color="primary"
+              endIcon={<SendIcon />}
+            >
+              Submit Request
+            </Button>
+          </DialogActions>
+        </Dialog>
         
         {/* CTA Section */}
         <Box sx={{ mt: 8, p: 4, bgcolor: 'primary.main', color: 'white', borderRadius: 2, textAlign: 'center' }}>
@@ -302,6 +534,23 @@ function ProjectsPage() {
           </Button>
         </Box>
       </Container>
+      
+      {/* Snackbar for form submission feedback */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={handleCloseSnackbar} 
+          severity={snackbarSeverity} 
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
