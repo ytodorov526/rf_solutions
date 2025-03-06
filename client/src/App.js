@@ -12,6 +12,7 @@ const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const PetrochemicalGamesPage = lazy(() => import('./pages/PetrochemicalGamesPage'));
+const NuclearEngineeringPage = lazy(() => import('./pages/NuclearEngineeringPage'));
 
 // Components
 import Navbar from './components/Navbar';
@@ -45,6 +46,7 @@ function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/educational-games" element={<PetrochemicalGamesPage />} />
+            <Route path="/nuclear-engineering" element={<NuclearEngineeringPage />} />
           </Routes>
         </Suspense>
         <Footer />

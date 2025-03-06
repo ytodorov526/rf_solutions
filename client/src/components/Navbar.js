@@ -20,7 +20,8 @@ const pages = [
   { name: 'Products', path: '/products' },
   { name: 'Services', path: '/services' },
   { name: 'Projects', path: '/projects' },
-  { name: 'Educational Games', path: '/educational-games' },
+  { name: 'Petrochemistry Games', path: '/educational-games' },
+  { name: 'Nuclear Engineering', path: '/nuclear-engineering' },
   { name: 'Contact', path: '/contact' },
 ];
 
