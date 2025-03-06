@@ -102,7 +102,7 @@ function RefinerySandbox() {
     if (unitToAdd) {
       setSelectedUnits([...selectedUnits, { 
         ...unitToAdd, 
-        id: \`\${unitId}-\${Date.now()}\`, // Unique ID
+        id: `${unitId}-${Date.now()}`, // Unique ID
         x: Math.random() * 400 + 50, // Random position
         y: Math.random() * 200 + 50,
         efficiency: 0.85, // Default efficiency
