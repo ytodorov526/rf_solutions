@@ -149,8 +149,7 @@ function ReactorKineticsSimulator() {
   // Effect to clear simulation when parameters change
   useEffect(() => {
     resetSimulation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parameters]);
+  }, [parameters, resetSimulation]);
   
   // Effect to handle animation
   useEffect(() => {
@@ -247,7 +246,7 @@ function ReactorKineticsSimulator() {
   }, [parameters.beta, parameters.initialReactivity, parameters.lambda, parameters.promptNeutronLifetime, parameters.reactivityInsertionDuration, parameters.reactivityInsertionRate]);
   
   // Function to reset simulation
-  const resetSimulation = () => {
+  const resetSimulation = React.useCallback(() => {
     setIsRunning(false);
     setCurrentTime(0);
     setSimulationData({
@@ -260,7 +259,7 @@ function ReactorKineticsSimulator() {
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
     }
-  };
+  }, [parameters.initialReactivity, parameters.beta, parameters.lambda]);
   
   // Function to start/pause simulation
   const toggleSimulation = () => {
