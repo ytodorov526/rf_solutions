@@ -47,8 +47,8 @@ function TabPanel(props) {
 
 function a11yProps(index) {
   return {
-    id: \`calculator-tab-\${index}\`,
-    'aria-controls': \`calculator-tabpanel-\${index}\`,
+    id: 'calculator-tab-' + index,
+    'aria-controls': 'calculator-tabpanel-' + index,
   };
 }
 
@@ -280,7 +280,7 @@ function NuclearCalculator() {
       setConversionResult({
         value: result,
         unit: toUnit,
-        formula: \`\${value} \${fromUnit} × \${factor} = \${result.toPrecision(6)} \${toUnit}\`,
+        formula: value + ' ' + fromUnit + ' × ' + factor + ' = ' + result.toPrecision(6) + ' ' + toUnit,
       });
     } else {
       setConversionResult({

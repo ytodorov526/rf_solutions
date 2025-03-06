@@ -387,9 +387,8 @@ function ReactorKineticsSimulator() {
     const csvContent = [
       'Time (s),Power,Reactivity (dollars)' + (showDelayedNeutrons ? ',Delayed Neutrons' : ''),
       ...simulationData.time.map((time, index) => 
-        \`\${time},\${simulationData.power[index]},\${simulationData.reactivity[index]}\${
-          showDelayedNeutrons ? ',' + simulationData.delayedNeutronPrecursors[index] : ''
-        }\`
+        time + ',' + simulationData.power[index] + ',' + simulationData.reactivity[index] + 
+        (showDelayedNeutrons ? ',' + simulationData.delayedNeutronPrecursors[index] : '')
       ),
     ].join('\\n');
     
@@ -714,7 +713,7 @@ function ReactorKineticsSimulator() {
             max={parameters.simulationTime}
             step={0.1}
             valueLabelDisplay="auto"
-            valueLabelFormat={(value) => \`\${value.toFixed(1)}s\`}
+            valueLabelFormat={(value) => value.toFixed(1) + 's'}
             disabled={isRunning}
             onChange={(_, value) => {
               setCurrentTime(value);

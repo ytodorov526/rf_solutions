@@ -529,7 +529,7 @@ function FuelAssemblyDesigner() {
     const newB = Math.min(255, b + amount);
     
     // Convert back to hex
-    return \`#\${newR.toString(16).padStart(2, '0')}\${newG.toString(16).padStart(2, '0')}\${newB.toString(16).padStart(2, '0')}\`;
+    return '#' + newR.toString(16).padStart(2, '0') + newG.toString(16).padStart(2, '0') + newB.toString(16).padStart(2, '0');
   };
   
   const darkenColor = (color, amount) => {
@@ -547,7 +547,7 @@ function FuelAssemblyDesigner() {
     const newB = Math.max(0, b - amount);
     
     // Convert back to hex
-    return \`#\${newR.toString(16).padStart(2, '0')}\${newG.toString(16).padStart(2, '0')}\${newB.toString(16).padStart(2, '0')}\`;
+    return '#' + newR.toString(16).padStart(2, '0') + newG.toString(16).padStart(2, '0') + newB.toString(16).padStart(2, '0');
   };
   
   // Function to handle assembly type change
@@ -681,7 +681,7 @@ function FuelAssemblyDesigner() {
     const dataStr = JSON.stringify(designData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileName = \`fuel_assembly_\${assemblyType}_\${new Date().toISOString().split('T')[0]}.json\`;
+    const exportFileName = 'fuel_assembly_' + assemblyType + '_' + new Date().toISOString().split('T')[0] + '.json';
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -696,7 +696,7 @@ function FuelAssemblyDesigner() {
     
     const dataUrl = canvas.toDataURL('image/png');
     const link = document.createElement('a');
-    link.download = \`fuel_assembly_\${assemblyType}_\${new Date().toISOString().split('T')[0]}.png\`;
+    link.download = 'fuel_assembly_' + assemblyType + '_' + new Date().toISOString().split('T')[0] + '.png';
     link.href = dataUrl;
     link.click();
   };
