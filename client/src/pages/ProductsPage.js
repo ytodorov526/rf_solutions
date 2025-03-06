@@ -21,9 +21,12 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Paper
+  Paper,
+  Tabs,
+  Tab
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import TechSpecsViewer from '../components/TechSpecsViewer';
 
 // Sample product data with detailed technical specifications
 const products = [
@@ -198,13 +201,19 @@ const products = [
 
 function ProductsPage() {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [dialogTabValue, setDialogTabValue] = useState(0);
 
   const handleOpenSpecs = (product) => {
     setSelectedProduct(product);
+    setDialogTabValue(0);
   };
 
   const handleCloseSpecs = () => {
     setSelectedProduct(null);
+  };
+  
+  const handleDialogTabChange = (event, newValue) => {
+    setDialogTabValue(newValue);
   };
 
   return (
@@ -274,17 +283,17 @@ function ProductsPage() {
           ))}
         </Grid>
         
-        {/* Technical Specifications Dialog */}
+        {/* Enhanced Technical Specifications Dialog */}
         <Dialog
           open={Boolean(selectedProduct)}
           onClose={handleCloseSpecs}
-          maxWidth="md"
+          maxWidth="lg"
           fullWidth
         >
           {selectedProduct && (
             <>
               <DialogTitle>
-                {selectedProduct.name} - Technical Specifications
+                {selectedProduct.name} - Technical Information
                 <IconButton
                   aria-label="close"
                   onClick={handleCloseSpecs}
@@ -298,35 +307,88 @@ function ProductsPage() {
                   <CloseIcon />
                 </IconButton>
               </DialogTitle>
+              
+              <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 2 }}>
+                <Tabs
+                  value={dialogTabValue}
+                  onChange={handleDialogTabChange}
+                  aria-label="product information tabs"
+                >
+                  <Tab label="Basic Specifications" />
+                  <Tab label="Advanced Technical Details" />
+                </Tabs>
+              </Box>
+              
               <DialogContent dividers>
-                <TableContainer component={Paper} variant="outlined">
-                  <Table>
-                    <TableBody>
-                      {selectedProduct.specifications.map((spec, index) => (
-                        <TableRow 
-                          key={index}
-                          sx={{ 
-                            '&:nth-of-type(odd)': { 
-                              backgroundColor: (theme) => theme.palette.action.hover 
-                            } 
-                          }}
-                        >
-                          <TableCell 
-                            component="th" 
-                            scope="row"
+                {dialogTabValue === 0 ? (
+                  <TableContainer component={Paper} variant="outlined">
+                    <Table>
+                      <TableBody>
+                        {selectedProduct.specifications.map((spec, index) => (
+                          <TableRow 
+                            key={index}
                             sx={{ 
-                              fontWeight: 'bold',
-                              width: '40%' 
+                              '&:nth-of-type(odd)': { 
+                                backgroundColor: (theme) => theme.palette.action.hover 
+                              } 
                             }}
                           >
-                            {spec.name}
-                          </TableCell>
-                          <TableCell>{spec.value}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                            <TableCell 
+                              component="th" 
+                              scope="row"
+                              sx={{ 
+                                fontWeight: 'bold',
+                                width: '40%' 
+                              }}
+                            >
+                              {spec.name}
+                            </TableCell>
+                            <TableCell>{spec.value}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                ) : (
+                  <TechSpecsViewer 
+                    product={{
+                      id: selectedProduct.id.toString(),
+                      name: selectedProduct.name,
+                      category: selectedProduct.category,
+                      // Organize specifications into categories expected by TechSpecsViewer
+                      specs: {
+                        general: selectedProduct.specifications.filter(s => 
+                          ['Dimensions', 'Weight', 'Operating Temperature', 'Power', 'Display'].some(term => 
+                            s.name.includes(term)
+                          )),
+                        rf: selectedProduct.specifications.filter(s => 
+                          ['Frequency', 'Bandwidth', 'Gain', 'Phase', 'Noise', 'Range', 'Sensitivity', 'VSWR', 'Impedance'].some(term => 
+                            s.name.includes(term)
+                          )),
+                        analysis: selectedProduct.specifications.filter(s => 
+                          ['Analysis', 'Processing', 'Software', 'Interface', 'Protocol', 'Data'].some(term => 
+                            s.name.includes(term)
+                          )).map(s => ({
+                            name: s.name,
+                            value: s.name.includes('Support') ? 'Standard' : s.value
+                          })),
+                        triggering: selectedProduct.specifications.filter(s => 
+                          ['Trigger', 'Timing', 'Control', 'Remote', 'Update'].some(term => 
+                            s.name.includes(term)
+                          ))
+                      },
+                      documents: [
+                        { type: "Datasheet", filename: `${selectedProduct.name.replace(/\s+/g, '_')}_Datasheet.pdf`, size: "2.4 MB" },
+                        { type: "User Manual", filename: `${selectedProduct.name.replace(/\s+/g, '_')}_Manual.pdf`, size: "8.7 MB" },
+                        { type: "Application Note", filename: `${selectedProduct.category}_Application_Note.pdf`, size: "1.5 MB" }
+                      ],
+                      comparisonProducts: [
+                        { id: "basic", name: `${selectedProduct.name} Basic`, priceCategory: "Entry-level" },
+                        { id: "pro-plus", name: `${selectedProduct.name} Pro+`, priceCategory: "High-end" }
+                      ]
+                    }}
+                  />
+                )}
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseSpecs}>Close</Button>

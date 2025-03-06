@@ -109,15 +109,47 @@ app.get('/api/products/:id', (req, res) => {
   res.json(product);
 });
 
-app.post('/api/contacts', (req, res) => {
-  const newContact = {
-    id: mockData.contacts.length + 1,
-    ...req.body,
-    createdAt: new Date().toISOString()
-  };
-  mockData.contacts.push(newContact);
-  res.status(201).json(newContact);
-});
+// Import routes
+const contactRoutes = require('./routes/contactRoutes');
+const productRoutes = require('./routes/productRoutes');
+const projectRoutes = require('./routes/projectRoutes');
+
+// Check if we're in demo mode or production
+const DEMO_MODE = process.env.DEMO_MODE === 'true';
+
+if (DEMO_MODE) {
+  // Use mock data routes for demo
+  app.post('/api/contacts', (req, res) => {
+    const newContact = {
+      id: mockData.contacts.length + 1,
+      ...req.body,
+      createdAt: new Date().toISOString()
+    };
+    mockData.contacts.push(newContact);
+    
+    // Try to send email notifications if email is configured
+    if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
+      try {
+        const emailService = require('./services/emailService');
+        emailService.sendContactConfirmation(newContact).catch(err => 
+          console.error('Failed to send confirmation email:', err)
+        );
+        emailService.sendAdminNotification(newContact).catch(err => 
+          console.error('Failed to send admin notification:', err)
+        );
+      } catch (err) {
+        console.error('Error with email service:', err);
+      }
+    }
+    
+    res.status(201).json(newContact);
+  });
+} else {
+  // Use actual routes with database
+  app.use('/api/contacts', contactRoutes);
+  app.use('/api/products', productRoutes);
+  app.use('/api/projects', projectRoutes);
+}
 
 // Serve static assets in production or for demo
 // Check if we're in Azure deployment (where client build is copied to server/public)

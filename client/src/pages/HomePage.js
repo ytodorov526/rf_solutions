@@ -28,6 +28,8 @@ import BuildIcon from '@mui/icons-material/Build';
 // Import components
 import ProjectRequestForm from '../components/ProjectRequestForm';
 import RFNewsSection from '../components/RFNewsSection';
+import RFCalculator from '../components/RFCalculator';
+import LiveDataMonitor from '../components/LiveDataMonitor';
 
 function HomePage() {
   const [projectFormOpen, setProjectFormOpen] = useState(false);
@@ -370,6 +372,28 @@ function HomePage() {
                   "Working with RF Solutions on our automotive radar module was a seamless experience. Their team's expertise in RF design and signal processing was evident throughout the project."
                 </Typography>
               </Paper>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+      
+      {/* Interactive Tools Section */}
+      <Box sx={{ py: 8, bgcolor: 'grey.100' }}>
+        <Container maxWidth="lg">
+          <Typography variant="h3" component="h2" align="center" gutterBottom>
+            Interactive RF Tools
+          </Typography>
+          <Typography variant="h6" align="center" color="textSecondary" paragraph sx={{ mb: 6 }}>
+            Try our engineering tools for RF system design and analysis
+          </Typography>
+          
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={12}>
+              <LiveDataMonitor />
+            </Grid>
+            
+            <Grid item xs={12} md={12} sx={{ mt: 4 }}>
+              <RFCalculator />
             </Grid>
           </Grid>
         </Container>

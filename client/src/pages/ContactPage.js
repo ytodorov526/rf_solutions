@@ -15,6 +15,7 @@ import {
   CardContent,
   useTheme
 } from '@mui/material';
+import { getApiUrl } from '../config/apiConfig';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -69,8 +70,11 @@ function ContactPage() {
       setSnackbarSeverity('info');
       setOpenSnackbar(true);
       
+      // Get API URL from config
+      const apiUrl = getApiUrl('/api/contacts');
+        
       // Send data to backend API
-      const response = await fetch('http://localhost:5000/api/contacts', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +102,7 @@ function ContactPage() {
       });
     } catch (error) {
       console.error('Error submitting form:', error);
-      setSnackbarMessage('There was an error sending your message. Please try again or contact us directly.');
+      setSnackbarMessage('There was an error sending your message. Please try again or contact us directly at info@rf-solutions1.azurewebsites.net');
       setSnackbarSeverity('error');
       setOpenSnackbar(true);
     }
@@ -141,7 +145,7 @@ function ContactPage() {
                           Email Us
                         </Typography>
                         <Typography variant="body2">
-                          info@rfsolutions.com
+                          info@rf-solutions1.azurewebsites.net
                         </Typography>
                       </Box>
                     </Box>

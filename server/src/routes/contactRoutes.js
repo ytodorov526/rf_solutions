@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Contact = require('../models/Contact');
+const emailService = require('../services/emailService');
 
 // @route   POST /api/contacts
 // @desc    Submit a new contact form
@@ -9,6 +10,18 @@ router.post('/', async (req, res) => {
   try {
     const newContact = new Contact(req.body);
     const savedContact = await newContact.save();
+    
+    try {
+      // Send confirmation email to the contact
+      await emailService.sendContactConfirmation(savedContact);
+      
+      // Send notification to admin
+      await emailService.sendAdminNotification(savedContact);
+    } catch (emailError) {
+      console.error('Error sending emails:', emailError);
+      // We continue even if email sending fails
+      // The contact is already saved in the database
+    }
     
     res.status(201).json(savedContact);
   } catch (err) {

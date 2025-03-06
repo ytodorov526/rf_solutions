@@ -30,6 +30,7 @@ import {
   InputAdornment,
   Tooltip
 } from '@mui/material';
+import { getApiUrl } from '../config/apiConfig';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
@@ -245,14 +246,48 @@ function ProjectRequestForm({ open, onClose }) {
     setSubmitError('');
     
     try {
-      // In a real application, you would submit form data to your backend
-      // For demo purposes, simulate an API call with a delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Prepare data for submission - convert form data to match Contact model
+      const contactData = {
+        name: formValues.name,
+        email: formValues.email,
+        phone: formValues.phone || '',
+        company: formValues.company,
+        inquiryType: 'Project Consultation',
+        message: `
+Project Name: ${formValues.projectName}
+Project Type: ${formValues.projectType}
+Project Description: ${formValues.projectDescription}
+Timeline: ${formValues.timeline || 'Not specified'}
+Budget Range: ${formValues.budgetRange || 'Not specified'}
+Frequency Bands: ${formValues.frequencyBands.join(', ')}
+${formValues.customFrequencyRange ? `Custom Frequency Range: ${formValues.customFrequencyRange}` : ''}
+Power Requirements: ${formValues.powerRequirements || 'Not specified'}
+Physical Constraints: ${formValues.physicalConstraints || 'Not specified'}
+Environmental Conditions: ${formValues.environmentalConditions.join(', ') || 'None specified'}
+Temperature Range: ${temperatureRange[0]}°C to ${temperatureRange[1]}°C
+Standards Compliance: ${formValues.standardsCompliance.join(', ') || 'None specified'}
+${formValues.customStandards ? `Custom Standards: ${formValues.customStandards}` : ''}
+Additional Notes: ${formValues.additionalNotes || 'None provided'}
+        `.trim()
+      };
       
-      // Simulate successful submission
+      // Submit to API
+      const response = await fetch(getApiUrl('/api/contacts'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactData),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}: ${await response.text()}`);
+      }
+      
+      // Successful submission
       setSubmitSuccess(true);
       
-      // Reset form after submission (in a real app this would be after successful API response)
+      // Reset form after submission
       setTimeout(() => {
         setActiveStep(0);
         setFormValues({
@@ -285,7 +320,7 @@ function ProjectRequestForm({ open, onClose }) {
       }, 2000);
     } catch (error) {
       console.error('Error submitting form:', error);
-      setSubmitError('There was an error submitting your project request. Please try again or contact us directly.');
+      setSubmitError('There was an error submitting your project request. Please try again or contact us directly at info@rf-solutions1.azurewebsites.net');
       setSubmitting(false);
     }
   };

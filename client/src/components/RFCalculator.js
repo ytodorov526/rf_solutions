@@ -74,6 +74,19 @@ function RFCalculator() {
   const [antennaFreqUnit, setAntennaFreqUnit] = useState('GHz');
   const [efficiency, setEfficiency] = useState(0.55);
   const [antennaGain, setAntennaGain] = useState(null);
+  
+  // Link Budget Calculator
+  const [txPower, setTxPower] = useState(30); // dBm
+  const [txGain, setTxGain] = useState(12); // dBi
+  const [rxGain, setRxGain] = useState(10); // dBi
+  const [linkFrequency, setLinkFrequency] = useState(2.4); // GHz
+  const [linkDistance, setLinkDistance] = useState(5); // km
+  const [cableLoss, setCableLoss] = useState(2); // dB
+  const [otherLosses, setOtherLosses] = useState(6); // dB
+  const [sensitivity, setSensitivity] = useState(-90); // dBm
+  const [linkBudget, setLinkBudget] = useState(null);
+  const [linkMargin, setLinkMargin] = useState(null);
+  const [receivedPower, setReceivedPower] = useState(null);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -101,6 +114,11 @@ function RFCalculator() {
         setAntennaFreqUnit('GHz');
         setEfficiency(0.55);
         setAntennaGain(null);
+        break;
+      case 3: // Link Budget
+        setLinkBudget(null);
+        setLinkMargin(null);
+        setReceivedPower(null);
         break;
       default:
         break;
@@ -233,6 +251,39 @@ function RFCalculator() {
       setCalculating(false);
     }, 500);
   };
+  
+  const calculateLinkBudget = () => {
+    setError('');
+    
+    if (linkFrequency <= 0 || linkDistance <= 0) {
+      setError('Please enter valid frequency and distance values');
+      return;
+    }
+
+    setCalculating(true);
+
+    // Simulate calculation delay
+    setTimeout(() => {
+      // Free space path loss calculation in dB
+      // FSPL (dB) = 20log10(d) + 20log10(f) + 20log10(4π/c)
+      // Simplified for distance in km and frequency in GHz
+      const pathLossDb = 20 * Math.log10(linkDistance) + 20 * Math.log10(linkFrequency) + 92.45;
+      
+      // Link budget calculation
+      const budget = txPower + txGain + rxGain - pathLossDb - cableLoss - otherLosses;
+      setLinkBudget(budget);
+      
+      // Calculate received power
+      const rxPower = txPower + txGain + rxGain - pathLossDb - cableLoss - otherLosses;
+      setReceivedPower(rxPower);
+      
+      // Link margin
+      const margin = rxPower - sensitivity;
+      setLinkMargin(margin);
+      
+      setCalculating(false);
+    }, 500);
+  };
 
   return (
     <Paper elevation={3} sx={{ p: 0, borderRadius: 2, overflow: 'hidden' }}>
@@ -252,6 +303,7 @@ function RFCalculator() {
           <Tab label="Wavelength" {...a11yProps(0)} />
           <Tab label="Path Loss" {...a11yProps(1)} />
           <Tab label="Antenna Gain" {...a11yProps(2)} />
+          <Tab label="Link Budget" {...a11yProps(3)} />
         </Tabs>
       </Box>
 
@@ -558,6 +610,229 @@ function RFCalculator() {
                   </TableBody>
                 </Table>
               </TableContainer>
+            </Grid>
+          )}
+        </Grid>
+      </TabPanel>
+      
+      {/* Link Budget Calculator */}
+      <TabPanel value={tabValue} index={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              label="Transmit Power (dBm)"
+              type="number"
+              fullWidth
+              value={txPower}
+              onChange={(e) => setTxPower(parseFloat(e.target.value))}
+              InputProps={{ inputProps: { step: 0.1 } }}
+            />
+            <Typography variant="caption" color="textSecondary">
+              Typical range: 10-50 dBm
+            </Typography>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              label="Transmit Antenna Gain (dBi)"
+              type="number"
+              fullWidth
+              value={txGain}
+              onChange={(e) => setTxGain(parseFloat(e.target.value))}
+              InputProps={{ inputProps: { step: 0.1 } }}
+            />
+            <Typography variant="caption" color="textSecondary">
+              Typically: 2-30 dBi
+            </Typography>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              label="Receive Antenna Gain (dBi)"
+              type="number"
+              fullWidth
+              value={rxGain}
+              onChange={(e) => setRxGain(parseFloat(e.target.value))}
+              InputProps={{ inputProps: { step: 0.1 } }}
+            />
+            <Typography variant="caption" color="textSecondary">
+              Typically: 2-30 dBi
+            </Typography>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              label="Frequency (GHz)"
+              type="number"
+              fullWidth
+              value={linkFrequency}
+              onChange={(e) => setLinkFrequency(parseFloat(e.target.value))}
+              InputProps={{ inputProps: { min: 0.1, step: 0.1 } }}
+            />
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              label="Distance (km)"
+              type="number"
+              fullWidth
+              value={linkDistance}
+              onChange={(e) => setLinkDistance(parseFloat(e.target.value))}
+              InputProps={{ inputProps: { min: 0.1, step: 0.1 } }}
+            />
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              label="Cable/Connector Losses (dB)"
+              type="number"
+              fullWidth
+              value={cableLoss}
+              onChange={(e) => setCableLoss(parseFloat(e.target.value))}
+              InputProps={{ inputProps: { min: 0, step: 0.1 } }}
+            />
+            <Typography variant="caption" color="textSecondary">
+              Total at both TX and RX ends
+            </Typography>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={6}>
+            <TextField
+              label="Other Losses (dB)"
+              type="number"
+              fullWidth
+              value={otherLosses}
+              onChange={(e) => setOtherLosses(parseFloat(e.target.value))}
+              InputProps={{ inputProps: { min: 0, step: 0.1 } }}
+            />
+            <Typography variant="caption" color="textSecondary">
+              Atmosphere, rain, obstacles, polarization mismatch, etc.
+            </Typography>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={6}>
+            <TextField
+              label="Receiver Sensitivity (dBm)"
+              type="number"
+              fullWidth
+              value={sensitivity}
+              onChange={(e) => setSensitivity(parseFloat(e.target.value))}
+              InputProps={{ inputProps: { step: 0.1 } }}
+            />
+            <Typography variant="caption" color="textSecondary">
+              Typically: -80 to -110 dBm
+            </Typography>
+          </Grid>
+          
+          <Grid item xs={12}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <Button 
+                variant="contained" 
+                color="primary"
+                startIcon={<CalculateIcon />}
+                onClick={calculateLinkBudget}
+                disabled={calculating}
+                sx={{ mr: 1 }}
+              >
+                Calculate Link Budget
+              </Button>
+              <Button 
+                variant="outlined"
+                startIcon={<RefreshIcon />}
+                onClick={() => resetCurrentCalculator(3)}
+                disabled={calculating}
+              >
+                Reset
+              </Button>
+            </Box>
+          </Grid>
+          
+          {calculating ? (
+            <Grid item xs={12} sx={{ textAlign: 'center', mt: 2 }}>
+              <CircularProgress size={30} />
+            </Grid>
+          ) : linkBudget !== null && (
+            <Grid item xs={12}>
+              <Box sx={{ mt: 3, mb: 2 }}>
+                <Divider>
+                  <Typography variant="subtitle2" color="textSecondary">Link Budget Analysis</Typography>
+                </Divider>
+              </Box>
+              <TableContainer component={Paper} variant="outlined">
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Parameter</TableCell>
+                      <TableCell align="right">Value</TableCell>
+                      <TableCell>Description</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell component="th" sx={{ fontWeight: 'bold' }}>Free Space Path Loss</TableCell>
+                      <TableCell align="right">{(20 * Math.log10(linkDistance) + 20 * Math.log10(linkFrequency) + 92.45).toFixed(2)} dB</TableCell>
+                      <TableCell>Loss due to signal propagation through free space</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" sx={{ fontWeight: 'bold' }}>System Gain</TableCell>
+                      <TableCell align="right">{(txPower + txGain + rxGain).toFixed(2)} dB</TableCell>
+                      <TableCell>Combined gain of transmitter power and antennas</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" sx={{ fontWeight: 'bold' }}>System Losses</TableCell>
+                      <TableCell align="right">{(cableLoss + otherLosses).toFixed(2)} dB</TableCell>
+                      <TableCell>Combined losses in the system</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" sx={{ fontWeight: 'bold' }}>Received Power</TableCell>
+                      <TableCell 
+                        align="right"
+                        sx={{ 
+                          fontWeight: 'bold',
+                          color: receivedPower > sensitivity ? 'success.main' : 'error.main'
+                        }}
+                      >
+                        {receivedPower.toFixed(2)} dBm
+                      </TableCell>
+                      <TableCell>Expected power at the receiver</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" sx={{ fontWeight: 'bold' }}>Link Margin</TableCell>
+                      <TableCell 
+                        align="right"
+                        sx={{ 
+                          fontWeight: 'bold',
+                          color: linkMargin > 10 ? 'success.main' : 
+                                 linkMargin > 5 ? 'warning.main' : 'error.main'
+                        }}
+                      >
+                        {linkMargin.toFixed(2)} dB
+                      </TableCell>
+                      <TableCell>
+                        {linkMargin > 10 ? 'Excellent link quality' : 
+                         linkMargin > 5 ? 'Good link quality, but vulnerable to fading' : 
+                         linkMargin > 0 ? 'Poor link quality, likely unreliable' : 
+                         'Link will not work, signal below sensitivity threshold'}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              
+              <Box sx={{ mt: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+                <Typography variant="subtitle2" gutterBottom>Link Assessment:</Typography>
+                <Typography variant="body2">
+                  {linkMargin > 20 ? 
+                    'This link has an excellent margin and should be very reliable in all conditions.' : 
+                   linkMargin > 10 ? 
+                    'This link has a good margin and should be reliable in most conditions.' : 
+                   linkMargin > 5 ? 
+                    'This link has a moderate margin and may experience interruptions during adverse weather or interference.' : 
+                   linkMargin > 0 ? 
+                    'This link has a very small margin and will likely be unreliable. Consider using higher-gain antennas or reducing distance.' : 
+                    'This link will not work as the received signal is below the receiver sensitivity. Significant improvements are needed.'}
+                </Typography>
+              </Box>
             </Grid>
           )}
         </Grid>
