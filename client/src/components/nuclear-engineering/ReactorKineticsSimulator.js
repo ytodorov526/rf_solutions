@@ -149,6 +149,7 @@ function ReactorKineticsSimulator() {
   // Effect to clear simulation when parameters change
   useEffect(() => {
     resetSimulation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parameters]);
   
   // Effect to handle animation
@@ -188,10 +189,10 @@ function ReactorKineticsSimulator() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isRunning, parameters.simulationTime]);
+  }, [isRunning, parameters.simulationTime, runSimulationStep]);
   
   // Function to run a simulation step
-  const runSimulationStep = (time) => {
+  const runSimulationStep = React.useCallback((time) => {
     // Simplified point-kinetics equations
     // This is a basic implementation for educational purposes
     
@@ -243,7 +244,7 @@ function ReactorKineticsSimulator() {
       reactivity: [...prev.reactivity, reactivityDollars],
       delayedNeutronPrecursors: [...prev.delayedNeutronPrecursors, newDelayedNeutrons],
     }));
-  };
+  }, [parameters.beta, parameters.initialReactivity, parameters.lambda, parameters.promptNeutronLifetime, parameters.reactivityInsertionDuration, parameters.reactivityInsertionRate]);
   
   // Function to reset simulation
   const resetSimulation = () => {

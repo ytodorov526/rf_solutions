@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, Component } from 'react';
 import {
   Box,
   Container,
@@ -18,6 +18,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  CircularProgress,
 } from '@mui/material';
 import ScienceIcon from '@mui/icons-material/Science';
 import CalculateIcon from '@mui/icons-material/Calculate';
@@ -51,6 +52,44 @@ function a11yProps(index) {
     id: `nuclear-tab-${index}`,
     'aria-controls': `nuclear-tabpanel-${index}`,
   };
+}
+
+// Error boundary for component isolation
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Component Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Box sx={{ p: 3, border: '1px solid #f5c6cb', borderRadius: 1, bgcolor: '#f8d7da', color: '#721c24' }}>
+          <Typography variant="h6">Component Error</Typography>
+          <Typography variant="body2">This component couldn't be loaded. Please try refreshing the page.</Typography>
+          <Button 
+            variant="outlined" 
+            color="error" 
+            size="small" 
+            sx={{ mt: 2 }}
+            onClick={() => this.setState({ hasError: false })}
+          >
+            Try Again
+          </Button>
+        </Box>
+      );
+    }
+
+    return this.props.children;
+  }
 }
 
 // Reactor Types data for educational content
@@ -286,10 +325,19 @@ function NuclearEngineeringPage() {
               
               {/* Include the NuclearCalculator component */}
               <Box sx={{ mt: 4 }}>
-                {React.createElement(
-                  React.lazy(() => import('../components/nuclear-engineering/NuclearCalculator')),
-                  {}
-                )}
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Nuclear Calculator...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/NuclearCalculator')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
               </Box>
               
               <Typography variant="h5" gutterBottom sx={{ mt: 6 }}>
@@ -334,18 +382,36 @@ function NuclearEngineeringPage() {
               {/* Import and include the ReactorKineticsSimulator component */}
               <Box sx={{ mt: 4 }}>
                 {/* Include the dynamic simulator component */}
-                {React.createElement(
-                  React.lazy(() => import('../components/nuclear-engineering/ReactorKineticsSimulator')),
-                  {}
-                )}
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Reactor Kinetics Simulator...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/ReactorKineticsSimulator')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
               </Box>
               
               <Box sx={{ mt: 4 }}>
                 {/* Include the fuel assembly designer */}
-                {React.createElement(
-                  React.lazy(() => import('../components/nuclear-engineering/FuelAssemblyDesigner')),
-                  {}
-                )}
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Fuel Assembly Designer...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/FuelAssemblyDesigner')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
               </Box>
               
               <Typography variant="h5" gutterBottom sx={{ mt: 6, mb: 3 }}>

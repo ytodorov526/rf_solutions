@@ -356,8 +356,30 @@ function FuelAssemblyDesigner() {
     }
   }, [assemblyType]);
   
-  // Draw the assembly when grid, viewMode, or canvas size changes
+  // Function to handle window resize
   useEffect(() => {
+    const handleResize = () => {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        // Maintain aspect ratio
+        const container = canvas.parentElement;
+        if (container) {
+          const containerWidth = container.clientWidth;
+          const containerHeight = container.clientHeight;
+          const size = Math.min(containerWidth, containerHeight, 600);
+          canvas.width = size;
+          canvas.height = size;
+          drawAssembly(); // Redraw with new size
+        }
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [grid, viewMode, rows, cols, selectedCell]);
+
+  // Draw the assembly function
+  const drawAssembly = () => {
     const canvas = canvasRef.current;
     if (!canvas || grid.length === 0) return;
     
@@ -365,189 +387,230 @@ function FuelAssemblyDesigner() {
     const width = canvas.width;
     const height = canvas.height;
     
-    // Clear canvas
-    ctx.clearRect(0, 0, width, height);
-    
-    // Calculate cell size to fit the grid
-    const cellSize = Math.min(
-      width / cols,
-      height / rows
-    );
-    
-    // Calculate offset to center the grid
-    const offsetX = (width - cols * cellSize) / 2;
-    const offsetY = (height - rows * cellSize) / 2;
-    
-    // Draw background grid
-    ctx.strokeStyle = '#ddd';
-    ctx.lineWidth = 0.5;
-    
-    for (let i = 0; i <= rows; i++) {
-      ctx.beginPath();
-      ctx.moveTo(offsetX, offsetY + i * cellSize);
-      ctx.lineTo(offsetX + cols * cellSize, offsetY + i * cellSize);
-      ctx.stroke();
-    }
-    
-    for (let j = 0; j <= cols; j++) {
-      ctx.beginPath();
-      ctx.moveTo(offsetX + j * cellSize, offsetY);
-      ctx.lineTo(offsetX + j * cellSize, offsetY + rows * cellSize);
-      ctx.stroke();
-    }
-    
-    // Draw cells
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        const pinType = grid[i][j];
-        const pinInfo = fuelPinTypes[pinType];
-        
-        // Calculate cell position
-        const x = offsetX + j * cellSize;
-        const y = offsetY + i * cellSize;
-        
-        // Draw pin
-        ctx.fillStyle = pinInfo.color;
-        
-        if (viewMode === '2D') {
-          // Simple 2D circles
-          const radius = cellSize * 0.4; // Adjustable size relative to cell
-          ctx.beginPath();
-          ctx.arc(
-            x + cellSize / 2,
-            y + cellSize / 2,
-            radius,
-            0,
-            2 * Math.PI
-          );
-          ctx.fill();
-          
-          // Draw pin outline
-          ctx.strokeStyle = '#333';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-          
-          // If it's a selected cell, highlight it
-          if (selectedCell && selectedCell.row === i && selectedCell.col === j) {
-            ctx.strokeStyle = '#ff0000';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(x + 2, y + 2, cellSize - 4, cellSize - 4);
-          }
-          
-        } else if (viewMode === '3D') {
-          // More detailed 3D-like pins with shading
-          const radius = cellSize * 0.4;
-          
-          // Add gradient for 3D effect
-          const gradient = ctx.createRadialGradient(
-            x + cellSize / 2 - radius * 0.3,
-            y + cellSize / 2 - radius * 0.3,
-            0,
-            x + cellSize / 2,
-            y + cellSize / 2,
-            radius
-          );
-          
-          gradient.addColorStop(0, lightenColor(pinInfo.color, 40));
-          gradient.addColorStop(0.7, pinInfo.color);
-          gradient.addColorStop(1, darkenColor(pinInfo.color, 30));
-          
-          ctx.fillStyle = gradient;
-          ctx.beginPath();
-          ctx.arc(
-            x + cellSize / 2,
-            y + cellSize / 2,
-            radius,
-            0,
-            2 * Math.PI
-          );
-          ctx.fill();
-          
-          // Draw pin outline
-          ctx.strokeStyle = '#333';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-          
-          // For fuel pins, add pellet stacking details
-          if (pinType === 'fuel' || pinType === 'gadolinia') {
-            const innerRadius = radius * 0.7;
+    try {
+      // Clear canvas
+      ctx.clearRect(0, 0, width, height);
+      
+      // Calculate cell size to fit the grid
+      const cellSize = Math.min(
+        width / cols,
+        height / rows
+      );
+      
+      // Calculate offset to center the grid
+      const offsetX = (width - cols * cellSize) / 2;
+      const offsetY = (height - rows * cellSize) / 2;
+      
+      // Draw background grid
+      ctx.strokeStyle = '#ddd';
+      ctx.lineWidth = 0.5;
+      
+      for (let i = 0; i <= rows; i++) {
+        ctx.beginPath();
+        ctx.moveTo(offsetX, offsetY + i * cellSize);
+        ctx.lineTo(offsetX + cols * cellSize, offsetY + i * cellSize);
+        ctx.stroke();
+      }
+      
+      for (let j = 0; j <= cols; j++) {
+        ctx.beginPath();
+        ctx.moveTo(offsetX + j * cellSize, offsetY);
+        ctx.lineTo(offsetX + j * cellSize, offsetY + rows * cellSize);
+        ctx.stroke();
+      }
+      
+      // Draw cells
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          if (i < grid.length && j < grid[i].length) {
+            const pinType = grid[i][j];
+            const pinInfo = fuelPinTypes[pinType] || fuelPinTypes.empty;
             
-            // Draw inner circle (pellet)
-            ctx.fillStyle = pinType === 'fuel' ? '#d63031' : '#fdcb6e';
-            ctx.beginPath();
-            ctx.arc(
-              x + cellSize / 2,
-              y + cellSize / 2,
-              innerRadius,
-              0,
-              2 * Math.PI
-            );
-            ctx.fill();
+            // Calculate cell position
+            const x = offsetX + j * cellSize;
+            const y = offsetY + i * cellSize;
             
-            // Add pellet details (horizontal lines)
-            ctx.strokeStyle = '#9e0d11';
-            ctx.lineWidth = 0.5;
+            // Draw pin
+            ctx.fillStyle = pinInfo.color;
             
-            for (let k = 1; k < 4; k++) {
+            if (viewMode === '2D') {
+              // Simple 2D circles
+              const radius = cellSize * 0.4; // Adjustable size relative to cell
               ctx.beginPath();
-              ctx.moveTo(
-                x + cellSize / 2 - innerRadius,
-                y + cellSize / 2 - innerRadius / 2 + k * innerRadius / 4
+              ctx.arc(
+                x + cellSize / 2,
+                y + cellSize / 2,
+                radius,
+                0,
+                2 * Math.PI
               );
-              ctx.lineTo(
-                x + cellSize / 2 + innerRadius,
-                y + cellSize / 2 - innerRadius / 2 + k * innerRadius / 4
-              );
+              ctx.fill();
+              
+              // Draw pin outline
+              ctx.strokeStyle = '#333';
+              ctx.lineWidth = 1;
               ctx.stroke();
+              
+              // If it's a selected cell, highlight it
+              if (selectedCell && selectedCell.row === i && selectedCell.col === j) {
+                ctx.strokeStyle = '#ff0000';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x + 2, y + 2, cellSize - 4, cellSize - 4);
+              }
+              
+            } else if (viewMode === '3D') {
+              // More detailed 3D-like pins with shading
+              const radius = cellSize * 0.4;
+              
+              try {
+                // Add gradient for 3D effect
+                const gradient = ctx.createRadialGradient(
+                  x + cellSize / 2 - radius * 0.3,
+                  y + cellSize / 2 - radius * 0.3,
+                  0,
+                  x + cellSize / 2,
+                  y + cellSize / 2,
+                  radius
+                );
+                
+                gradient.addColorStop(0, lightenColor(pinInfo.color, 40));
+                gradient.addColorStop(0.7, pinInfo.color);
+                gradient.addColorStop(1, darkenColor(pinInfo.color, 30));
+                
+                ctx.fillStyle = gradient;
+              } catch (error) {
+                console.error('Error creating gradient:', error);
+                ctx.fillStyle = pinInfo.color; // Fallback to flat color
+              }
+              
+              ctx.beginPath();
+              ctx.arc(
+                x + cellSize / 2,
+                y + cellSize / 2,
+                radius,
+                0,
+                2 * Math.PI
+              );
+              ctx.fill();
+              
+              // Draw pin outline
+              ctx.strokeStyle = '#333';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+              
+              // For fuel pins, add pellet stacking details
+              if (pinType === 'fuel' || pinType === 'gadolinia') {
+                const innerRadius = radius * 0.7;
+                
+                // Draw inner circle (pellet)
+                ctx.fillStyle = pinType === 'fuel' ? '#d63031' : '#fdcb6e';
+                ctx.beginPath();
+                ctx.arc(
+                  x + cellSize / 2,
+                  y + cellSize / 2,
+                  innerRadius,
+                  0,
+                  2 * Math.PI
+                );
+                ctx.fill();
+                
+                // Add pellet details (horizontal lines)
+                ctx.strokeStyle = '#9e0d11';
+                ctx.lineWidth = 0.5;
+                
+                for (let k = 1; k < 4; k++) {
+                  ctx.beginPath();
+                  ctx.moveTo(
+                    x + cellSize / 2 - innerRadius,
+                    y + cellSize / 2 - innerRadius / 2 + k * innerRadius / 4
+                  );
+                  ctx.lineTo(
+                    x + cellSize / 2 + innerRadius,
+                    y + cellSize / 2 - innerRadius / 2 + k * innerRadius / 4
+                  );
+                  ctx.stroke();
+                }
+              }
+              
+              // If it's a selected cell, highlight it
+              if (selectedCell && selectedCell.row === i && selectedCell.col === j) {
+                ctx.strokeStyle = '#ff0000';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x + 2, y + 2, cellSize - 4, cellSize - 4);
+              }
             }
-          }
-          
-          // If it's a selected cell, highlight it
-          if (selectedCell && selectedCell.row === i && selectedCell.col === j) {
-            ctx.strokeStyle = '#ff0000';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(x + 2, y + 2, cellSize - 4, cellSize - 4);
           }
         }
       }
+    } catch (error) {
+      console.error('Error drawing assembly:', error);
     }
+  };
+  
+  // Draw the assembly when grid or view mode changes
+  useEffect(() => {
+    drawAssembly();
   }, [grid, viewMode, rows, cols, selectedCell]);
   
   // Helper functions for color manipulation
   const lightenColor = (color, amount) => {
-    // Remove the # if present
-    color = color.replace('#', '');
-    
-    // Parse the color
-    const r = parseInt(color.substring(0, 2), 16);
-    const g = parseInt(color.substring(2, 4), 16);
-    const b = parseInt(color.substring(4, 6), 16);
-    
-    // Lighten
-    const newR = Math.min(255, r + amount);
-    const newG = Math.min(255, g + amount);
-    const newB = Math.min(255, b + amount);
-    
-    // Convert back to hex
-    return '#' + newR.toString(16).padStart(2, '0') + newG.toString(16).padStart(2, '0') + newB.toString(16).padStart(2, '0');
+    try {
+      // Remove the # if present
+      color = color.replace('#', '');
+      
+      // Check if color is a valid hex
+      if (!/^[0-9A-Fa-f]{6}$/.test(color)) {
+        return '#FFFFFF'; // Return white as fallback
+      }
+      
+      // Parse the color
+      const r = parseInt(color.substring(0, 2), 16);
+      const g = parseInt(color.substring(2, 4), 16);
+      const b = parseInt(color.substring(4, 6), 16);
+      
+      // Lighten
+      const newR = Math.min(255, r + amount);
+      const newG = Math.min(255, g + amount);
+      const newB = Math.min(255, b + amount);
+      
+      // Convert back to hex
+      return '#' + newR.toString(16).padStart(2, '0') + 
+                    newG.toString(16).padStart(2, '0') + 
+                    newB.toString(16).padStart(2, '0');
+    } catch (error) {
+      console.error('Error lightening color:', error);
+      return '#FFFFFF'; // Return white as fallback
+    }
   };
   
   const darkenColor = (color, amount) => {
-    // Remove the # if present
-    color = color.replace('#', '');
-    
-    // Parse the color
-    const r = parseInt(color.substring(0, 2), 16);
-    const g = parseInt(color.substring(2, 4), 16);
-    const b = parseInt(color.substring(4, 6), 16);
-    
-    // Darken
-    const newR = Math.max(0, r - amount);
-    const newG = Math.max(0, g - amount);
-    const newB = Math.max(0, b - amount);
-    
-    // Convert back to hex
-    return '#' + newR.toString(16).padStart(2, '0') + newG.toString(16).padStart(2, '0') + newB.toString(16).padStart(2, '0');
+    try {
+      // Remove the # if present
+      color = color.replace('#', '');
+      
+      // Check if color is a valid hex
+      if (!/^[0-9A-Fa-f]{6}$/.test(color)) {
+        return '#000000'; // Return black as fallback
+      }
+      
+      // Parse the color
+      const r = parseInt(color.substring(0, 2), 16);
+      const g = parseInt(color.substring(2, 4), 16);
+      const b = parseInt(color.substring(4, 6), 16);
+      
+      // Darken
+      const newR = Math.max(0, r - amount);
+      const newG = Math.max(0, g - amount);
+      const newB = Math.max(0, b - amount);
+      
+      // Convert back to hex
+      return '#' + newR.toString(16).padStart(2, '0') + 
+                    newG.toString(16).padStart(2, '0') + 
+                    newB.toString(16).padStart(2, '0');
+    } catch (error) {
+      console.error('Error darkening color:', error);
+      return '#000000'; // Return black as fallback
+    }
   };
   
   // Function to handle assembly type change
@@ -569,55 +632,70 @@ function FuelAssemblyDesigner() {
   
   // Function to handle canvas click (cell selection)
   const handleCanvasClick = (event) => {
-    const canvas = canvasRef.current;
-    if (!canvas || grid.length === 0) return;
-    
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    
-    // Calculate cell size and offset
-    const cellSize = Math.min(
-      canvas.width / cols,
-      canvas.height / rows
-    );
-    
-    const offsetX = (canvas.width - cols * cellSize) / 2;
-    const offsetY = (canvas.height - rows * cellSize) / 2;
-    
-    // Calculate grid indices
-    const j = Math.floor((x - offsetX) / cellSize);
-    const i = Math.floor((y - offsetY) / cellSize);
-    
-    // Check if click is within grid bounds
-    if (i >= 0 && i < rows && j >= 0 && j < cols) {
-      // Update the grid with the selected pin type
-      const newGrid = [...grid];
-      const currentCellType = newGrid[i][j];
+    try {
+      const canvas = canvasRef.current;
+      if (!canvas || grid.length === 0) return;
       
-      if (currentCellType !== selectedPinType) {
-        newGrid[i][j] = selectedPinType;
-        setGrid(newGrid);
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      
+      // Calculate cell size and offset
+      const cellSize = Math.min(
+        canvas.width / cols,
+        canvas.height / rows
+      );
+      
+      const offsetX = (canvas.width - cols * cellSize) / 2;
+      const offsetY = (canvas.height - rows * cellSize) / 2;
+      
+      // Calculate grid indices
+      const j = Math.floor((x - offsetX) / cellSize);
+      const i = Math.floor((y - offsetY) / cellSize);
+      
+      // Check if click is within grid bounds
+      if (i >= 0 && i < rows && j >= 0 && j < cols) {
+        // Make sure grid is initialized properly
+        const newGrid = [...grid];
         
-        // Update assembly statistics
-        const stats = calculateAssemblyStats(newGrid, fuelPinTypes, {
-          pinDiameter,
-          pinPitch
+        // Ensure the row exists
+        if (!newGrid[i]) {
+          // If row doesn't exist, initialize necessary rows
+          for (let r = 0; r <= i; r++) {
+            if (!newGrid[r]) {
+              newGrid[r] = Array(cols).fill('empty');
+            }
+          }
+        }
+        
+        const currentCellType = newGrid[i][j];
+        
+        if (currentCellType !== selectedPinType) {
+          newGrid[i][j] = selectedPinType;
+          setGrid(newGrid);
+          
+          // Update assembly statistics
+          const stats = calculateAssemblyStats(newGrid, fuelPinTypes, {
+            pinDiameter,
+            pinPitch
+          });
+          setAssemblyStats(stats);
+        }
+        
+        // Set this as the selected cell for detailed editing
+        setSelectedCell({ row: i, col: j });
+        
+        // Update pin properties based on the selected cell
+        const pinType = selectedPinType;
+        setPinProperties({
+          enrichment: pinType === 'fuel' ? fuelPinTypes.fuel.enrichment : 
+                      pinType === 'gadolinia' ? fuelPinTypes.gadolinia.enrichment : 0,
+          gadolinia: pinType === 'gadolinia' ? fuelPinTypes.gadolinia.gadolinia : 0,
+          burnup: 0, // Default burnup value
         });
-        setAssemblyStats(stats);
       }
-      
-      // Set this as the selected cell for detailed editing
-      setSelectedCell({ row: i, col: j });
-      
-      // Update pin properties based on the selected cell
-      const pinType = selectedPinType;
-      setPinProperties({
-        enrichment: pinType === 'fuel' ? fuelPinTypes.fuel.enrichment : 
-                    pinType === 'gadolinia' ? fuelPinTypes.gadolinia.enrichment : 0,
-        gadolinia: pinType === 'gadolinia' ? fuelPinTypes.gadolinia.gadolinia : 0,
-        burnup: 0, // Default burnup value
-      });
+    } catch (error) {
+      console.error('Error handling canvas click:', error);
     }
   };
   
