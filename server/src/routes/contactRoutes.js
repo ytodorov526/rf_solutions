@@ -8,24 +8,46 @@ const emailService = require('../services/emailService');
 // @access  Public
 router.post('/', async (req, res) => {
   try {
+    // Validate required fields
+    const { name, email, message } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ 
+        message: 'Email is required',
+        success: false 
+      });
+    }
+    
+    // Create and save the contact
     const newContact = new Contact(req.body);
     const savedContact = await newContact.save();
     
-    try {
-      // Send confirmation email to the contact
-      await emailService.sendContactConfirmation(savedContact);
-      
-      // Send notification to admin
-      await emailService.sendAdminNotification(savedContact);
-    } catch (emailError) {
-      console.error('Error sending emails:', emailError);
-      // We continue even if email sending fails
-      // The contact is already saved in the database
-    }
+    // Email sending - won't block the response
+    Promise.allSettled([
+      emailService.sendContactConfirmation(savedContact),
+      emailService.sendAdminNotification(savedContact)
+    ]).then(results => {
+      results.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          console.error(`Email ${index === 0 ? 'confirmation' : 'notification'} failed:`, result.reason);
+        }
+      });
+    });
     
-    res.status(201).json(savedContact);
+    // Respond to client immediately after saving to database
+    // Don't wait for emails to complete
+    res.status(201).json({
+      ...savedContact.toJSON(),
+      message: 'Your contact request has been received. Thank you!',
+      success: true
+    });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.error('Error handling contact submission:', err);
+    res.status(400).json({ 
+      message: 'Failed to process your request. Please try again later.',
+      error: err.message,
+      success: false 
+    });
   }
 });
 

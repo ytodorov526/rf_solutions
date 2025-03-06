@@ -68,25 +68,44 @@ This script will:
 
 If successful, you should see a confirmation message in the console and receive the test email.
 
+## Graceful Degradation
+
+The application is designed to work even when the Azure Email Communication Service is not configured or unavailable:
+
+1. **Initialization Check**:
+   - When the server starts, it checks if Azure Email Communication Service is properly configured
+   - If not configured, email functionality is disabled but the application continues to function
+   - Contact form submissions are still saved to the database
+
+2. **Resilient Implementation**:
+   - Email sending is non-blocking; the application responds to users immediately
+   - If email sending fails, detailed error logs are created but the application continues running
+   - All error cases are gracefully handled to prevent application crashes
+
 ## Troubleshooting
 
 If you encounter issues:
 
 1. **Check Environment Variables**:
    - Ensure `AZURE_EMAIL_CONNECTION_STRING` and `AZURE_EMAIL_SENDER` are correctly set
+   - You can use the test script to verify these are working correctly
 
-2. **Verify Azure Configuration**:
+2. **Run the Test Script**:
+   - Use `node test-azure-email.js` to diagnose email service issues
+   - The script provides detailed guidance on how to resolve configuration issues
+
+3. **Verify Azure Configuration**:
    - Confirm that your Email Communication Service domain is verified
    - Check that your sender email is valid and allowed
 
-3. **Check Logs**:
+4. **Check Logs**:
    - The application logs errors when sending emails fails
    - Look for error messages that may indicate the issue
 
-4. **Rate Limits**:
+5. **Rate Limits**:
    - Azure Email Communication Service has rate limits
    - If sending a high volume of emails, you might hit these limits
 
-5. **Spam Filtering**:
+6. **Spam Filtering**:
    - Test emails may be marked as spam
    - Check your spam folder if test emails are not appearing in the inbox
