@@ -80,6 +80,39 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "Catalytic reformers convert low-octane straight-chain hydrocarbons (paraffins) into higher-octane branched-chain and cyclic hydrocarbons (aromatics and isoparaffins), which are valuable for gasoline blending."
+    },
+    {
+      question: "What is the most abundant element in crude oil?",
+      options: [
+        "Carbon",
+        "Hydrogen",
+        "Sulfur",
+        "Oxygen"
+      ],
+      correctAnswer: 0,
+      explanation: "Carbon is the most abundant element in crude oil, typically making up 83-87% of its composition. Hydrogen is the second most abundant element at 11-14%, with small amounts of sulfur, nitrogen, oxygen, and metals making up the remainder."
+    },
+    {
+      question: "Which of the following is an example of an aromatic hydrocarbon?",
+      options: [
+        "Propane",
+        "Cyclohexane",
+        "Benzene",
+        "Butane"
+      ],
+      correctAnswer: 2,
+      explanation: "Benzene is an aromatic hydrocarbon characterized by a ring structure with alternating double bonds. Propane and butane are alkanes (saturated hydrocarbons), while cyclohexane is a cycloalkane (saturated cyclic hydrocarbon)."
+    },
+    {
+      question: "What unit is commonly used to measure crude oil volume internationally?",
+      options: [
+        "Gallon",
+        "Liter",
+        "Barrel",
+        "Cubic meter"
+      ],
+      correctAnswer: 2,
+      explanation: "The barrel (abbreviated as bbl) is the standard unit for measuring crude oil volume in the international oil industry. One barrel equals 42 U.S. gallons or approximately 159 liters."
     }
   ],
   intermediate: [
@@ -137,6 +170,39 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "Adding ethanol to gasoline increases the Reid Vapor Pressure (RVP) due to non-ideal mixing behavior, making the mixture more volatile than expected based on the RVP of the individual components."
+    },
+    {
+      question: "What type of catalyst is commonly used in hydrocracking?",
+      options: [
+        "Platinum on alumina",
+        "Zeolites with nickel or tungsten sulfides",
+        "Iron oxide",
+        "Cobalt-molybdenum"
+      ],
+      correctAnswer: 1,
+      explanation: "Hydrocracking typically uses a bifunctional catalyst consisting of an acidic component (usually zeolites) combined with a hydrogenation component (often nickel or tungsten sulfides). This combination provides both cracking activity and hydrogenation capability."
+    },
+    {
+      question: "What is the role of the reboiler in a distillation column?",
+      options: [
+        "To cool the overhead vapor",
+        "To provide heat to the bottom of the column",
+        "To remove impurities from the feed",
+        "To control pressure in the column"
+      ],
+      correctAnswer: 1,
+      explanation: "The reboiler provides heat to the bottom of the distillation column, generating vapor that rises through the column. This vapor flow is essential for the separation process, as it contacts and strips lighter components from the descending liquid."
+    },
+    {
+      question: "In petrochemical processes, what is the 'water-gas shift reaction'?",
+      options: [
+        "Reaction of water with natural gas to form hydrogen",
+        "Conversion of CO and water to hydrogen and CO2",
+        "Process of removing water from natural gas",
+        "Method of converting water to synthesis gas"
+      ],
+      correctAnswer: 1,
+      explanation: "The water-gas shift reaction (CO + H2O ⇌ CO2 + H2) converts carbon monoxide and water into carbon dioxide and hydrogen. This reaction is important in many petrochemical processes, particularly in hydrogen production for refining operations."
     }
   ],
   advanced: [
@@ -194,6 +260,140 @@ const quizData = {
       ],
       correctAnswer: 3,
       explanation: "Heavy crude oils are challenging to refine because they typically have higher sulfur content (requiring more hydrotreating), lower API gravity (requiring more energy to process), and higher metal content (causing catalyst poisoning). These characteristics require more complex and expensive refining processes."
+    },
+    {
+      question: "What is the significance of the 'Conradson Carbon Residue' test in petroleum analysis?",
+      options: [
+        "It predicts the amount of coke that will form during thermal cracking",
+        "It measures the carbon dioxide emissions when the fuel is burned",
+        "It determines the carbon chain length distribution in crude oil",
+        "It quantifies the amount of carbon black that can be extracted"
+      ],
+      correctAnswer: 0,
+      explanation: "The Conradson Carbon Residue (CCR) test predicts the tendency of a hydrocarbon to form coke during thermal processing. It's an important quality parameter for feedstocks to catalytic cracking and coking units, as high CCR values indicate potential for excessive coke formation."
+    },
+    {
+      question: "In petroleum processing, what is the 'Solomon Complexity Factor'?",
+      options: [
+        "A measure of crude oil density",
+        "A mathematical model describing refinery capacity",
+        "A metric for comparing the complexity and capability of different refineries",
+        "A formula for calculating optimal operating temperatures"
+      ],
+      correctAnswer: 2,
+      explanation: "The Solomon Complexity Factor is a standardized metric used to compare the complexity and capability of different refineries. It assigns complexity values to various processing units and calculates an overall index that reflects a refinery's ability to process difficult feedstocks and produce high-value products."
+    },
+    {
+      question: "What is the primary mechanism of zeolite catalyst action in fluid catalytic cracking?",
+      options: [
+        "Radical chain reactions",
+        "Carbocation (carbonium ion) intermediates",
+        "Oxidation-reduction reactions",
+        "Free metal site adsorption"
+      ],
+      correctAnswer: 1,
+      explanation: "Zeolite catalysts in fluid catalytic cracking (FCC) primarily operate through a carbocation (carbonium ion) mechanism. The acidic sites on the zeolite structure generate carbonium ions from hydrocarbon feedstocks, which then undergo various reactions including scission (cracking), isomerization, and hydrogen transfer."
+    },
+    {
+      question: "What phenomenon is responsible for reducing separation efficiency in distillation columns when operating at very high or very low reflux ratios?",
+      options: [
+        "Entrainment",
+        "Channeling",
+        "Weeping",
+        "Flooding"
+      ],
+      correctAnswer: 3,
+      explanation: "Flooding occurs in distillation columns when the upward vapor velocity becomes so high that it prevents liquid from flowing downward through the column. This can happen at very high reflux ratios (high liquid and vapor traffic) and results in severely reduced separation efficiency. At very low reflux ratios, other issues like poor wetting of contact surfaces can also reduce efficiency."
+    }
+  ],
+  expert: [
+    {
+      question: "Which of the following best describes the process of 'mercaptan sweetening' in a refinery?",
+      options: [
+        "Converting mercaptans to disulfides without removing sulfur",
+        "Removing mercaptans through caustic washing",
+        "Converting hydrogen sulfide to elemental sulfur",
+        "Reducing the total acid number of petroleum products"
+      ],
+      correctAnswer: 0,
+      explanation: "Mercaptan sweetening is a process that converts odorous mercaptans (thiols) to less odorous disulfides through oxidation, typically using a Merox (mercaptan oxidation) process. Unlike hydrodesulfurization, it doesn't reduce the total sulfur content but improves the odor and handling properties of the product."
+    },
+    {
+      question: "In lubricant base oil production, what is the primary purpose of solvent extraction?",
+      options: [
+        "To remove wax components",
+        "To remove aromatic compounds",
+        "To increase viscosity index",
+        "To reduce pour point"
+      ],
+      correctAnswer: 1,
+      explanation: "Solvent extraction in lubricant base oil production primarily removes aromatic compounds, which have poor lubricating properties and oxidation stability. Common solvents include furfural, phenol, or N-methylpyrrolidone (NMP). This process improves the viscosity index, oxidation stability, and overall performance of the base oil."
+    },
+    {
+      question: "What is the theoretical minimum energy requirement for separating a binary mixture in distillation, according to thermodynamics?",
+      options: [
+        "The heat of vaporization of the more volatile component",
+        "The Gibbs free energy of mixing",
+        "The enthalpy difference between feed and product streams",
+        "The heat duty of the reboiler minus the condenser duty"
+      ],
+      correctAnswer: 1,
+      explanation: "The theoretical minimum energy requirement for separating a mixture through distillation is the Gibbs free energy of mixing (ΔG_mix). This represents the reversible work needed to separate the mixture into its pure components. Actual distillation processes require significantly more energy due to thermodynamic inefficiencies."
+    },
+    {
+      question: "Which of the following refinery processes operates at the highest pressure?",
+      options: [
+        "Fluid catalytic cracking",
+        "Delayed coking",
+        "Hydrocracking",
+        "Vacuum distillation"
+      ],
+      correctAnswer: 2,
+      explanation: "Hydrocracking typically operates at very high pressures, often in the range of 1000-2000 psi (70-140 bar), to promote hydrogenation reactions and suppress coke formation. Fluid catalytic cracking operates at near-atmospheric pressure, delayed coking at moderate pressure, and vacuum distillation at sub-atmospheric pressure."
+    },
+    {
+      question: "What is the primary role of HZSM-5 zeolite in the methanol-to-gasoline (MTG) process?",
+      options: [
+        "Converting methanol to formaldehyde",
+        "Facilitating the conversion of methanol to olefins and then to aromatics and paraffins",
+        "Removing water from the reaction mixture",
+        "Acting as a molecular sieve to separate products"
+      ],
+      correctAnswer: 1,
+      explanation: "In the methanol-to-gasoline (MTG) process, HZSM-5 zeolite catalyst facilitates the complex conversion of methanol first to dimethyl ether, then to light olefins, and finally to a mixture of aromatics and paraffins in the gasoline range. Its specific pore structure and acidity are critical for achieving the desired selectivity to gasoline-range hydrocarbons."
+    },
+    {
+      question: "Which of the following is a key challenge in Fischer-Tropsch synthesis for producing liquid fuels?",
+      options: [
+        "Achieving high conversion in a single pass",
+        "Controlling product selectivity to minimize methane and maximize desired products",
+        "Managing the highly exothermic reaction",
+        "All of the above"
+      ],
+      correctAnswer: 3,
+      explanation: "Fischer-Tropsch synthesis faces multiple key challenges: achieving high single-pass conversion is difficult due to equilibrium limitations; product selectivity is challenging to control, as the process can produce a wide range of products from methane to heavy waxes; and the reaction is highly exothermic, requiring sophisticated reactor designs for heat removal to prevent catalyst damage and control product distribution."
+    },
+    {
+      question: "What is the function of a Claus unit in a refinery?",
+      options: [
+        "To recover sulfur from hydrogen sulfide gas",
+        "To remove chlorides from process streams",
+        "To convert ammonia to nitrogen and hydrogen",
+        "To separate light ends from naphtha"
+      ],
+      correctAnswer: 0,
+      explanation: "A Claus unit recovers elemental sulfur from hydrogen sulfide (H₂S) gas produced during hydrodesulfurization and other refining processes. The process involves partial oxidation of H₂S to form sulfur dioxide, which then reacts with remaining H₂S to produce elemental sulfur and water. Claus units are critical for environmental compliance and for producing marketable sulfur."
+    },
+    {
+      question: "In a fluid catalytic cracking unit, what is the primary purpose of the 'stripper' section?",
+      options: [
+        "To separate catalyst from hydrocarbon products",
+        "To remove entrained hydrocarbons from spent catalyst using steam",
+        "To cool the catalyst before regeneration",
+        "To strip lighter products from heavier ones"
+      ],
+      correctAnswer: 1,
+      explanation: "In an FCC unit, the stripper section uses steam to remove (strip) entrained or adsorbed hydrocarbon vapors from the spent catalyst before it enters the regenerator. This maximizes product recovery and minimizes hydrocarbon burning in the regenerator, which would otherwise reduce yield and potentially create excessive temperatures."
     }
   ]
 };
@@ -326,6 +526,13 @@ function PetrochemicalQuiz() {
                 title="Advanced"
                 description="Complex refining chemistry, catalysts, and engineering challenges"
                 onSelect={() => handleSelectDifficulty('advanced')}
+                color="#ff9800"
+              />
+              
+              <DifficultyCard 
+                title="Expert"
+                description="Specialized petrochemical processes, thermodynamics, and advanced catalytic science"
+                onSelect={() => handleSelectDifficulty('expert')}
                 color="#f44336"
               />
             </Grid>
@@ -492,7 +699,7 @@ function PetrochemicalQuiz() {
 // Helper component for difficulty cards
 function DifficultyCard({ title, description, onSelect, color }) {
   return (
-    <Box sx={{ width: '33.33%', px: 1, mb: 2 }}>
+    <Box sx={{ width: { xs: '100%', sm: '50%', md: '25%' }, px: 1, mb: 2 }}>
       <Card
         sx={{
           height: '100%',
