@@ -284,45 +284,13 @@ function NuclearEngineeringPage() {
                 Interactive tools to calculate critical nuclear engineering parameters, explore reactor physics concepts, and visualize fundamental nuclear processes.
               </Typography>
               
-              <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
-                Key Nuclear Formulas Explained
-              </Typography>
-              <Grid container spacing={3}>
-                {calculatorFormulas.map((formula) => (
-                  <Grid item xs={12} md={6} key={formula.name}>
-                    <Paper elevation={2} sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                      <Typography variant="h6" gutterBottom>
-                        {formula.name}
-                      </Typography>
-                      <Box 
-                        sx={{ 
-                          bgcolor: 'rgba(0, 0, 0, 0.04)', 
-                          py: 2, 
-                          px: 3, 
-                          borderRadius: 1, 
-                          fontFamily: 'monospace',
-                          fontSize: '1.1rem',
-                          mb: 2
-                        }}
-                      >
-                        {formula.formula}
-                      </Box>
-                      <Typography variant="body2" color="text.secondary">
-                        {formula.description}
-                      </Typography>
-                      <Box sx={{ flexGrow: 1 }} />
-                      <Button 
-                        variant="outlined" 
-                        size="small" 
-                        sx={{ mt: 2, alignSelf: 'flex-start' }}
-                        startIcon={<CalculateIcon />}
-                      >
-                        Interactive Calculator
-                      </Button>
-                    </Paper>
-                  </Grid>
-                ))}
-              </Grid>
+              {/* Include the NuclearCalculator component */}
+              <Box sx={{ mt: 4 }}>
+                {React.createElement(
+                  React.lazy(() => import('../components/nuclear-engineering/NuclearCalculator')),
+                  {}
+                )}
+              </Box>
               
               <Typography variant="h5" gutterBottom sx={{ mt: 6 }}>
                 Coming Soon
@@ -334,7 +302,7 @@ function NuclearEngineeringPage() {
                       Advanced Reactor Performance Analyzer
                     </Typography>
                     <Typography variant="body2">
-                      A comprehensive suite of calculators for core design, thermal hydraulics analysis, fuel cycle assessment, and safety parameter evaluation. Calculate everything from neutron flux distributions to containment response parameters.
+                      A comprehensive suite of advanced calculators for core design, thermal hydraulics analysis, fuel cycle assessment, and safety parameter evaluation. Calculate everything from neutron flux distributions to containment response parameters with integrated 3D visualization.
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
@@ -363,40 +331,91 @@ function NuclearEngineeringPage() {
                 Interactive simulations to model reactor behavior, practice operational procedures, and understand complex nuclear processes. Our simulators provide hands-on learning experiences for students and professionals.
               </Typography>
               
-              <Grid container spacing={4} sx={{ mt: 2 }}>
-                {simulatorsOverview.map((simulator, index) => (
-                  <Grid item xs={12} md={6} key={index}>
-                    <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                      <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography variant="h5" component="h3" gutterBottom>
-                          {simulator.title}
+              {/* Import and include the ReactorKineticsSimulator component */}
+              <Box sx={{ mt: 4 }}>
+                {/* Include the dynamic simulator component */}
+                {React.createElement(
+                  React.lazy(() => import('../components/nuclear-engineering/ReactorKineticsSimulator')),
+                  {}
+                )}
+              </Box>
+              
+              <Box sx={{ mt: 4 }}>
+                {/* Include the fuel assembly designer */}
+                {React.createElement(
+                  React.lazy(() => import('../components/nuclear-engineering/FuelAssemblyDesigner')),
+                  {}
+                )}
+              </Box>
+              
+              <Typography variant="h5" gutterBottom sx={{ mt: 6, mb: 3 }}>
+                Coming Soon: Additional Simulator Modules
+              </Typography>
+              
+              <Grid container spacing={4}>
+                <Grid item xs={12} md={6}>
+                  <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography variant="h5" component="h3" gutterBottom>
+                        Containment System Analyzer
+                      </Typography>
+                      <Typography variant="body2" paragraph>
+                        Simulate containment system response during accident scenarios, including pressure and temperature transients. Model emergency cooling systems and safety relief valves.
+                      </Typography>
+                      <Box 
+                        sx={{ 
+                          display: 'inline-block', 
+                          bgcolor: 'rgba(0, 0, 0, 0.04)', 
+                          px: 1.5, 
+                          py: 0.5, 
+                          borderRadius: 1,
+                          mt: 'auto'
+                        }}
+                      >
+                        <Typography variant="caption" fontWeight="medium">
+                          Status: Coming Q3 2025
                         </Typography>
-                        <Typography variant="body2" paragraph>
-                          {simulator.description}
-                        </Typography>
-                        <Box 
-                          sx={{ 
-                            display: 'inline-block', 
-                            bgcolor: 'rgba(0, 0, 0, 0.04)', 
-                            px: 1.5, 
-                            py: 0.5, 
-                            borderRadius: 1,
-                            mt: 'auto'
-                          }}
-                        >
-                          <Typography variant="caption" fontWeight="medium">
-                            Status: {simulator.status}
-                          </Typography>
-                        </Box>
-                      </CardContent>
-                      <Box sx={{ p: 2, pt: 0 }}>
-                        <Button variant="outlined" fullWidth disabled>
-                          Launch Simulator
-                        </Button>
                       </Box>
-                    </Card>
-                  </Grid>
-                ))}
+                    </CardContent>
+                    <Box sx={{ p: 2, pt: 0 }}>
+                      <Button variant="outlined" fullWidth disabled>
+                        Launch Simulator
+                      </Button>
+                    </Box>
+                  </Card>
+                </Grid>
+                
+                <Grid item xs={12} md={6}>
+                  <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography variant="h5" component="h3" gutterBottom>
+                        Core Loading Pattern Optimizer
+                      </Typography>
+                      <Typography variant="body2" paragraph>
+                        Design and optimize nuclear reactor core loading patterns for maximum fuel utilization, cycle length, and balanced power distribution. Evaluate thermal margins and safety parameters.
+                      </Typography>
+                      <Box 
+                        sx={{ 
+                          display: 'inline-block', 
+                          bgcolor: 'rgba(0, 0, 0, 0.04)', 
+                          px: 1.5, 
+                          py: 0.5, 
+                          borderRadius: 1,
+                          mt: 'auto'
+                        }}
+                      >
+                        <Typography variant="caption" fontWeight="medium">
+                          Status: Coming Q4 2025
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                    <Box sx={{ p: 2, pt: 0 }}>
+                      <Button variant="outlined" fullWidth disabled>
+                        Launch Simulator
+                      </Button>
+                    </Box>
+                  </Card>
+                </Grid>
               </Grid>
               
               <Box sx={{ mt: 6, bgcolor: '#f5f5f5', p: 3, borderRadius: 2 }}>
