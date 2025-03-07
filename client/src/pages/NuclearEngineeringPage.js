@@ -723,52 +723,24 @@ function NuclearEngineeringPage() {
                 Nuclear Engineering Quiz
               </Typography>
               <Typography variant="body1" paragraph>
-                Test your knowledge of nuclear engineering concepts, reactor physics, and safety systems with our interactive quizzes.
+                Test your knowledge of nuclear engineering concepts, reactor physics, and safety systems with our interactive quiz. Choose from multiple difficulty levels ranging from beginner to expert.
               </Typography>
               
-              <Paper elevation={3} sx={{ p: 4, mt: 4, maxWidth: 800, mx: 'auto' }}>
-                <Typography variant="h5" gutterBottom>
-                  Sample Questions
-                </Typography>
-                <Typography variant="body2" paragraph>
-                  These sample questions represent the types of knowledge assessments available in our full quiz modules.
-                </Typography>
-                
-                {quizQuestions.map((question, index) => (
-                  <Box key={index} sx={{ mb: 4 }}>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      {index + 1}. {question.question}
-                    </Typography>
-                    <List dense>
-                      {question.options.map((option, optIndex) => (
-                        <ListItem key={optIndex} sx={{ py: 0.5 }}>
-                          <ListItemIcon sx={{ minWidth: 36 }}>
-                            {optIndex === question.answer ? (
-                              <CheckCircleIcon color="success" />
-                            ) : (
-                              <Box sx={{ width: 24, height: 24, borderRadius: '50%', border: '1px solid #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <Typography variant="body2" sx={{ fontSize: '0.8rem' }}>
-                                  {String.fromCharCode(65 + optIndex)}
-                                </Typography>
-                              </Box>
-                            )}
-                          </ListItemIcon>
-                          <ListItemText primary={option} />
-                        </ListItem>
-                      ))}
-                    </List>
-                  </Box>
-                ))}
-                
-                <Box sx={{ mt: 4, textAlign: 'center' }}>
-                  <Button variant="contained" color="primary">
-                    Take Full Quiz
-                  </Button>
-                  <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                    Full quiz contains 30+ questions across multiple difficulty levels
-                  </Typography>
-                </Box>
-              </Paper>
+              <Box sx={{ mt: 4 }}>
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Nuclear Engineering Quiz...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/NuclearEngineeringQuiz')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
+              </Box>
             </TabPanel>
             
             {/* Design Tools Tab */}
