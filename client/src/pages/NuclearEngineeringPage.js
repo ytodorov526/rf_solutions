@@ -397,6 +397,23 @@ function NuclearEngineeringPage() {
                 </ErrorBoundary>
               </Box>
               
+              <Box sx={{ mt: 4 }} id="containment-section">
+                {/* Include the containment system analyzer */}
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Containment System Analyzer...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/ContainmentSystemAnalyzer')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
+              </Box>
+              
               <Box sx={{ mt: 4 }}>
                 {/* Include the fuel assembly designer */}
                 <ErrorBoundary>
@@ -431,20 +448,27 @@ function NuclearEngineeringPage() {
                       <Box 
                         sx={{ 
                           display: 'inline-block', 
-                          bgcolor: 'rgba(0, 0, 0, 0.04)', 
+                          bgcolor: 'rgba(0, 100, 0, 0.08)', 
                           px: 1.5, 
                           py: 0.5, 
                           borderRadius: 1,
                           mt: 'auto'
                         }}
                       >
-                        <Typography variant="caption" fontWeight="medium">
-                          Status: Coming Q3 2025
+                        <Typography variant="caption" fontWeight="medium" color="success.main">
+                          Status: Available Now
                         </Typography>
                       </Box>
                     </CardContent>
                     <Box sx={{ p: 2, pt: 0 }}>
-                      <Button variant="outlined" fullWidth disabled>
+                      <Button 
+                        variant="outlined" 
+                        fullWidth 
+                        onClick={() => {
+                          setActiveTab(2);
+                          document.getElementById('containment-section').scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
                         Launch Simulator
                       </Button>
                     </Box>

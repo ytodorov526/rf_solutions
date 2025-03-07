@@ -125,10 +125,10 @@ function ReactorKineticsSimulator() {
   
   // State for simulation data
   const [simulationData, setSimulationData] = useState({
-    time: [],
-    power: [],
-    reactivity: [],
-    delayedNeutronPrecursors: [],
+    time: [0],
+    power: [1.0],
+    reactivity: [0],
+    delayedNeutronPrecursors: [initialParameters.beta / initialParameters.lambda],
   });
   
   // State for simulation control
@@ -145,6 +145,122 @@ function ReactorKineticsSimulator() {
   
   // Chart reference
   const chartRef = useRef(null);
+
+  // Function to calculate a simulation step
+  const calculateSimulationStep = (time, prevTime, prevPower, prevDelayedNeutrons) => {
+    // Calculate current reactivity based on insertion rate and duration
+    let currentReactivity = parameters.initialReactivity;
+    
+    if (time <= parameters.reactivityInsertionDuration) {
+      currentReactivity += time * parameters.reactivityInsertionRate;
+    } else {
+      currentReactivity += parameters.reactivityInsertionDuration * parameters.reactivityInsertionRate;
+      
+      // If oscillation is enabled, reverse reactivity after the insertion duration
+      if (parameters.oscillation && time <= parameters.reactivityInsertionDuration * 2) {
+        const oscillationTime = time - parameters.reactivityInsertionDuration;
+        currentReactivity -= oscillationTime * parameters.reactivityInsertionRate;
+      }
+    }
+    
+    // Calculate reactivity in dollars
+    const reactivityDollars = currentReactivity / parameters.beta;
+    
+    // Calculate new values using simplified point kinetics equations
+    const dt = time - prevTime;
+    
+    // Update delayed neutron precursors
+    const newDelayedNeutrons = prevDelayedNeutrons + dt * (
+      (parameters.beta / parameters.promptNeutronLifetime) * prevPower - 
+      parameters.lambda * prevDelayedNeutrons
+    );
+    
+    // Update power
+    const newPower = prevPower + dt * (
+      ((currentReactivity - parameters.beta) / parameters.promptNeutronLifetime) * prevPower +
+      parameters.lambda * prevDelayedNeutrons
+    );
+    
+    return {
+      power: Math.max(0.001, newPower), // Ensure power is positive for log scale
+      reactivity: reactivityDollars,
+      delayedNeutronPrecursors: newDelayedNeutrons
+    };
+  };
+
+  // Function to reset simulation
+  const resetSimulation = () => {
+    setIsRunning(false);
+    setCurrentTime(0);
+    setSimulationData({
+      time: [0],
+      power: [1.0], // Normalized power starting at 100%
+      reactivity: [parameters.initialReactivity / parameters.beta], // Initial reactivity in dollars
+      delayedNeutronPrecursors: [parameters.beta / parameters.lambda], // Initial delayed neutron concentration
+    });
+    
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  };
+
+  // Function to run a simulation step
+  const runSimulationStep = (time) => {
+    // Get previous values
+    const prevTime = simulationData.time.length > 0 ? simulationData.time[simulationData.time.length - 1] : 0;
+    const prevPower = simulationData.power.length > 0 ? simulationData.power[simulationData.power.length - 1] : 1.0;
+    const prevDelayedNeutrons = simulationData.delayedNeutronPrecursors.length > 0 
+      ? simulationData.delayedNeutronPrecursors[simulationData.delayedNeutronPrecursors.length - 1] 
+      : parameters.beta / parameters.lambda;
+    
+    const result = calculateSimulationStep(time, prevTime, prevPower, prevDelayedNeutrons);
+    
+    // Update simulation data
+    setSimulationData(prev => ({
+      time: [...prev.time, time],
+      power: [...prev.power, result.power],
+      reactivity: [...prev.reactivity, result.reactivity],
+      delayedNeutronPrecursors: [...prev.delayedNeutronPrecursors, result.delayedNeutronPrecursors],
+    }));
+  };
+  
+  // Function to start/pause simulation
+  const toggleSimulation = () => {
+    if (currentTime >= parameters.simulationTime) {
+      // If at the end, restart
+      resetSimulation();
+      setIsRunning(true);
+    } else {
+      // Otherwise toggle
+      setIsRunning(prev => !prev);
+    }
+  };
+  
+  // Function to handle parameter change
+  const handleParameterChange = (param, value) => {
+    setParameters(prev => ({
+      ...prev,
+      [param]: value,
+    }));
+  };
+  
+  // Function to handle preset selection
+  const handlePresetChange = (event) => {
+    const presetId = event.target.value;
+    setSelectedPreset(presetId);
+    
+    if (presetId) {
+      const preset = simulationPresets.find(p => p.id === presetId);
+      if (preset) {
+        setParameters(preset.parameters);
+      }
+    }
+  };
+
+  // Effect to clear simulation when parameters change
+  useEffect(() => {
+    resetSimulation();
+  }, [parameters]);
   
   // Effect to handle animation
   useEffect(() => {
@@ -185,114 +301,36 @@ function ReactorKineticsSimulator() {
     };
   }, [isRunning, parameters.simulationTime]);
   
-  // Effect to clear simulation when parameters change
-  useEffect(() => {
-    if (typeof resetSimulation === 'function') {
-      resetSimulation();
-    }
-  }, [parameters, resetSimulation]);
-  
-  // Function to reset simulation
-  const resetSimulation = React.useCallback(() => {
-    setIsRunning(false);
-    setCurrentTime(0);
-    setSimulationData({
-      time: [0],
-      power: [1.0], // Normalized power starting at 100%
-      reactivity: [parameters.initialReactivity / parameters.beta], // Initial reactivity in dollars
-      delayedNeutronPrecursors: [parameters.beta / parameters.lambda], // Initial delayed neutron concentration
-    });
+  // Function to export data
+  const exportData = () => {
+    const csvContent = [
+      'Time (s),Power,Reactivity (dollars)' + (showDelayedNeutrons ? ',Delayed Neutrons' : ''),
+      ...simulationData.time.map((time, index) => 
+        time + ',' + simulationData.power[index] + ',' + simulationData.reactivity[index] + 
+        (showDelayedNeutrons ? ',' + simulationData.delayedNeutronPrecursors[index] : '')
+      ),
+    ].join('\n');
     
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-  }, [parameters.initialReactivity, parameters.beta, parameters.lambda]);
-
-  // Function to run a simulation step
-  const runSimulationStep = React.useCallback((time) => {
-    // Simplified point-kinetics equations
-    // This is a basic implementation for educational purposes
-    
-    // Calculate current reactivity based on insertion rate and duration
-    let currentReactivity = parameters.initialReactivity;
-    
-    if (time <= parameters.reactivityInsertionDuration) {
-      currentReactivity += time * parameters.reactivityInsertionRate;
-    } else {
-      currentReactivity += parameters.reactivityInsertionDuration * parameters.reactivityInsertionRate;
-      
-      // If oscillation is enabled, reverse reactivity after the insertion duration
-      if (parameters.oscillation && time <= parameters.reactivityInsertionDuration * 2) {
-        const oscillationTime = time - parameters.reactivityInsertionDuration;
-        currentReactivity -= oscillationTime * parameters.reactivityInsertionRate;
-      }
-    }
-    
-    // Get previous values
-    const prevTime = simulationData.time.length > 0 ? simulationData.time[simulationData.time.length - 1] : 0;
-    const prevPower = simulationData.power.length > 0 ? simulationData.power[simulationData.power.length - 1] : 1.0;
-    const prevDelayedNeutrons = simulationData.delayedNeutronPrecursors.length > 0 
-      ? simulationData.delayedNeutronPrecursors[simulationData.delayedNeutronPrecursors.length - 1] 
-      : parameters.beta / parameters.lambda;
-    
-    // Calculate reactivity in dollars
-    const reactivityDollars = currentReactivity / parameters.beta;
-    
-    // Calculate new values
-    // Simplified point kinetics equations
-    const dt = time - prevTime;
-    
-    // Update delayed neutron precursors
-    const newDelayedNeutrons = prevDelayedNeutrons + dt * (
-      (parameters.beta / parameters.promptNeutronLifetime) * prevPower - 
-      parameters.lambda * prevDelayedNeutrons
-    );
-    
-    // Update power
-    const newPower = prevPower + dt * (
-      ((currentReactivity - parameters.beta) / parameters.promptNeutronLifetime) * prevPower +
-      parameters.lambda * prevDelayedNeutrons
-    );
-    
-    // Update simulation data
-    setSimulationData(prev => ({
-      time: [...prev.time, time],
-      power: [...prev.power, Math.max(0.001, newPower)], // Ensure power is positive for log scale
-      reactivity: [...prev.reactivity, reactivityDollars],
-      delayedNeutronPrecursors: [...prev.delayedNeutronPrecursors, newDelayedNeutrons],
-    }));
-  }, [parameters.beta, parameters.initialReactivity, parameters.lambda, parameters.promptNeutronLifetime, parameters.reactivityInsertionDuration, parameters.reactivityInsertionRate, parameters.oscillation, simulationData.time, simulationData.power, simulationData.delayedNeutronPrecursors]);
-  
-  // Function to start/pause simulation
-  const toggleSimulation = () => {
-    if (currentTime >= parameters.simulationTime) {
-      // If at the end, restart
-      resetSimulation();
-      setIsRunning(true);
-    } else {
-      // Otherwise toggle
-      setIsRunning(prev => !prev);
-    }
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'reactor_simulation_data.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
   
-  // Function to handle parameter change
-  const handleParameterChange = (param, value) => {
-    setParameters(prev => ({
-      ...prev,
-      [param]: value,
-    }));
-  };
-  
-  // Function to handle preset selection
-  const handlePresetChange = (event) => {
-    const presetId = event.target.value;
-    setSelectedPreset(presetId);
-    
-    if (presetId) {
-      const preset = simulationPresets.find(p => p.id === presetId);
-      if (preset) {
-        setParameters(preset.parameters);
-      }
+  // Function to save chart as image
+  const saveChart = () => {
+    if (chartRef.current) {
+      const url = chartRef.current.toBase64Image();
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'reactor_simulation_chart.png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
   
@@ -382,39 +420,6 @@ function ReactorKineticsSimulator() {
         },
       } : {}),
     },
-  };
-  
-  // Function to export data
-  const exportData = () => {
-    const csvContent = [
-      'Time (s),Power,Reactivity (dollars)' + (showDelayedNeutrons ? ',Delayed Neutrons' : ''),
-      ...simulationData.time.map((time, index) => 
-        time + ',' + simulationData.power[index] + ',' + simulationData.reactivity[index] + 
-        (showDelayedNeutrons ? ',' + simulationData.delayedNeutronPrecursors[index] : '')
-      ),
-    ].join('\\n');
-    
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'reactor_simulation_data.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-  
-  // Function to save chart as image
-  const saveChart = () => {
-    if (chartRef.current) {
-      const url = chartRef.current.toBase64Image();
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'reactor_simulation_chart.png');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
   };
   
   return (
