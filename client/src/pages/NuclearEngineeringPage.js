@@ -434,7 +434,7 @@ function NuclearEngineeringPage() {
                   </Grid>
                 </Paper>
                 
-                <Paper sx={{ p: 3, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9' }}>
+                <Paper sx={{ p: 3, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9', mb: 2 }}>
                   <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} md={8}>
                       <Typography variant="h6" gutterBottom color="success.main">
@@ -451,6 +451,31 @@ function NuclearEngineeringPage() {
                         onClick={() => {
                           const activationCalc = document.getElementById('neutron-activation-calculator');
                           if (activationCalc) activationCalc.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Try It Now
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Paper>
+                
+                <Paper sx={{ p: 3, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9' }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={8}>
+                      <Typography variant="h6" gutterBottom color="success.main">
+                        Thermal-Hydraulics Simulator
+                      </Typography>
+                      <Typography variant="body2">
+                        Explore the thermal-hydraulic behavior of different reactor types with our new interactive simulator. Model temperature distributions, flow conditions, and safety parameters for various coolants including water, heavy water, liquid metals, and gas. Test different operating conditions and see real-time effects on core performance and safety margins.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+                      <Button 
+                        variant="outlined" 
+                        color="success"
+                        onClick={() => {
+                          const thermalSim = document.getElementById('thermal-hydraulics-simulator');
+                          if (thermalSim) thermalSim.scrollIntoView({ behavior: 'smooth' });
                         }}
                       >
                         Try It Now
@@ -482,6 +507,23 @@ function NuclearEngineeringPage() {
                   }>
                     {React.createElement(
                       React.lazy(() => import('../components/nuclear-engineering/ReactorKineticsSimulator')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
+              </Box>
+              
+              <Box sx={{ mt: 4 }} id="thermal-hydraulics-section">
+                {/* Include the thermal hydraulics simulator */}
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Thermal-Hydraulics Simulator...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/ThermalHydraulicsSimulator')),
                       {}
                     )}
                   </Suspense>
@@ -614,6 +656,45 @@ function NuclearEngineeringPage() {
                         onClick={() => {
                           setActiveTab(2);
                           document.getElementById('core-optimizer-section').scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Launch Simulator
+                      </Button>
+                    </Box>
+                  </Card>
+                </Grid>
+                
+                <Grid item xs={12} md={6}>
+                  <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography variant="h5" component="h3" gutterBottom>
+                        Thermal-Hydraulics Simulator
+                      </Typography>
+                      <Typography variant="body2" paragraph>
+                        Simulate thermal-hydraulic behavior of nuclear reactors with different coolant types and core geometries. Model temperature distributions, flow conditions, and critical safety parameters for various reactor designs.
+                      </Typography>
+                      <Box 
+                        sx={{ 
+                          display: 'inline-block', 
+                          bgcolor: 'rgba(0, 100, 0, 0.08)', 
+                          px: 1.5, 
+                          py: 0.5, 
+                          borderRadius: 1,
+                          mt: 'auto'
+                        }}
+                      >
+                        <Typography variant="caption" fontWeight="medium" color="success.main">
+                          Status: Available Now
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                    <Box sx={{ p: 2, pt: 0 }}>
+                      <Button 
+                        variant="outlined" 
+                        fullWidth 
+                        onClick={() => {
+                          setActiveTab(2);
+                          document.getElementById('thermal-hydraulics-section').scrollIntoView({ behavior: 'smooth' });
                         }}
                       >
                         Launch Simulator
