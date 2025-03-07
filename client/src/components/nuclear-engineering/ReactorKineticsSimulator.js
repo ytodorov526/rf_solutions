@@ -146,11 +146,6 @@ function ReactorKineticsSimulator() {
   // Chart reference
   const chartRef = useRef(null);
   
-  // Effect to clear simulation when parameters change
-  useEffect(() => {
-    resetSimulation();
-  }, [parameters, resetSimulation]);
-  
   // Effect to handle animation
   useEffect(() => {
     if (isRunning) {
@@ -188,8 +183,31 @@ function ReactorKineticsSimulator() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isRunning, parameters.simulationTime, runSimulationStep]);
+  }, [isRunning, parameters.simulationTime]);
   
+  // Effect to clear simulation when parameters change
+  useEffect(() => {
+    if (typeof resetSimulation === 'function') {
+      resetSimulation();
+    }
+  }, [parameters, resetSimulation]);
+  
+  // Function to reset simulation
+  const resetSimulation = React.useCallback(() => {
+    setIsRunning(false);
+    setCurrentTime(0);
+    setSimulationData({
+      time: [0],
+      power: [1.0], // Normalized power starting at 100%
+      reactivity: [parameters.initialReactivity / parameters.beta], // Initial reactivity in dollars
+      delayedNeutronPrecursors: [parameters.beta / parameters.lambda], // Initial delayed neutron concentration
+    });
+    
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  }, [parameters.initialReactivity, parameters.beta, parameters.lambda]);
+
   // Function to run a simulation step
   const runSimulationStep = React.useCallback((time) => {
     // Simplified point-kinetics equations
@@ -243,23 +261,7 @@ function ReactorKineticsSimulator() {
       reactivity: [...prev.reactivity, reactivityDollars],
       delayedNeutronPrecursors: [...prev.delayedNeutronPrecursors, newDelayedNeutrons],
     }));
-  }, [parameters.beta, parameters.initialReactivity, parameters.lambda, parameters.promptNeutronLifetime, parameters.reactivityInsertionDuration, parameters.reactivityInsertionRate]);
-  
-  // Function to reset simulation
-  const resetSimulation = React.useCallback(() => {
-    setIsRunning(false);
-    setCurrentTime(0);
-    setSimulationData({
-      time: [0],
-      power: [1.0], // Normalized power starting at 100%
-      reactivity: [parameters.initialReactivity / parameters.beta], // Initial reactivity in dollars
-      delayedNeutronPrecursors: [parameters.beta / parameters.lambda], // Initial delayed neutron concentration
-    });
-    
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-  }, [parameters.initialReactivity, parameters.beta, parameters.lambda]);
+  }, [parameters.beta, parameters.initialReactivity, parameters.lambda, parameters.promptNeutronLifetime, parameters.reactivityInsertionDuration, parameters.reactivityInsertionRate, parameters.oscillation, simulationData.time, simulationData.power, simulationData.delayedNeutronPrecursors]);
   
   // Function to start/pause simulation
   const toggleSimulation = () => {
