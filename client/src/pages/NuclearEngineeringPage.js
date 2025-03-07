@@ -749,34 +749,33 @@ function NuclearEngineeringPage() {
                 Nuclear Plant Design Tools
               </Typography>
               <Typography variant="body1" paragraph>
-                Professional-grade tools for nuclear power plant design, fuel assembly optimization, and safety system analysis. These upcoming tools are intended for educational purposes and professional development.
+                Professional-grade tools for nuclear power plant design, fuel assembly optimization, and safety system analysis. These tools are intended for educational purposes and professional development.
               </Typography>
               
-              <Box sx={{ position: 'relative', width: '100%', height: 400, bgcolor: '#f5f5f5', mb: 4, borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Typography variant="h5" color="textSecondary">
-                  3D Design Tool Preview Coming Soon
-                </Typography>
+              <Box sx={{ mt: 2, mb: 4 }}>
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4, height: 200 }}>
+                      <CircularProgress size={40} />
+                      <Typography sx={{ ml: 2 }}>Loading Reactor Vessel Designer...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/ReactorVesselDesigner')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
               </Box>
               
+              <Divider sx={{ my: 4 }} />
+              
+              <Typography variant="h5" gutterBottom>
+                Additional Design Tools
+              </Typography>
+              
               <Grid container spacing={4}>
-                <Grid item xs={12} md={4}>
-                  <Paper elevation={2} sx={{ p: 3, height: '100%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <EngineeringIcon color="primary" sx={{ mr: 1, fontSize: 28 }} />
-                      <Typography variant="h5" component="h3">
-                        Reactor Vessel Designer
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" paragraph>
-                      Design reactor pressure vessels with consideration for neutron fluence, thermal stresses, and material selection. Includes templates for PWR, BWR, and SMR designs.
-                    </Typography>
-                    <Typography variant="caption" display="block" sx={{ color: 'text.secondary' }}>
-                      Status: In development • Expected Q3 2025
-                    </Typography>
-                  </Paper>
-                </Grid>
-                
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={6}>
                   <Paper elevation={2} sx={{ p: 3, height: '100%' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                       <AutoGraphIcon color="primary" sx={{ mr: 1, fontSize: 28 }} />
@@ -793,7 +792,7 @@ function NuclearEngineeringPage() {
                   </Paper>
                 </Grid>
                 
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={6}>
                   <Paper elevation={2} sx={{ p: 3, height: '100%' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                       <LightbulbIcon color="primary" sx={{ mr: 1, fontSize: 28 }} />
