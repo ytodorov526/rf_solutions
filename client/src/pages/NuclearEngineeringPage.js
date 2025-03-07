@@ -340,34 +340,125 @@ function NuclearEngineeringPage() {
                 </ErrorBoundary>
               </Box>
               
-              <Typography variant="h5" gutterBottom sx={{ mt: 6 }}>
-                Coming Soon
-              </Typography>
-              <Paper sx={{ p: 3, bgcolor: '#f5f9ff' }}>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={12} md={8}>
-                    <Typography variant="h6" gutterBottom>
-                      Advanced Reactor Performance Analyzer
-                    </Typography>
-                    <Typography variant="body2">
-                      A comprehensive suite of advanced calculators for core design, thermal hydraulics analysis, fuel cycle assessment, and safety parameter evaluation. Calculate everything from neutron flux distributions to containment response parameters with integrated 3D visualization.
-                    </Typography>
+              {/* Include the RadiationShieldingCalculator component */}
+              <Box sx={{ mt: 4 }}>
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Radiation Shielding Calculator...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/RadiationShieldingCalculator')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
+              </Box>
+              
+              {/* Include the NeutronActivationCalculator component */}
+              <Box sx={{ mt: 4 }}>
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Neutron Activation Calculator...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/NeutronActivationCalculator')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
+              </Box>
+              
+              <Box id="coming-soon-section" sx={{ mt: 6 }}>
+                <Typography variant="h5" gutterBottom>
+                  Coming Soon
+                </Typography>
+                <Paper sx={{ p: 3, bgcolor: '#f5f9ff' }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={8}>
+                      <Typography variant="h6" gutterBottom>
+                        Advanced Reactor Performance Analyzer
+                      </Typography>
+                      <Typography variant="body2">
+                        A comprehensive suite of advanced calculators for core design, thermal hydraulics analysis, fuel cycle assessment, and safety parameter evaluation. Calculate everything from neutron flux distributions to containment response parameters with integrated 3D visualization.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+                      <Button 
+                        variant="contained" 
+                        color="primary" 
+                        disabled
+                        startIcon={<AutoGraphIcon />}
+                      >
+                        Join Waitlist
+                      </Button>
+                      <Typography variant="caption" display="block" sx={{ mt: 1 }}>
+                        Expected release: Q3 2025
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
-                    <Button 
-                      variant="contained" 
-                      color="primary" 
-                      disabled
-                      startIcon={<AutoGraphIcon />}
-                    >
-                      Join Waitlist
-                    </Button>
-                    <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                      Expected release: Q3 2025
-                    </Typography>
+                </Paper>
+              </Box>
+              
+              <Box sx={{ mt: 4 }}>
+                <Typography variant="h5" gutterBottom>
+                  Recently Added Calculators
+                </Typography>
+                <Paper sx={{ p: 3, mb: 2, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9' }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={8}>
+                      <Typography variant="h6" gutterBottom color="success.main">
+                        Radiation Shielding Calculator
+                      </Typography>
+                      <Typography variant="body2">
+                        Our new interactive tool helps you design and analyze radiation shielding for various applications. Calculate dose rates through different materials, compare shielding effectiveness, and understand the underlying physics of radiation attenuation.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+                      <Button 
+                        variant="outlined" 
+                        color="success"
+                        onClick={() => {
+                          const shieldingCalc = document.getElementById('radiation-shielding-calculator');
+                          if (shieldingCalc) shieldingCalc.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Try It Now
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Paper>
+                </Paper>
+                
+                <Paper sx={{ p: 3, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9' }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={8}>
+                      <Typography variant="h6" gutterBottom color="success.main">
+                        Neutron Activation Calculator
+                      </Typography>
+                      <Typography variant="body2">
+                        Calculate induced radioactivity in materials exposed to neutron fields. This advanced tool models activation products, decay chains, and resulting dose rates based on material composition and irradiation parameters. Perfect for research reactor experiments, isotope production planning, and nuclear material analysis.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+                      <Button 
+                        variant="outlined" 
+                        color="success"
+                        onClick={() => {
+                          const activationCalc = document.getElementById('neutron-activation-calculator');
+                          if (activationCalc) activationCalc.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Try It Now
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Box>
             </TabPanel>
             
             {/* Reactor Simulators Tab */}
