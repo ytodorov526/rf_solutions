@@ -190,7 +190,63 @@ const quizData = {
       ],
       correctAnswer: 2,
       explanation: "In most commercial nuclear reactors, fuel is arranged in fuel assemblies. These typically consist of fuel rods (zirconium alloy tubes containing uranium fuel pellets) arranged in a square or hexagonal array. A typical pressurized water reactor might contain 150-200 fuel assemblies, each with 200-300 fuel rods."
+    },
+    {
+      question: "What is the primary reason for using zirconium alloys as fuel cladding in nuclear reactors?",
+      options: [
+        "Low cost and easy manufacturing",
+        "High melting point",
+        "Low neutron absorption cross-section",
+        "Resistance to radiation damage"
+      ],
+      correctAnswer: 2,
+      explanation: "Zirconium alloys are primarily used as fuel cladding because of their low neutron absorption cross-section, which allows more neutrons to participate in the chain reaction. They also have good corrosion resistance in high-temperature water and adequate mechanical properties."
+    },
+    {
+      question: "Which nuclear reactor design uses graphite as a moderator and carbon dioxide as a coolant?",
+      options: [
+        "Pressurized Water Reactor (PWR)",
+        "Boiling Water Reactor (BWR)",
+        "Advanced Gas-cooled Reactor (AGR)",
+        "Pressurized Heavy Water Reactor (PHWR)"
+      ],
+      correctAnswer: 2,
+      explanation: "The Advanced Gas-cooled Reactor (AGR) uses graphite as a moderator and carbon dioxide gas as a coolant. This design was developed in the United Kingdom as a successor to the earlier Magnox reactors and operates at higher temperatures and higher thermal efficiencies than water-cooled reactors."
+    },
+    {
+      question: "What is the purpose of a spent fuel pool at a nuclear power plant?",
+      options: [
+        "To store and cool irradiated fuel after removal from the reactor",
+        "To clean contaminated equipment",
+        "To prepare new fuel for insertion into the reactor",
+        "To conduct experimental research on radiation effects"
+      ],
+      correctAnswer: 0,
+      explanation: "Spent fuel pools are used to store and cool fuel assemblies after they're removed from the reactor. The water provides both cooling (removing decay heat) and radiation shielding. Typically, fuel remains in these pools for at least 5-10 years before potential transfer to dry cask storage."
+    },
+    {
+      question: "What is meant by 'Generation IV' in nuclear reactor design?",
+      options: [
+        "The fourth reactor built at a specific power plant site",
+        "A theoretical concept that hasn't been developed yet",
+        "Advanced reactor designs with enhanced safety and efficiency features",
+        "Reactors that produce fourth-generation nuclear fuels"
+      ],
+      correctAnswer: 2,
+      explanation: "Generation IV refers to a set of advanced nuclear reactor designs currently under development. These designs aim to improve safety, sustainability, efficiency, and proliferation resistance compared to current (Generation II and III) reactors. Examples include the Molten Salt Reactor, Sodium-cooled Fast Reactor, and Very High Temperature Reactor."
+    },
+    {
+      question: "What is the purpose of 'burnable poisons' in nuclear reactor fuel?",
+      options: [
+        "To reduce the toxicity of nuclear waste",
+        "To increase the fuel's energy output",
+        "To compensate for reactivity decrease over the fuel cycle",
+        "To prevent fuel melting in accident scenarios"
+      ],
+      correctAnswer: 2,
+      explanation: "Burnable poisons (like gadolinium or boron) are incorporated into some fuel elements to compensate for the high initial reactivity of fresh fuel. They 'burn up' (absorb neutrons and convert to non-absorbing isotopes) gradually as the fuel depletes, helping maintain relatively constant reactivity throughout the fuel cycle and allowing for longer periods between refueling."
     }
+  ],
   ],
   intermediate: [
     {
@@ -357,6 +413,72 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "Heavy water absorbs significantly fewer neutrons than light water because deuterium has a much lower neutron absorption cross-section than hydrogen. This allows heavy water reactors (like CANDU) to achieve criticality with natural uranium (0.7% U-235) without enrichment, which was historically important for countries without uranium enrichment capabilities."
+    },
+    {
+      question: "What is the 'six-factor formula' used for in reactor physics?",
+      options: [
+        "Calculating fuel enrichment requirements",
+        "Determining control rod positions",
+        "Calculating the effective neutron multiplication factor",
+        "Estimating reactor power output"
+      ],
+      correctAnswer: 2,
+      explanation: "The six-factor formula calculates the effective neutron multiplication factor (k) by multiplying six independent factors: the reproduction factor (η), the fast fission factor (ε), the fast non-leakage probability (Pf), the resonance escape probability (p), the thermal non-leakage probability (Pt), and the thermal utilization factor (f). It separates the complex neutronics of a reactor into distinct physical processes for analysis."
+    },
+    {
+      question: "What is 'xenon poisoning' and why is it significant for reactor operation?",
+      options: [
+        "Radiation sickness caused by xenon gas leaks",
+        "Corrosion of fuel cladding by xenon isotopes",
+        "Accumulation of xenon-135 that absorbs neutrons and affects reactivity",
+        "Release of toxic xenon compounds during fuel failure"
+      ],
+      correctAnswer: 2,
+      explanation: "Xenon poisoning refers to the accumulation of xenon-135 (a fission product with an extremely high neutron absorption cross-section) in an operating reactor. After a power reduction, xenon-135 continues to accumulate from iodine-135 decay, causing a temporary decrease in reactivity that can prevent restart for several hours. This phenomenon complicates load-following operations and was a factor in the Chernobyl accident."
+    },
+    {
+      question: "What is a 'loss of coolant accident' (LOCA) in a nuclear reactor?",
+      options: [
+        "Gradual evaporation of coolant during normal operation",
+        "Accidental discharge of coolant to the environment",
+        "A breach in the reactor cooling system causing coolant to escape",
+        "Failure of cooling water pumps during a power outage"
+      ],
+      correctAnswer: 2,
+      explanation: "A loss of coolant accident (LOCA) occurs when there is a breach in the reactor cooling system that allows coolant to escape faster than makeup systems can replace it. This is a serious accident scenario that could lead to core overheating and fuel damage if emergency cooling systems don't function properly. Nuclear plants have multiple emergency systems designed to prevent core damage during a LOCA."
+    },
+    {
+      question: "What is the primary purpose of emergency core cooling systems (ECCS) in nuclear plants?",
+      options: [
+        "To cool the containment building during accidents",
+        "To prevent core damage during loss of normal cooling",
+        "To reduce pressure in the reactor during transients",
+        "To cool spent fuel during refueling operations"
+      ],
+      correctAnswer: 1,
+      explanation: "Emergency Core Cooling Systems (ECCS) are designed to prevent core damage during accidents where normal cooling is compromised, particularly during a loss of coolant accident (LOCA). These systems typically include multiple redundant and diverse cooling methods, such as high-pressure injection, accumulators, and low-pressure long-term cooling systems."
+    },
+    {
+      question: "What is 'burnup' in the context of nuclear fuel?",
+      options: [
+        "The temperature at which nuclear fuel begins to melt",
+        "The measure of energy extracted from nuclear fuel",
+        "The process of burning away impurities in fresh fuel",
+        "The rate of fission product buildup in the reactor core"
+      ],
+      correctAnswer: 1,
+      explanation: "Burnup is a measure of the energy extracted from nuclear fuel, typically expressed in gigawatt-days per metric ton of uranium (GWd/tU). It represents how much of the original fissile material has been 'burned' through nuclear reactions. Higher burnup means more efficient fuel utilization but also leads to greater fuel cladding stress and fission product inventory."
+    },
+    {
+      question: "What is a 'breed and burn' reactor concept?",
+      options: [
+        "A reactor that alternates between power production and shutdown periods",
+        "A reactor where fertile material is converted to fissile material and then used for energy production",
+        "A reactor design that uses both fission and fusion processes",
+        "A temporary reactor used to start up larger commercial reactors"
+      ],
+      correctAnswer: 1,
+      explanation: "A 'breed and burn' reactor concept refers to designs where fertile material (like U-238) is converted to fissile material (like Pu-239) in situ and then 'burned' (undergoes fission) without reprocessing. This allows for very efficient use of uranium resources, potentially extracting up to 60 times more energy from the same amount of uranium compared to conventional once-through fuel cycles."
     }
   ],
   advanced: [
@@ -535,6 +657,50 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "PCT stands for Peak Cladding Temperature, which is the highest temperature reached by the fuel cladding during a Loss-of-Coolant Accident (LOCA). It's a critical safety parameter with regulatory limits (typically 1204°C/2200°F in the US) to prevent excessive cladding oxidation, embrittlement, and potential failure. Demonstration that PCT remains below limits is essential for licensing and safety analysis."
+    },
+    {
+      question: "What is the difference between 'safety-related' and 'non-safety-related' systems in nuclear power plants?",
+      options: [
+        "Safety-related systems are operated by licensed operators, non-safety-related systems by technicians",
+        "Safety-related systems are designed to prevent accidents, non-safety-related systems to mitigate consequences",
+        "Safety-related systems are subject to stringent quality assurance requirements and regulatory oversight",
+        "Safety-related systems are inside containment, non-safety-related systems are outside"
+      ],
+      correctAnswer: 2,
+      explanation: "Safety-related systems are those essential for safely shutting down the reactor, maintaining it in a safe shutdown condition, or preventing/mitigating accident consequences. They are subject to stringent quality assurance requirements, environmental qualification, redundancy criteria, and regular testing. Non-safety-related systems, while important for operation, do not require the same level of regulatory oversight or design requirements."
+    },
+    {
+      question: "What is the 'decay heat fraction' in a nuclear reactor and why is it important?",
+      options: [
+        "The percentage of heat generated by radioactive decay rather than fission after shutdown",
+        "The percentage of heat lost through containment structures",
+        "The percentage of fuel that decays during normal operation",
+        "The percentage of radioactive isotopes that produce heat during decay"
+      ],
+      correctAnswer: 0,
+      explanation: "The decay heat fraction is the percentage of the reactor's rated thermal power that continues to be generated after shutdown due to radioactive decay of fission products. Immediately after shutdown, decay heat is typically about 7% of full power, decreasing to about 1% after an hour and 0.5% after a day. Managing this decay heat is crucial for preventing fuel damage following shutdown, as demonstrated by accidents like Fukushima."
+    },
+    {
+      question: "What distinguishes a Molten Salt Reactor (MSR) from conventional solid-fuel reactors?",
+      options: [
+        "It operates at much higher temperatures",
+        "It uses liquid fuel dissolved in a molten salt coolant",
+        "It requires highly enriched uranium fuel",
+        "It uses multiple small modular cores instead of one large core"
+      ],
+      correctAnswer: 1,
+      explanation: "The defining characteristic of a Molten Salt Reactor (MSR) is the use of liquid fuel dissolved in a molten salt mixture that serves as both fuel medium and primary coolant. This contrasts with conventional reactors using solid fuel elements. MSRs offer potential advantages including online refueling, atmospheric pressure operation, inherent passive safety features, and potential for thorium fuel cycle implementation."
+    },
+    {
+      question: "What is 'reactivity insertion rate' and why is it limited in reactor designs?",
+      options: [
+        "The speed at which new fuel is added during refueling operations",
+        "The rate at which positive reactivity can be added to the core by control systems",
+        "The rate at which reactor power increases during startup",
+        "The rate at which xenon builds up after shutdown"
+      ],
+      correctAnswer: 1,
+      explanation: "Reactivity insertion rate is the rate at which positive reactivity can be added to the reactor by control systems (primarily control rod withdrawal). It is strictly limited in reactor designs and operating procedures to ensure that any power increases occur slowly enough for negative temperature feedback to counteract the increase and for safety systems to respond if needed. Excessive reactivity insertion rates contributed to accidents like Chernobyl and SL-1."
     }
   ],
   expert: [
@@ -548,6 +714,50 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "The 1/v law states that for many nuclides, neutron absorption cross-sections are inversely proportional to neutron velocity (or equivalently, inversely proportional to the square root of energy). This is why thermal neutrons (slower) have higher absorption probabilities than fast neutrons for many isotopes, including key absorbers like B-10, which follows this law closely over a wide energy range."
+    },
+    {
+      question: "What is the 'point of adding heat' (POAH) in a nuclear reactor startup?",
+      options: [
+        "The power level at which measurable heat output begins",
+        "The point at which operators must switch from nuclear to thermal instruments",
+        "The power level where negative temperature coefficients become effective",
+        "The temperature at which water begins to boil in the core"
+      ],
+      correctAnswer: 2,
+      explanation: "The Point of Adding Heat (POAH) is the power level at which the reactor's negative temperature coefficients become effective in reactor control. Below this point, changes in reactivity primarily depend on control rod positioning, while above it, temperature feedback effects become increasingly important. This transition point is significant during reactor startup and is typically in the range of 10⁻⁴% to 10⁻³% of rated power."
+    },
+    {
+      question: "What is a 'Watt fission spectrum' in nuclear physics?",
+      options: [
+        "The energy distribution of neutrons emitted during nuclear fission",
+        "The power density distribution in a reactor named after James Watt",
+        "The heat transfer coefficient spectrum in steam generators",
+        "The frequency distribution of fission events in a given time period"
+      ],
+      correctAnswer: 0,
+      explanation: "The Watt fission spectrum is a mathematical representation of the energy distribution of neutrons emitted during nuclear fission. Named after physicist Eugene Watt, it describes the probability of neutrons being emitted with various energies. This spectrum is crucial for reactor physics calculations, shielding design, and criticality safety analyses, as the energy of neutrons greatly affects their interaction probabilities with different materials."
+    },
+    {
+      question: "What are 'Dancoff factors' in nuclear engineering calculations?",
+      options: [
+        "Correction factors for shadow effects between fuel lumps in lattice calculations",
+        "Parameters used to calculate thermal hydraulic performance",
+        "Scaling factors for radiation detector efficiency",
+        "Constants used in neutron diffusion approximations"
+      ],
+      correctAnswer: 0,
+      explanation: "Dancoff factors are correction factors that account for the shadowing or self-shielding effects between neighboring fuel elements in a reactor lattice. They quantify how neutrons that leave one fuel element may enter another without passing through the moderator, which affects resonance absorption calculations. Accurate Dancoff factors are important for precise determination of resonance escape probability and effective multiplication factor calculations."
+    },
+    {
+      question: "What is the 'adjoint flux' in reactor physics calculations?",
+      options: [
+        "The neutron flux in regions adjacent to the core",
+        "The importance function representing the contribution of neutrons to future fission events",
+        "The flux of delayed neutrons following prompt neutron emission",
+        "The thermal flux measured at symmetric positions around the core"
+      ],
+      correctAnswer: 1,
+      explanation: "The adjoint flux (or adjoint function) represents the importance of neutrons at different positions, energies, and directions with respect to sustaining the chain reaction. Mathematically, it's the solution to the adjoint of the neutron transport equation. It's crucial for reactor control theory, perturbation calculations, detector placement optimization, and variance reduction techniques in Monte Carlo simulations."
     },
     {
       question: "Which phenomenon explains why reactors can experience xenon-induced spatial power oscillations?",
