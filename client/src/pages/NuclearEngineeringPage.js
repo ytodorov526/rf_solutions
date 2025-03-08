@@ -374,35 +374,20 @@ function NuclearEngineeringPage() {
                 </ErrorBoundary>
               </Box>
               
-              <Box id="coming-soon-section" sx={{ mt: 6 }}>
-                <Typography variant="h5" gutterBottom>
-                  Coming Soon
-                </Typography>
-                <Paper sx={{ p: 3, bgcolor: '#f5f9ff' }}>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12} md={8}>
-                      <Typography variant="h6" gutterBottom>
-                        Advanced Reactor Performance Analyzer
-                      </Typography>
-                      <Typography variant="body2">
-                        A comprehensive suite of advanced calculators for core design, thermal hydraulics analysis, fuel cycle assessment, and safety parameter evaluation. Calculate everything from neutron flux distributions to containment response parameters with integrated 3D visualization.
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
-                      <Button 
-                        variant="contained" 
-                        color="primary" 
-                        disabled
-                        startIcon={<AutoGraphIcon />}
-                      >
-                        Join Waitlist
-                      </Button>
-                      <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                        Expected release: Q3 2025
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Paper>
+              <Box sx={{ mt: 4 }}>
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Advanced Reactor Performance Analyzer...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/AdvancedReactorPerformanceAnalyzer')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
               </Box>
               
               <Box sx={{ mt: 4 }}>
@@ -413,10 +398,35 @@ function NuclearEngineeringPage() {
                   <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} md={8}>
                       <Typography variant="h6" gutterBottom color="success.main">
+                        Advanced Reactor Performance Analyzer
+                      </Typography>
+                      <Typography variant="body2">
+                        Our newest analytical tool allows you to compare different reactor designs across technical, economic, environmental, and operational metrics. Create custom reactor designs and see how they stack up against established technologies from PWRs to advanced SMRs and Gen IV designs.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+                      <Button 
+                        variant="outlined" 
+                        color="success"
+                        onClick={() => {
+                          const reactorAnalyzer = document.getElementById('advanced-reactor-analyzer');
+                          if (reactorAnalyzer) reactorAnalyzer.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Try It Now
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Paper>
+                
+                <Paper sx={{ p: 3, mb: 2, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9' }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={8}>
+                      <Typography variant="h6" gutterBottom color="success.main">
                         Radiation Shielding Calculator
                       </Typography>
                       <Typography variant="body2">
-                        Our new interactive tool helps you design and analyze radiation shielding for various applications. Calculate dose rates through different materials, compare shielding effectiveness, and understand the underlying physics of radiation attenuation.
+                        Our interactive tool helps you design and analyze radiation shielding for various applications. Calculate dose rates through different materials, compare shielding effectiveness, and understand the underlying physics of radiation attenuation.
                       </Typography>
                     </Grid>
                     <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
@@ -780,15 +790,29 @@ function NuclearEngineeringPage() {
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                       <AutoGraphIcon color="primary" sx={{ mr: 1, fontSize: 28 }} />
                       <Typography variant="h5" component="h3">
-                        Core Loading Pattern Optimizer
+                        Advanced Reactor Performance Analyzer
                       </Typography>
                     </Box>
                     <Typography variant="body2" paragraph>
-                      Optimize fuel assembly loading patterns for maximum cycle length, minimum peaking factors, and efficient fuel utilization. Includes visualization of power distributions.
+                      Compare different reactor designs across technical, economic, environmental, and operational metrics. Customize parameters and weightings to assess overall performance of various reactor technologies.
                     </Typography>
-                    <Typography variant="caption" display="block" sx={{ color: 'text.secondary' }}>
-                      Status: In development • Expected Q4 2025
+                    <Typography variant="caption" display="block" sx={{ color: 'success.main', fontWeight: 'bold' }}>
+                      Status: Available Now
                     </Typography>
+                    <Button 
+                      variant="outlined" 
+                      color="primary"
+                      sx={{ mt: 1 }}
+                      onClick={() => {
+                        setActiveTab(1);
+                        setTimeout(() => {
+                          const element = document.getElementById('advanced-reactor-analyzer');
+                          if (element) element.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }}
+                    >
+                      Launch Tool
+                    </Button>
                   </Paper>
                 </Grid>
                 
