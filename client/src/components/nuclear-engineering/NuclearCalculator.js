@@ -314,7 +314,7 @@ function NuclearCalculator() {
     <Box>
       <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
         <Typography variant="h5" gutterBottom>
-          Nuclear Engineering Calculators
+          Advanced Nuclear Calculations
         </Typography>
         <Typography variant="body2" color="text.secondary" paragraph>
           Interactive calculators for common nuclear engineering formulas and conversions. These tools demonstrate the fundamental relationships in reactor physics and radiation protection.
