@@ -407,6 +407,10 @@ function PetrochemicalQuiz() {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   
+  // State for jump to question
+  const [jumpToQuestionValue, setJumpToQuestionValue] = useState('');
+  const [showJumpInput, setShowJumpInput] = useState(false);
+  
   // Handle difficulty selection
   const handleSelectDifficulty = (level) => {
     setDifficulty(level);
@@ -421,6 +425,21 @@ function PetrochemicalQuiz() {
     setScore(0);
     setQuizCompleted(false);
     setShowExplanation(false);
+    setJumpToQuestionValue('');
+    setShowJumpInput(false);
+  };
+  
+  // Handle jump to question
+  const handleJumpToQuestion = () => {
+    const questionNumber = parseInt(jumpToQuestionValue);
+    if (!isNaN(questionNumber) && questionNumber >= 1 && questionNumber <= quizData[difficulty].length) {
+      setCurrentQuestion(questionNumber - 1);
+      setSelectedAnswer(null);
+      setAnswered(false);
+      setShowExplanation(false);
+      setJumpToQuestionValue('');
+      setShowJumpInput(false);
+    }
   };
   
   // Handle answer selection
@@ -593,9 +612,52 @@ function PetrochemicalQuiz() {
         {/* Progress indicator */}
         <Box sx={{ mb: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-            <Typography variant="body2" color="textSecondary">
-              Question {currentQuestion + 1} of {quizData[difficulty].length}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="body2" color="textSecondary">
+                Question {currentQuestion + 1} of {quizData[difficulty].length}
+              </Typography>
+              {!showJumpInput ? (
+                <Button 
+                  size="small" 
+                  onClick={() => setShowJumpInput(true)} 
+                  sx={{ ml: 1, minWidth: 'auto', p: '2px 5px' }}
+                >
+                  Jump
+                </Button>
+              ) : (
+                <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+                  <input
+                    type="number"
+                    min="1"
+                    max={quizData[difficulty].length}
+                    value={jumpToQuestionValue}
+                    onChange={(e) => setJumpToQuestionValue(e.target.value)}
+                    style={{ 
+                      width: '40px', 
+                      padding: '4px',
+                      marginRight: '4px',
+                      border: '1px solid #ccc',
+                      borderRadius: '4px'
+                    }}
+                  />
+                  <Button 
+                    size="small" 
+                    onClick={handleJumpToQuestion}
+                    disabled={!jumpToQuestionValue}
+                    sx={{ minWidth: 'auto', p: '2px 5px' }}
+                  >
+                    Go
+                  </Button>
+                  <Button 
+                    size="small" 
+                    onClick={() => setShowJumpInput(false)}
+                    sx={{ minWidth: 'auto', p: '2px 5px', ml: 1 }}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              )}
+            </Box>
             <Chip 
               label={difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} 
               color={
