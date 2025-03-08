@@ -94,6 +94,23 @@ const OrbitalMechanicsSimulator = () => {
       inclination: 0, 
       argumentOfPeriapsis: 0
     },
+    molniya: {
+      name: 'Molniya Orbit',
+      centralBody: 'earth',
+      semiMajorAxis: 26600, // km
+      eccentricity: 0.74,
+      inclination: 63.4, // Critical inclination to minimize perturbations
+      argumentOfPeriapsis: 270 // Apogee over northern hemisphere
+    },
+    lunarTransfer: {
+      name: 'Earth-Moon Transfer',
+      objects: [
+        { name: 'Earth Orbit', semiMajorAxis: 6771, eccentricity: 0, inclination: 0, argumentOfPeriapsis: 0, color: '#2196f3' },
+        { name: 'Transfer Orbit', semiMajorAxis: 200000, eccentricity: 0.966, inclination: 0, argumentOfPeriapsis: 0, color: '#ff9800' },
+        { name: 'Moon Orbit', semiMajorAxis: 384400, eccentricity: 0.0549, inclination: 5.145, argumentOfPeriapsis: 0, color: '#9e9e9e' }
+      ],
+      centralBody: 'earth'
+    },
     hohmannTransfer: { 
       name: 'Hohmann Transfer (LEO to GEO)', 
       objects: [
@@ -244,9 +261,17 @@ const OrbitalMechanicsSimulator = () => {
     const M = n * time % (2 * Math.PI);
     
     // Solve Kepler's equation for eccentric anomaly E
+    // Using Newton-Raphson method for better convergence
     let E = M;
-    for (let i = 0; i < 10; i++) {
-      E = M + e * Math.sin(E);
+    let delta = 1.0;
+    const epsilon = 1e-6; // Convergence threshold
+    let iterations = 0;
+    const maxIterations = 30;
+    
+    while (Math.abs(delta) > epsilon && iterations < maxIterations) {
+      delta = (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
+      E = E - delta;
+      iterations++;
     }
     
     // True anomaly
@@ -306,17 +331,60 @@ const OrbitalMechanicsSimulator = () => {
     const scaleBase = Math.min(width, height) * 0.45 / maxDistance;
     const scale = scaleBase * zoomLevel;
     
-    // Draw central body
+    // Draw grid (optional)
+    if (darkMode) {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    } else {
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
+    }
+    ctx.lineWidth = 1;
+    
+    // Draw coordinate grid
+    const gridSize = Math.ceil(maxDistance / 4) * 1000; // Round to nearest 1000 km
+    const gridStep = gridSize * scale;
+    
+    for (let i = -4; i <= 4; i++) {
+      // Vertical lines
+      ctx.beginPath();
+      ctx.moveTo(centerX + i * gridStep, 0);
+      ctx.lineTo(centerX + i * gridStep, height);
+      ctx.stroke();
+      
+      // Horizontal lines
+      ctx.beginPath();
+      ctx.moveTo(0, centerY + i * gridStep);
+      ctx.lineTo(width, centerY + i * gridStep);
+      ctx.stroke();
+    }
+    
+    // Draw central body with gradient
+    const gradient = ctx.createRadialGradient(
+      centerX, centerY, 0,
+      centerX, centerY, bodyRadius * scale
+    );
+    
+    // Set gradient colors based on the central body
+    if (centralBody === 'earth') {
+      gradient.addColorStop(0, '#4286f4');
+      gradient.addColorStop(1, '#2356b4');
+    } else if (centralBody === 'mars') {
+      gradient.addColorStop(0, '#f4a582');
+      gradient.addColorStop(1, '#d73027');
+    } else if (centralBody === 'moon') {
+      gradient.addColorStop(0, '#e0e0e0');
+      gradient.addColorStop(1, '#9e9e9e');
+    }
+    
     ctx.beginPath();
     ctx.arc(centerX, centerY, bodyRadius * scale, 0, 2 * Math.PI);
-    ctx.fillStyle = body.color;
+    ctx.fillStyle = gradient;
     ctx.fill();
     
     // Draw orbits
     orbitalObjects.forEach(obj => {
       const points = calculateOrbitPoints(obj);
       
-      // Draw orbital path
+      // Draw orbital path with gradient or dash pattern based on type
       ctx.beginPath();
       const firstPoint = points[0];
       ctx.moveTo(centerX + firstPoint.x * scale, centerY - firstPoint.y * scale);
@@ -326,14 +394,56 @@ const OrbitalMechanicsSimulator = () => {
         ctx.lineTo(centerX + point.x * scale, centerY - point.y * scale);
       }
       
+      // Use dashed lines for transfer orbits
+      if (obj.name.includes('Transfer')) {
+        ctx.setLineDash([5, 3]);
+      } else {
+        ctx.setLineDash([]);
+      }
+      
       ctx.strokeStyle = obj.color;
       ctx.lineWidth = 2;
       ctx.stroke();
+      
+      // Draw periapsis and apoapsis markers for each orbit
+      const a = obj.semiMajorAxis;
+      const e = obj.eccentricity;
+      const omega = obj.argumentOfPeriapsis * Math.PI / 180;
+      
+      // Calculate periapsis and apoapsis positions
+      const periapsisDistance = a * (1 - e);
+      const apoapsisDistance = a * (1 + e);
+      
+      // Periapsis position (direction based on argument of periapsis)
+      const periX = periapsisDistance * Math.cos(omega);
+      const periY = periapsisDistance * Math.sin(omega);
+      
+      // Apoapsis position (opposite direction from periapsis)
+      const apoX = -apoapsisDistance * Math.cos(omega);
+      const apoY = -apoapsisDistance * Math.sin(omega);
+      
+      // Draw periapsis marker (small circle)
+      ctx.beginPath();
+      ctx.arc(
+        centerX + periX * scale, 
+        centerY - periY * scale, 
+        3, 0, 2 * Math.PI
+      );
+      ctx.fillStyle = obj.color;
+      ctx.fill();
+      
+      // Draw apoapsis marker (small square)
+      ctx.fillRect(
+        centerX + apoX * scale - 3, 
+        centerY - apoY * scale - 3,
+        6, 6
+      );
       
       // Draw spacecraft position if simulation is running
       if (simulationTime > 0) {
         const position = calculatePositionAtTime(obj, simulationTime);
         
+        // Draw spacecraft
         ctx.beginPath();
         ctx.arc(
           centerX + position.x * scale, 
@@ -342,6 +452,24 @@ const OrbitalMechanicsSimulator = () => {
         );
         ctx.fillStyle = obj.color;
         ctx.fill();
+        
+        // Draw orbit trace (fading trail)
+        if (obj.trail) {
+          // Draw the trail points
+          for (let i = 0; i < obj.trail.length; i++) {
+            const point = obj.trail[i];
+            const alpha = i / obj.trail.length; // Fade out older points
+            
+            ctx.beginPath();
+            ctx.arc(
+              centerX + point.x * scale,
+              centerY - point.y * scale,
+              2, 0, 2 * Math.PI
+            );
+            ctx.fillStyle = `${obj.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`;
+            ctx.fill();
+          }
+        }
         
         // Draw label for spacecraft
         ctx.fillStyle = darkMode ? '#ffffff' : '#000000';
@@ -356,24 +484,73 @@ const OrbitalMechanicsSimulator = () => {
     });
     
     // Draw legend and scale
-    ctx.fillStyle = darkMode ? '#ffffff' : '#000000';
+    const textColor = darkMode ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)';
+    ctx.fillStyle = textColor;
     ctx.font = '12px Arial';
     ctx.textAlign = 'left';
-    ctx.fillText(`1 pixel = ${(1/scale).toFixed(1)} km`, 10, 20);
+    ctx.fillText(`Scale: 1 pixel = ${(1/scale).toFixed(1)} km`, 10, 20);
     ctx.fillText(`Central body: ${body.name}`, 10, 40);
     ctx.fillText(`Simulation time: ${simulationTime.toFixed(1)} s`, 10, 60);
+    
+    // Draw additional orbit information if needed
+    if (orbitalObjects.length === 1) {
+      const obj = orbitalObjects[0];
+      const period = 2 * Math.PI * Math.sqrt(Math.pow(obj.semiMajorAxis, 3) / body.mu);
+      ctx.fillText(`Orbital period: ${(period / 60).toFixed(1)} minutes`, 10, 80);
+    }
   };
   
   // Animation loop
   const animate = (timestamp) => {
     if (!isRunning) return;
     
+    // Update simulation time
     setSimulationTime(prevTime => prevTime + 0.1 * timeScale);
+    
+    // Update orbital object trails
+    setOrbitalObjects(prevObjects => {
+      return prevObjects.map(obj => {
+        // Calculate current position
+        const position = calculatePositionAtTime(obj, simulationTime);
+        
+        // Add position to trail
+        const maxTrailLength = 50;
+        const trail = obj.trail || [];
+        const newTrail = [...trail, position];
+        
+        // Keep only the last maxTrailLength points
+        if (newTrail.length > maxTrailLength) {
+          newTrail.shift();
+        }
+        
+        return {
+          ...obj,
+          trail: newTrail
+        };
+      });
+    });
+    
     renderOrbits();
     
     animationRef.current = requestAnimationFrame(animate);
   };
   
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const parentBox = canvas.parentElement.getBoundingClientRect();
+        canvas.width = parentBox.width;
+        canvas.height = 500;
+        renderOrbits();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Effect hooks
   useEffect(() => {
     renderOrbits();
@@ -529,7 +706,9 @@ const OrbitalMechanicsSimulator = () => {
                     <MenuItem value="">Custom</MenuItem>
                     <MenuItem value="iss">ISS Orbit</MenuItem>
                     <MenuItem value="geostationary">Geostationary Orbit</MenuItem>
+                    <MenuItem value="molniya">Molniya Orbit</MenuItem>
                     <MenuItem value="hohmannTransfer">Hohmann Transfer (LEO to GEO)</MenuItem>
+                    <MenuItem value="lunarTransfer">Earth-Moon Transfer</MenuItem>
                   </Select>
                 </FormControl>
               </Paper>
@@ -683,6 +862,9 @@ const OrbitalMechanicsSimulator = () => {
                 <br />
                 3. The square of the orbital period is proportional to the cube of the semi-major axis.
               </Typography>
+              <Typography variant="body2" sx={{ mt: 1, fontStyle: 'italic', color: 'text.secondary' }}>
+                Period = 2π√(a³/μ), where μ is the gravitational parameter.
+              </Typography>
             </Grid>
             
             <Grid item xs={12} md={4}>
@@ -690,7 +872,7 @@ const OrbitalMechanicsSimulator = () => {
               <Typography variant="body2">
                 <strong>Semi-Major Axis (a):</strong> Half the longest diameter of the elliptical orbit.
                 <br />
-                <strong>Eccentricity (e):</strong> Measures how much the orbit deviates from a circle.
+                <strong>Eccentricity (e):</strong> Measures how much the orbit deviates from a circle (e=0).
                 <br />
                 <strong>Inclination (i):</strong> Angle between the orbit plane and reference plane.
                 <br />
@@ -702,6 +884,8 @@ const OrbitalMechanicsSimulator = () => {
               <Typography variant="subtitle1" gutterBottom>Orbital Maneuvers</Typography>
               <Typography variant="body2">
                 <strong>Hohmann Transfer:</strong> Fuel-efficient elliptical orbit used to transfer between two circular orbits.
+                <br />
+                <strong>Bi-Elliptic Transfer:</strong> More efficient than Hohmann for large orbit changes.
                 <br />
                 <strong>Inclination Change:</strong> Changing the angle of an orbit, typically expensive in terms of fuel.
                 <br />
