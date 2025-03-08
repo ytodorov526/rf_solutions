@@ -26,10 +26,11 @@ import {
   AddCircleOutline,
   RemoveCircleOutline
 } from '@mui/icons-material';
-import { useTheme } from '../../theme/ThemeContext';
+import { useThemeContext } from '../../theme/ThemeContext';
 
 const OrbitalMechanicsSimulator = () => {
-  const { darkMode } = useTheme();
+  const { mode } = useThemeContext();
+  const darkMode = mode === 'dark';
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   
