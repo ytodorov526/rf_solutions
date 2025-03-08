@@ -37,10 +37,9 @@ import CalculateIcon from '@mui/icons-material/Calculate';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Bar, Radar, Doughnut } from 'react-chartjs-2';
-import annotationPlugin from 'chartjs-plugin-annotation';
 
 // Register Chart.js components
-ChartJS.register(...registerables, annotationPlugin);
+ChartJS.register(...registerables);
 
 // Reactor design presets
 const REACTOR_DESIGNS = {
