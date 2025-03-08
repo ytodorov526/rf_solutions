@@ -33,6 +33,12 @@ const OrbitalMechanicsSimulator = () => {
   const darkMode = mode === 'dark';
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
+  const lastRenderData = useRef(null);
+  
+  // Canvas interaction state
+  const [isDragging, setIsDragging] = useState(false);
+  const [viewOffset, setViewOffset] = useState({ x: 0, y: 0 });
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   
   // Simulation state
   const [isRunning, setIsRunning] = useState(false);
@@ -208,6 +214,16 @@ const OrbitalMechanicsSimulator = () => {
   const resetSimulation = () => {
     setIsRunning(false);
     setSimulationTime(0);
+    setViewOffset({ x: 0, y: 0 }); // Reset view to center
+    
+    // Clear trails from objects
+    setOrbitalObjects(prevObjects => 
+      prevObjects.map(obj => ({
+        ...obj,
+        trail: []
+      }))
+    );
+    
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
       animationRef.current = null;
@@ -300,6 +316,12 @@ const OrbitalMechanicsSimulator = () => {
   
   // Rendering
   const renderOrbits = () => {
+    // If we have animation data, use it to render directly
+    if (isRunning && lastRenderData.current) {
+      renderOrbitsWithPositions(lastRenderData.current.objects, lastRenderData.current.time);
+      return;
+    }
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
     
@@ -311,8 +333,8 @@ const OrbitalMechanicsSimulator = () => {
     ctx.clearRect(0, 0, width, height);
     
     // Center of canvas
-    const centerX = width / 2;
-    const centerY = height / 2;
+    const centerX = width / 2 + viewOffset.x;
+    const centerY = height / 2 + viewOffset.y;
     
     // Scale factor (pixels per km)
     const body = centralBodies[centralBody];
@@ -498,6 +520,15 @@ const OrbitalMechanicsSimulator = () => {
       const period = 2 * Math.PI * Math.sqrt(Math.pow(obj.semiMajorAxis, 3) / body.mu);
       ctx.fillText(`Orbital period: ${(period / 60).toFixed(1)} minutes`, 10, 80);
     }
+    
+    // Draw navigation instructions when zoomed
+    if (zoomLevel > 1.5) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+      ctx.fillRect(width - 220, height - 35, 210, 25);
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'right';
+      ctx.fillText('Click and drag to pan view', width - 15, height - 18);
+    }
   };
   
   // Animation loop
@@ -505,34 +536,245 @@ const OrbitalMechanicsSimulator = () => {
     if (!isRunning) return;
     
     // Update simulation time
-    setSimulationTime(prevTime => prevTime + 0.1 * timeScale);
+    const newTime = simulationTime + 0.1 * timeScale;
+    setSimulationTime(newTime);
     
-    // Update orbital object trails
-    setOrbitalObjects(prevObjects => {
-      return prevObjects.map(obj => {
-        // Calculate current position
-        const position = calculatePositionAtTime(obj, simulationTime);
-        
-        // Add position to trail
-        const maxTrailLength = 50;
-        const trail = obj.trail || [];
-        const newTrail = [...trail, position];
-        
-        // Keep only the last maxTrailLength points
-        if (newTrail.length > maxTrailLength) {
-          newTrail.shift();
-        }
-        
-        return {
-          ...obj,
-          trail: newTrail
-        };
-      });
+    // Calculate current positions without updating the whole object state
+    // This prevents the React state update from blocking the animation
+    const objectsWithTrails = orbitalObjects.map(obj => {
+      // Calculate current position
+      const position = calculatePositionAtTime(obj, newTime);
+      
+      // Add position to trail
+      const maxTrailLength = 50;
+      const trail = obj.trail || [];
+      const newTrail = [...trail, position];
+      
+      // Keep only the last maxTrailLength points
+      if (newTrail.length > maxTrailLength) {
+        newTrail.shift();
+      }
+      
+      return {
+        ...obj,
+        trail: newTrail,
+        currentPosition: position // Store current position for rendering
+      };
     });
     
-    renderOrbits();
+    // Directly render with the calculated positions without waiting for state updates
+    renderOrbitsWithPositions(objectsWithTrails, newTime);
     
+    // Schedule the next frame
     animationRef.current = requestAnimationFrame(animate);
+  };
+  
+  // Separate rendering function that doesn't depend on state updates
+  const renderOrbitsWithPositions = (objectsWithPositions, currentTime) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+    
+    // Center of canvas
+    const centerX = width / 2 + viewOffset.x;
+    const centerY = height / 2 + viewOffset.y;
+    
+    // Scale factor (pixels per km)
+    const body = centralBodies[centralBody];
+    const bodyRadius = body.radius;
+    
+    // Find maximum orbit radius to set scale
+    let maxDistance = 0;
+    objectsWithPositions.forEach(obj => {
+      const a = obj.semiMajorAxis;
+      const e = obj.eccentricity;
+      const apoapsis = a * (1 + e);
+      if (apoapsis > maxDistance) maxDistance = apoapsis;
+    });
+    
+    // Set scale to fit largest orbit with margin
+    const scaleBase = Math.min(width, height) * 0.45 / maxDistance;
+    const scale = scaleBase * zoomLevel;
+    
+    // Draw grid (optional)
+    if (darkMode) {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    } else {
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
+    }
+    ctx.lineWidth = 1;
+    
+    // Draw coordinate grid
+    const gridSize = Math.ceil(maxDistance / 4) * 1000; // Round to nearest 1000 km
+    const gridStep = gridSize * scale;
+    
+    for (let i = -4; i <= 4; i++) {
+      // Vertical lines
+      ctx.beginPath();
+      ctx.moveTo(centerX + i * gridStep, 0);
+      ctx.lineTo(centerX + i * gridStep, height);
+      ctx.stroke();
+      
+      // Horizontal lines
+      ctx.beginPath();
+      ctx.moveTo(0, centerY + i * gridStep);
+      ctx.lineTo(width, centerY + i * gridStep);
+      ctx.stroke();
+    }
+    
+    // Draw central body with gradient
+    const gradient = ctx.createRadialGradient(
+      centerX, centerY, 0,
+      centerX, centerY, bodyRadius * scale
+    );
+    
+    // Set gradient colors based on the central body
+    if (centralBody === 'earth') {
+      gradient.addColorStop(0, '#4286f4');
+      gradient.addColorStop(1, '#2356b4');
+    } else if (centralBody === 'mars') {
+      gradient.addColorStop(0, '#f4a582');
+      gradient.addColorStop(1, '#d73027');
+    } else if (centralBody === 'moon') {
+      gradient.addColorStop(0, '#e0e0e0');
+      gradient.addColorStop(1, '#9e9e9e');
+    }
+    
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, bodyRadius * scale, 0, 2 * Math.PI);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    
+    // Draw orbits
+    objectsWithPositions.forEach(obj => {
+      const points = calculateOrbitPoints(obj);
+      
+      // Draw orbital path with gradient or dash pattern based on type
+      ctx.beginPath();
+      const firstPoint = points[0];
+      ctx.moveTo(centerX + firstPoint.x * scale, centerY - firstPoint.y * scale);
+      
+      for (let i = 1; i < points.length; i++) {
+        const point = points[i];
+        ctx.lineTo(centerX + point.x * scale, centerY - point.y * scale);
+      }
+      
+      // Use dashed lines for transfer orbits
+      if (obj.name.includes('Transfer')) {
+        ctx.setLineDash([5, 3]);
+      } else {
+        ctx.setLineDash([]);
+      }
+      
+      ctx.strokeStyle = obj.color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      // Draw periapsis and apoapsis markers for each orbit
+      const a = obj.semiMajorAxis;
+      const e = obj.eccentricity;
+      const omega = obj.argumentOfPeriapsis * Math.PI / 180;
+      
+      // Calculate periapsis and apoapsis positions
+      const periapsisDistance = a * (1 - e);
+      const apoapsisDistance = a * (1 + e);
+      
+      // Periapsis position (direction based on argument of periapsis)
+      const periX = periapsisDistance * Math.cos(omega);
+      const periY = periapsisDistance * Math.sin(omega);
+      
+      // Apoapsis position (opposite direction from periapsis)
+      const apoX = -apoapsisDistance * Math.cos(omega);
+      const apoY = -apoapsisDistance * Math.sin(omega);
+      
+      // Draw periapsis marker (small circle)
+      ctx.beginPath();
+      ctx.arc(
+        centerX + periX * scale, 
+        centerY - periY * scale, 
+        3, 0, 2 * Math.PI
+      );
+      ctx.fillStyle = obj.color;
+      ctx.fill();
+      
+      // Draw apoapsis marker (small square)
+      ctx.fillRect(
+        centerX + apoX * scale - 3, 
+        centerY - apoY * scale - 3,
+        6, 6
+      );
+      
+      // Draw spacecraft position if simulation is running
+      if (currentTime > 0 && obj.currentPosition) {
+        const position = obj.currentPosition;
+        
+        // Draw spacecraft
+        ctx.beginPath();
+        ctx.arc(
+          centerX + position.x * scale, 
+          centerY - position.y * scale, 
+          5, 0, 2 * Math.PI
+        );
+        ctx.fillStyle = obj.color;
+        ctx.fill();
+        
+        // Draw orbit trace (fading trail)
+        if (obj.trail) {
+          // Draw the trail points
+          for (let i = 0; i < obj.trail.length; i++) {
+            const point = obj.trail[i];
+            const alpha = i / obj.trail.length; // Fade out older points
+            
+            ctx.beginPath();
+            ctx.arc(
+              centerX + point.x * scale,
+              centerY - point.y * scale,
+              2, 0, 2 * Math.PI
+            );
+            ctx.fillStyle = `${obj.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`;
+            ctx.fill();
+          }
+        }
+        
+        // Draw label for spacecraft
+        ctx.fillStyle = darkMode ? '#ffffff' : '#000000';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(
+          obj.name, 
+          centerX + position.x * scale, 
+          centerY - position.y * scale - 12
+        );
+      }
+    });
+    
+    // Draw legend and scale
+    const textColor = darkMode ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 0, 0, 0.9)';
+    ctx.fillStyle = textColor;
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Scale: 1 pixel = ${(1/scale).toFixed(1)} km`, 10, 20);
+    ctx.fillText(`Central body: ${body.name}`, 10, 40);
+    ctx.fillText(`Simulation time: ${currentTime.toFixed(1)} s`, 10, 60);
+    
+    // Draw additional orbit information if needed
+    if (objectsWithPositions.length === 1) {
+      const obj = objectsWithPositions[0];
+      const period = 2 * Math.PI * Math.sqrt(Math.pow(obj.semiMajorAxis, 3) / body.mu);
+      ctx.fillText(`Orbital period: ${(period / 60).toFixed(1)} minutes`, 10, 80);
+    }
+    
+    // Store the last successful rendering to avoid flicker during React updates
+    lastRenderData.current = {
+      objects: objectsWithPositions,
+      time: currentTime
+    };
   };
   
   // Handle window resize
@@ -554,7 +796,7 @@ const OrbitalMechanicsSimulator = () => {
   // Effect hooks
   useEffect(() => {
     renderOrbits();
-  }, [orbitalObjects, centralBody, zoomLevel]);
+  }, [orbitalObjects, centralBody, zoomLevel, viewOffset]);
   
   useEffect(() => {
     if (isRunning) {
@@ -570,6 +812,58 @@ const OrbitalMechanicsSimulator = () => {
     };
   }, [isRunning, timeScale]);
   
+  // Add mouse event handlers for canvas navigation
+  const handleCanvasMouseDown = (e) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    setIsDragging(true);
+    setDragStart({ 
+      x: e.clientX - viewOffset.x, 
+      y: e.clientY - viewOffset.y 
+    });
+  };
+  
+  const handleCanvasMouseMove = (e) => {
+    if (!isDragging) return;
+    
+    const newOffsetX = e.clientX - dragStart.x;
+    const newOffsetY = e.clientY - dragStart.y;
+    setViewOffset({ x: newOffsetX, y: newOffsetY });
+    
+    // Re-render immediately to avoid lag
+    renderOrbits();
+  };
+  
+  const handleCanvasMouseUp = () => {
+    setIsDragging(false);
+  };
+  
+  const handleCanvasWheel = (e) => {
+    e.preventDefault();
+    
+    // Zoom in/out with mouse wheel
+    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+    const newZoom = Math.max(0.1, Math.min(10, zoomLevel * zoomFactor));
+    setZoomLevel(newZoom);
+    
+    // Center zoom on mouse position (more natural)
+    // const canvas = canvasRef.current;
+    // if (canvas) {
+    //   const rect = canvas.getBoundingClientRect();
+    //   const mouseX = e.clientX - rect.left;
+    //   const mouseY = e.clientY - rect.top;
+    //   const centerX = canvas.width / 2;
+    //   const centerY = canvas.height / 2;
+    //   
+    //   // Adjust offset to zoom toward mouse position
+    //   setViewOffset({
+    //     x: viewOffset.x + (mouseX - centerX) * (1 - zoomFactor),
+    //     y: viewOffset.y + (mouseY - centerY) * (1 - zoomFactor)
+    //   });
+    // }
+  };
+  
   useEffect(() => {
     // Initialize canvas
     const canvas = canvasRef.current;
@@ -579,6 +873,13 @@ const OrbitalMechanicsSimulator = () => {
       canvas.width = parentBox.width;
       canvas.height = 500;
       
+      // Add mouse event listeners for navigation
+      canvas.addEventListener('mousedown', handleCanvasMouseDown);
+      canvas.addEventListener('mousemove', handleCanvasMouseMove);
+      canvas.addEventListener('mouseup', handleCanvasMouseUp);
+      canvas.addEventListener('mouseleave', handleCanvasMouseUp);
+      canvas.addEventListener('wheel', handleCanvasWheel);
+      
       renderOrbits();
     }
     
@@ -586,6 +887,14 @@ const OrbitalMechanicsSimulator = () => {
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+      }
+      
+      if (canvas) {
+        canvas.removeEventListener('mousedown', handleCanvasMouseDown);
+        canvas.removeEventListener('mousemove', handleCanvasMouseMove);
+        canvas.removeEventListener('mouseup', handleCanvasMouseUp);
+        canvas.removeEventListener('mouseleave', handleCanvasMouseUp);
+        canvas.removeEventListener('wheel', handleCanvasWheel);
       }
     };
   }, []);
