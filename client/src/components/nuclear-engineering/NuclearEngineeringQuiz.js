@@ -247,7 +247,6 @@ const quizData = {
       explanation: "Burnable poisons (like gadolinium or boron) are incorporated into some fuel elements to compensate for the high initial reactivity of fresh fuel. They 'burn up' (absorb neutrons and convert to non-absorbing isotopes) gradually as the fuel depletes, helping maintain relatively constant reactivity throughout the fuel cycle and allowing for longer periods between refueling."
     }
   ],
-  ],
   intermediate: [
     {
       question: "What is the delayed neutron fraction in a nuclear reactor?",
