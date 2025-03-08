@@ -175,7 +175,7 @@ function RocketSciencePage() {
                 <Tab icon={<SchoolIcon />} iconPosition="start" label="Educational Resources" {...a11yProps(0)} />
                 <Tab icon={<CalculateIcon />} iconPosition="start" label="Orbital Mechanics" {...a11yProps(1)} />
                 <Tab icon={<ScienceIcon />} iconPosition="start" label="Propulsion Systems" {...a11yProps(2)} />
-                <Tab icon={<RocketLaunchIcon />} iconPosition="start" label="Knowledge Quiz" {...a11yProps(3)} />
+                <Tab icon={<RocketLaunchIcon />} iconPosition="start" label="Simulator & Quiz" {...a11yProps(3)} />
               </Tabs>
             </Box>
             
@@ -246,7 +246,7 @@ function RocketSciencePage() {
               
               <Box sx={{ mt: 4 }}>
                 <Typography variant="h5" gutterBottom>
-                  Coming Soon: Interactive Orbital Mechanics Simulator
+                  Interactive Orbital Mechanics Simulator
                 </Typography>
                 <Paper sx={{ p: 3, bgcolor: '#f5f9ff' }}>
                   <Grid container spacing={2} alignItems="center">
@@ -255,21 +255,23 @@ function RocketSciencePage() {
                         Interactive Orbital Mechanics Simulator
                       </Typography>
                       <Typography variant="body2">
-                        Design, analyze, and visualize spacecraft orbits with our comprehensive orbital mechanics simulator. Calculate transfer orbits, perform maneuvers, and plan complex missions with accurate physics models and 3D visualization.
+                        Design, analyze, and visualize spacecraft orbits with our comprehensive orbital mechanics simulator. Calculate transfer orbits, perform maneuvers, and plan complex missions with accurate physics models and interactive visualization.
                       </Typography>
                     </Grid>
                     <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
                       <Button 
                         variant="contained" 
-                        color="primary" 
-                        disabled
+                        color="primary"
                         startIcon={<ExploreIcon />}
+                        onClick={() => {
+                          setActiveTab(3);
+                          setTimeout(() => {
+                            document.getElementById('orbital-simulator-section').scrollIntoView({ behavior: 'smooth' });
+                          }, 100);
+                        }}
                       >
-                        Join Waitlist
+                        Try It Now
                       </Button>
-                      <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                        Expected release: Q2 2025
-                      </Typography>
                     </Grid>
                   </Grid>
                 </Paper>
@@ -499,29 +501,56 @@ function RocketSciencePage() {
               </Box>
             </TabPanel>
             
-            {/* Knowledge Quiz Tab */}
+            {/* Knowledge Quiz & Simulator Tab */}
             <TabPanel value={activeTab} index={3}>
-              <Typography variant="h4" gutterBottom>
-                Rocket Science Quiz
-              </Typography>
-              <Typography variant="body1" paragraph>
-                Test your knowledge of rocket propulsion, orbital mechanics, and spacecraft engineering with our interactive quiz. Choose from multiple difficulty levels ranging from beginner to expert.
-              </Typography>
-              
-              <Box sx={{ mt: 4 }}>
+              <Box id="orbital-simulator-section" sx={{ mb: 6 }}>
+                <Typography variant="h4" gutterBottom>
+                  Orbital Mechanics Simulator
+                </Typography>
+                <Typography variant="body1" paragraph>
+                  Visualize and explore orbital mechanics with our interactive simulator. Design custom orbits, experiment with different parameters, and see how they affect spacecraft trajectories in real-time.
+                </Typography>
+                
                 <ErrorBoundary>
                   <Suspense fallback={
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
                       <CircularProgress size={24} />
-                      <Typography sx={{ ml: 2 }}>Loading Rocket Science Quiz...</Typography>
+                      <Typography sx={{ ml: 2 }}>Loading Orbital Mechanics Simulator...</Typography>
                     </Box>
                   }>
                     {React.createElement(
-                      React.lazy(() => import('../components/rocket-science/RocketScienceQuiz')),
+                      React.lazy(() => import('../components/rocket-science/OrbitalMechanicsSimulator')),
                       {}
                     )}
                   </Suspense>
                 </ErrorBoundary>
+              </Box>
+              
+              <Divider sx={{ my: 6 }} />
+              
+              <Box>
+                <Typography variant="h4" gutterBottom>
+                  Rocket Science Quiz
+                </Typography>
+                <Typography variant="body1" paragraph>
+                  Test your knowledge of rocket propulsion, orbital mechanics, and spacecraft engineering with our interactive quiz. Choose from multiple difficulty levels ranging from beginner to expert.
+                </Typography>
+                
+                <Box sx={{ mt: 4 }}>
+                  <ErrorBoundary>
+                    <Suspense fallback={
+                      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                        <CircularProgress size={24} />
+                        <Typography sx={{ ml: 2 }}>Loading Rocket Science Quiz...</Typography>
+                      </Box>
+                    }>
+                      {React.createElement(
+                        React.lazy(() => import('../components/rocket-science/RocketScienceQuiz')),
+                        {}
+                      )}
+                    </Suspense>
+                  </ErrorBoundary>
+                </Box>
               </Box>
             </TabPanel>
           </Paper>
