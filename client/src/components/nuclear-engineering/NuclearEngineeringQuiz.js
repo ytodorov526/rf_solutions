@@ -135,6 +135,61 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "Control rods absorb neutrons to control the rate of the nuclear chain reaction. By inserting or withdrawing control rods, operators can decrease or increase the reactor power. Control rods are typically made of neutron-absorbing materials such as boron, cadmium, or hafnium."
+    },
+    {
+      question: "What is the main purpose of a containment building in a nuclear power plant?",
+      options: [
+        "To protect the reactor from external weather conditions",
+        "To improve the plant's aesthetic appearance",
+        "To prevent the release of radioactive materials in the event of an accident",
+        "To house administrative offices and control rooms"
+      ],
+      correctAnswer: 2,
+      explanation: "The primary purpose of a containment building is to prevent the release of radioactive materials to the environment if an accident occurs. The containment building is typically a steel-lined concrete structure designed to withstand internal pressure and seal in radioactive materials."
+    },
+    {
+      question: "Which isotope is commonly used in nuclear medicine for diagnostic imaging?",
+      options: [
+        "Uranium-235",
+        "Plutonium-239",
+        "Technetium-99m",
+        "Radon-222"
+      ],
+      correctAnswer: 2,
+      explanation: "Technetium-99m is the most widely used radioisotope in nuclear medicine for diagnostic imaging. It emits gamma rays that can be detected by gamma cameras, has a short half-life of about 6 hours (minimizing patient radiation exposure), and can be attached to various chemicals to target specific organs or tissues."
+    },
+    {
+      question: "What is the difference between radiation and radioactivity?",
+      options: [
+        "They are different terms for the same phenomenon",
+        "Radiation is the energy or particles emitted, while radioactivity is the process of unstable atoms decaying",
+        "Radiation only refers to light waves, while radioactivity refers to particle emission",
+        "Radiation is harmless, while radioactivity is always dangerous"
+      ],
+      correctAnswer: 1,
+      explanation: "Radiation refers to the energy or particles that are emitted from a source, while radioactivity is the property or process by which unstable atomic nuclei spontaneously decompose, emitting radiation in the process. A material is radioactive if it contains unstable nuclei that undergo radioactive decay."
+    },
+    {
+      question: "What is the typical thermal efficiency of a nuclear power plant?",
+      options: [
+        "10-20%",
+        "30-35%",
+        "50-60%",
+        "80-90%"
+      ],
+      correctAnswer: 1,
+      explanation: "Nuclear power plants typically operate at thermal efficiencies of around 30-35%. This is similar to coal-fired power plants but lower than modern combined-cycle natural gas plants. The efficiency is limited by thermodynamic principles and the relatively low steam temperatures used to ensure safety and material longevity."
+    },
+    {
+      question: "What is the fuel commonly arranged in within a nuclear reactor core?",
+      options: [
+        "Fuel pellets",
+        "Fuel pebbles",
+        "Fuel assemblies",
+        "Fuel plates"
+      ],
+      correctAnswer: 2,
+      explanation: "In most commercial nuclear reactors, fuel is arranged in fuel assemblies. These typically consist of fuel rods (zirconium alloy tubes containing uranium fuel pellets) arranged in a square or hexagonal array. A typical pressurized water reactor might contain 150-200 fuel assemblies, each with 200-300 fuel rods."
     }
   ],
   intermediate: [
@@ -247,6 +302,61 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "Zirconium alloys are used as fuel cladding primarily because of their low neutron absorption cross-section, which means they don't significantly reduce neutron flux in the reactor. They also have good corrosion resistance in high-temperature water and adequate mechanical properties, though they're neither the best thermal conductors nor the cheapest materials available."
+    },
+    {
+      question: "What is the function of the pressurizer in a Pressurized Water Reactor?",
+      options: [
+        "To increase the thermal efficiency of the steam cycle",
+        "To cool the reactor coolant before it enters the steam generator",
+        "To control and maintain primary coolant system pressure",
+        "To pressurize the containment during accident conditions"
+      ],
+      correctAnswer: 2,
+      explanation: "The pressurizer maintains and controls the pressure in the primary coolant system of a PWR. It contains both water and steam phases, with electric heaters and water spray systems that can increase or decrease pressure as needed. This ensures the primary coolant remains liquid throughout the system, preventing boiling in the core."
+    },
+    {
+      question: "What is meant by 'defense in depth' in nuclear safety?",
+      options: [
+        "The practice of building reactors underground for protection",
+        "Multiple, redundant safety systems and barriers to prevent accidents and mitigate consequences",
+        "Having multiple operators monitor the reactor at all times",
+        "Designing reactors to withstand military attacks"
+      ],
+      correctAnswer: 1,
+      explanation: "Defense in depth is a fundamental safety principle involving multiple independent and redundant layers of protection, so if one layer fails, others remain effective. These layers include physical barriers (fuel cladding, pressure vessel, containment) and diverse safety systems, ensuring that no single failure can lead to a major release of radioactive material."
+    },
+    {
+      question: "What is the primary coolant used in a Boiling Water Reactor (BWR)?",
+      options: [
+        "Heavy water (D₂O)",
+        "Light water (H₂O)",
+        "Liquid sodium",
+        "Helium gas"
+      ],
+      correctAnswer: 1,
+      explanation: "Light water (ordinary water, H₂O) is used as both coolant and moderator in a Boiling Water Reactor. Unlike in PWRs, the water is allowed to boil in the core, creating steam that directly drives the turbine. This simplifies the design by eliminating the need for steam generators but requires radiation shielding around the turbine."
+    },
+    {
+      question: "What is the purpose of a neutron reflector in a nuclear reactor?",
+      options: [
+        "To shield operators from neutron radiation",
+        "To redirect escaped neutrons back into the core to improve fuel utilization",
+        "To moderate fast neutrons to thermal energies",
+        "To absorb excess neutrons during shutdown"
+      ],
+      correctAnswer: 1,
+      explanation: "A neutron reflector surrounds the reactor core and reflects neutrons that would otherwise escape back into the core. This improves fuel utilization, reduces critical mass requirements, and helps flatten the neutron flux distribution. Common reflector materials include beryllium, graphite, and water."
+    },
+    {
+      question: "What is the primary advantage of heavy water (D₂O) as a moderator compared to light water?",
+      options: [
+        "It has a higher boiling point, allowing higher operating temperatures",
+        "It absorbs fewer neutrons, enabling the use of natural uranium fuel",
+        "It has better heat transfer properties, improving thermal efficiency",
+        "It provides better radiation shielding for operators"
+      ],
+      correctAnswer: 1,
+      explanation: "Heavy water absorbs significantly fewer neutrons than light water because deuterium has a much lower neutron absorption cross-section than hydrogen. This allows heavy water reactors (like CANDU) to achieve criticality with natural uranium (0.7% U-235) without enrichment, which was historically important for countries without uranium enrichment capabilities."
     }
   ],
   advanced: [
@@ -359,6 +469,72 @@ const quizData = {
       ],
       correctAnswer: 2,
       explanation: "The pressurizer maintains primary coolant pressure and compensates for volume changes in a PWR. It contains both water and steam phases in equilibrium, with heaters and spray systems to raise or lower pressure as needed. This ensures the primary coolant remains liquid throughout the system despite temperature changes, preventing boiling in the core while allowing efficient heat transfer to the secondary system."
+    },
+    {
+      question: "What is xenon poisoning in nuclear reactors?",
+      options: [
+        "Physical damage to fuel rods from xenon gas buildup",
+        "Temporary decrease in reactor power due to xenon-135 absorption of neutrons",
+        "Radiation sickness in operators exposed to xenon isotopes",
+        "Corrosion of primary coolant system components by xenon"
+      ],
+      correctAnswer: 1,
+      explanation: "Xenon poisoning refers to the buildup of xenon-135, which has an extremely high neutron absorption cross-section, in an operating reactor. After a power reduction, xenon-135 (produced from iodine-135 decay) continues to accumulate, causing a temporary decrease in reactivity that can make restart difficult for several hours. This phenomenon complicates load-following operations and played a role in the Chernobyl accident."
+    },
+    {
+      question: "What is the principle behind the operation of a Sodium-cooled Fast Reactor (SFR)?",
+      options: [
+        "Using sodium as a moderator to slow down neutrons",
+        "Utilizing fast neutrons for fission and liquid sodium as coolant",
+        "Heating sodium to very high temperatures to improve thermal efficiency",
+        "Generating hydrogen through sodium-water reactions"
+      ],
+      correctAnswer: 1,
+      explanation: "Sodium-cooled Fast Reactors (SFRs) utilize fast neutrons without moderation for the fission chain reaction, while using liquid sodium as the coolant. Sodium's excellent heat transfer properties allow efficient cooling without slowing neutrons. These reactors can breed new fuel and potentially transmute long-lived waste, but present challenges including sodium's chemical reactivity with water and air."
+    },
+    {
+      question: "What is the purpose of a spent fuel pool at a nuclear power plant?",
+      options: [
+        "To clean and refurbish used fuel for reinsertion",
+        "To store and cool spent fuel assemblies after removal from the reactor",
+        "To extract remaining uranium from used fuel",
+        "To dilute radioactive materials before disposal"
+      ],
+      correctAnswer: 1,
+      explanation: "Spent fuel pools store and cool fuel assemblies after they're removed from the reactor. The water provides both cooling (removing decay heat) and radiation shielding. Typically, fuel remains in these pools for at least 5-10 years before potential transfer to dry cask storage. The pools are designed with multiple cooling systems, radiation monitoring, and are typically housed in robust structures."
+    },
+    {
+      question: "What is the significance of the 'iodine pit' in reactor operation?",
+      options: [
+        "A corrosion problem caused by iodine isotopes in the primary coolant",
+        "A depression in reactivity occurring approximately 9 hours after shutdown",
+        "A facility for capturing radioactive iodine released during accidents",
+        "The location where iodine filters are installed in the ventilation system"
+      ],
+      correctAnswer: 1,
+      explanation: "The iodine pit refers to a period of minimum reactivity occurring about 9 hours after reactor shutdown, caused by the decay of iodine-135 into xenon-135 (a strong neutron absorber). While iodine-135 decays (half-life ~6.7 hours), xenon-135 continues to build up faster than it decays (half-life ~9.2 hours) until reaching equilibrium. This can prevent reactor restart for several hours after shutdown."
+    },
+    {
+      question: "What is the primary function of a core catcher in advanced reactor designs?",
+      options: [
+        "To catch dropped fuel assemblies during refueling operations",
+        "To contain and cool molten corium in case of a severe accident",
+        "To collect debris that might block coolant channels",
+        "To support the weight of the reactor core"
+      ],
+      correctAnswer: 1,
+      explanation: "A core catcher is a safety feature in advanced reactor designs designed to contain, spread, and cool molten core material (corium) in the event of a severe accident with reactor pressure vessel failure. By preventing corium-concrete interaction and ensuring coolability, it helps prevent containment breach and significant radioactive release. This feature has been implemented in designs like the EPR and VVER-1200."
+    },
+    {
+      question: "In LOCA analysis for nuclear plants, what does the term 'PCT' stand for and why is it important?",
+      options: [
+        "Primary Coolant Temperature - the operating temperature of the coolant",
+        "Peak Cladding Temperature - the maximum temperature reached by fuel cladding",
+        "Pressure Containment Test - a pre-operational test of the containment",
+        "Planned Cooling Time - the scheduled duration of refueling outages"
+      ],
+      correctAnswer: 1,
+      explanation: "PCT stands for Peak Cladding Temperature, which is the highest temperature reached by the fuel cladding during a Loss-of-Coolant Accident (LOCA). It's a critical safety parameter with regulatory limits (typically 1204°C/2200°F in the US) to prevent excessive cladding oxidation, embrittlement, and potential failure. Demonstration that PCT remains below limits is essential for licensing and safety analysis."
     }
   ],
   expert: [
@@ -471,6 +647,72 @@ const quizData = {
       ],
       correctAnswer: 0,
       explanation: "In accelerator-driven systems, the neutron window is the physical barrier (typically made of a material like an alloy of lead-bismuth) that separates the vacuum environment of the accelerator from the subcritical core environment while allowing the high-energy particle beam to pass through. This component faces extreme engineering challenges including radiation damage, thermal stress, and corrosion, and is often considered one of the critical technological limitations for ADS implementation."
+    },
+    {
+      question: "What is the difference between deterministic and Monte Carlo methods in nuclear reactor simulations?",
+      options: [
+        "Deterministic methods solve the transport equation directly, while Monte Carlo methods track individual particle histories probabilistically",
+        "Deterministic methods are used for transient analysis, while Monte Carlo methods are only for steady-state calculations",
+        "Deterministic methods work only for thermal reactors, while Monte Carlo methods are used for fast reactors",
+        "Deterministic methods simulate normal operation, while Monte Carlo methods simulate accident conditions"
+      ],
+      correctAnswer: 0,
+      explanation: "Deterministic methods (like discrete ordinates or diffusion theory) numerically solve the neutron transport or diffusion equations by discretizing space, energy, and angle. In contrast, Monte Carlo methods simulate the random walks of individual neutrons through the geometry, using probability distributions for interactions. Monte Carlo provides exact geometry representation and continuous energy treatment but requires high computational resources to reduce statistical uncertainty."
+    },
+    {
+      question: "What is the Wigner energy release phenomenon in graphite-moderated reactors?",
+      options: [
+        "Energy generated directly by beta decay of impurities in graphite",
+        "Spontaneous release of stored energy from radiation damage in graphite crystal structure",
+        "Heat generated when graphite burns in contact with air during accidents",
+        "Energy from neutron-carbon reactions in graphite"
+      ],
+      correctAnswer: 1,
+      explanation: "Wigner energy (or Wigner effect) is the release of stored energy that occurs when neutron-irradiated graphite is heated above its irradiation temperature. Neutron bombardment displaces carbon atoms from their lattice positions, storing potential energy. This energy can be released spontaneously if the graphite reaches a critical temperature, potentially causing rapid temperature excursions. This phenomenon contributed to the 1957 Windscale fire in the UK."
+    },
+    {
+      question: "In the realm of nuclear fuel cycle analysis, what does 'SWU' stand for and what does it represent?",
+      options: [
+        "Standard Waste Unit - a measure of nuclear waste radioactivity",
+        "Separative Work Unit - a measure of the effort required for uranium enrichment",
+        "Safe Working Uranium - the maximum uranium concentration safe for handling",
+        "Surface Water Uptake - the contamination level in cooling water"
+      ],
+      correctAnswer: 1,
+      explanation: "SWU stands for Separative Work Unit, a measure of the effort required in uranium enrichment processes. It quantifies the amount of isotope separation work performed to enrich uranium, regardless of the specific enrichment technology used. The SWU concept is important in fuel cycle economics and non-proliferation analysis, as it helps determine enrichment facility capacity and enrichment costs."
+    },
+    {
+      question: "What is the significance of the 'n,2n' reaction in nuclear systems?",
+      options: [
+        "It's the primary reaction for uranium fission",
+        "It leads to tritium production in fusion blankets",
+        "It converts uranium-238 to plutonium-239",
+        "It results in neutron multiplication and increased neutron economy"
+      ],
+      correctAnswer: 3,
+      explanation: "In an (n,2n) reaction, a high-energy neutron interacts with a nucleus, causing the emission of two lower-energy neutrons. This reaction is important for neutron multiplication and improved neutron economy in fast reactors and fusion systems. Materials like beryllium and lead exhibit significant (n,2n) cross-sections and are used as neutron multipliers in blanket designs for fusion reactors and some research reactors."
+    },
+    {
+      question: "What is 'neutron importance' in reactor physics?",
+      options: [
+        "The percentage of neutrons that cause fission",
+        "The relative contribution of neutrons at different positions and energies to sustaining the chain reaction",
+        "The ability of neutrons to penetrate shielding materials",
+        "The neutron flux at the center of the reactor core"
+      ],
+      correctAnswer: 1,
+      explanation: "Neutron importance is a measure of the relative contribution of neutrons at specific positions, energies, and directions to the sustainable chain reaction. It characterizes how valuable a neutron is to maintaining criticality, considering its probability of causing future fissions. Neutron importance varies throughout the reactor and is used in reactor control theory, adjoint calculations, and perturbation theory for reactivity calculations."
+    },
+    {
+      question: "In the context of radiation protection, what is the meaning of 'committed dose'?",
+      options: [
+        "The annual dose limit committed to by regulatory authorities",
+        "The total dose expected to be received from an external source over a lifetime",
+        "The integrated dose to an organ or tissue over a specified time period following intake of radioactive material",
+        "The dose a facility commits to keep workers below"
+      ],
+      correctAnswer: 2,
+      explanation: "Committed dose is the integrated radiation dose to an organ or tissue over a specified time period (typically 50 years for adults or 70 years for children) following the intake of radioactive material. It accounts for continued exposure from radionuclides retained in the body, considering their biological half-lives and metabolic behavior. This concept is crucial for radiation protection since internal contamination can lead to prolonged exposure."
     }
   ]
 };
