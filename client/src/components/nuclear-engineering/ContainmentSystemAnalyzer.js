@@ -18,11 +18,14 @@ import {
   FormControlLabel,
   Slider,
   Alert,
+  Collapse,
   Tab,
   Tabs,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LaunchIcon from '@mui/icons-material/Launch';
 import PauseIcon from '@mui/icons-material/Pause';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveIcon from '@mui/icons-material/Save';
@@ -181,6 +184,9 @@ function a11yProps(index) {
 }
 
 function ContainmentSystemAnalyzer() {
+  // State for UI visibility
+  const [showSimulator, setShowSimulator] = useState(false);
+  
   // State for containment parameters
   const [parameters, setParameters] = useState(initialParameters);
   
@@ -208,6 +214,16 @@ function ContainmentSystemAnalyzer() {
   
   // Chart reference
   const chartRef = useRef(null);
+  
+  // Effect to handle stopping simulation when hiding simulator
+  useEffect(() => {
+    if (!showSimulator && isRunning) {
+      setIsRunning(false);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    }
+  }, [showSimulator, isRunning]);
 
   // Function to calculate mass/energy release at a given time
   const calculateMassEnergyRelease = (time) => {
@@ -660,7 +676,18 @@ function ContainmentSystemAnalyzer() {
           Analyze pressure, temperature, and humidity transients and evaluate the effectiveness of safety systems.
         </Typography>
         
-        <Divider sx={{ my: 2 }} />
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={showSimulator ? <ExpandMoreIcon /> : <LaunchIcon />}
+          onClick={() => setShowSimulator(!showSimulator)}
+          sx={{ my: 2 }}
+        >
+          {showSimulator ? "Hide Simulator" : "Launch Simulator"}
+        </Button>
+        
+        <Collapse in={showSimulator} timeout="auto" unmountOnExit>
+          <Divider sx={{ my: 2 }} />
         
         {/* Accident Presets */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
@@ -1124,6 +1151,7 @@ function ContainmentSystemAnalyzer() {
             </Grid>
           </Grid>
         </Box>
+        </Collapse>
       </Paper>
     </Box>
   );

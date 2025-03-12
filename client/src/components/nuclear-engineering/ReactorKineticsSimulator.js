@@ -17,6 +17,10 @@ import {
   IconButton,
   Switch,
   FormControlLabel,
+  Collapse,
+  Card,
+  CardContent,
+  CardActions,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -24,6 +28,8 @@ import PauseIcon from '@mui/icons-material/Pause';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveIcon from '@mui/icons-material/Save';
 import DownloadIcon from '@mui/icons-material/Download';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 // Import chart.js
 import {
@@ -120,6 +126,9 @@ const simulationPresets = [
 ];
 
 function ReactorKineticsSimulator() {
+  // State for UI visibility
+  const [showSimulator, setShowSimulator] = useState(false);
+  
   // State for reactor parameters
   const [parameters, setParameters] = useState(initialParameters);
   
@@ -145,6 +154,16 @@ function ReactorKineticsSimulator() {
   
   // Chart reference
   const chartRef = useRef(null);
+  
+  // Effect to handle stopping simulation when hiding simulator
+  useEffect(() => {
+    if (!showSimulator && isRunning) {
+      setIsRunning(false);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    }
+  }, [showSimulator, isRunning]);
 
   // Function to calculate a simulation step
   const calculateSimulationStep = (time, prevTime, prevPower, prevDelayedNeutrons) => {
@@ -433,7 +452,18 @@ function ReactorKineticsSimulator() {
           equations. Adjust parameters to see how reactivity changes affect reactor power level.
         </Typography>
         
-        <Divider sx={{ my: 2 }} />
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={showSimulator ? <ExpandMoreIcon /> : <LaunchIcon />}
+          onClick={() => setShowSimulator(!showSimulator)}
+          sx={{ my: 2 }}
+        >
+          {showSimulator ? "Hide Simulator" : "Launch Simulator"}
+        </Button>
+        
+        <Collapse in={showSimulator} timeout="auto" unmountOnExit>
+          <Divider sx={{ my: 2 }} />
         
         {/* Simulation Presets */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
@@ -778,6 +808,7 @@ function ReactorKineticsSimulator() {
             </Grid>
           </Grid>
         </Box>
+        </Collapse>
       </Paper>
     </Box>
   );
