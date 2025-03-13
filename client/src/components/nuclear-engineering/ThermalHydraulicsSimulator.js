@@ -20,13 +20,16 @@ import {
   Alert,
   Divider,
   Card,
-  CardContent
+  CardContent,
+  Collapse
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import DownloadIcon from '@mui/icons-material/Download';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -192,6 +195,9 @@ function TabPanel(props) {
 }
 
 const ThermalHydraulicsSimulator = () => {
+  // UI state
+  const [showSimulator, setShowSimulator] = useState(false);
+  
   // State variables
   const [reactorType, setReactorType] = useState('');
   const [coolantType, setCoolantType] = useState('water');
@@ -581,6 +587,14 @@ const ThermalHydraulicsSimulator = () => {
     fuelRods, coreHeight, coreDiameter, channelDiameter, activeFuelLength, bypassFlow
   ]);
   
+  // Effect to handle stopping simulation when hiding simulator
+  useEffect(() => {
+    if (!showSimulator && animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+  }, [showSimulator]);
+  
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -601,7 +615,23 @@ const ThermalHydraulicsSimulator = () => {
         </Tooltip>
       </Typography>
       
-      <Divider sx={{ my: 2 }} />
+      <Typography variant="body2" color="text.secondary" paragraph>
+        Simulate thermal-hydraulic behavior in nuclear reactors with different coolant types and core geometries.
+        Visualize temperature distributions, pressure drops, and safety margins.
+      </Typography>
+      
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={showSimulator ? <ExpandMoreIcon /> : <LaunchIcon />}
+        onClick={() => setShowSimulator(!showSimulator)}
+        sx={{ my: 2 }}
+      >
+        {showSimulator ? "Hide Simulator" : "Launch Simulator"}
+      </Button>
+      
+      <Collapse in={showSimulator} timeout="auto" unmountOnExit>
+        <Divider sx={{ my: 2 }} />
       
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tabValue} onChange={handleTabChange} aria-label="thermal hydraulics simulator tabs">
@@ -1395,6 +1425,7 @@ const ThermalHydraulicsSimulator = () => {
           </Grid>
         </Grid>
       </TabPanel>
+      </Collapse>
     </Paper>
   );
 };

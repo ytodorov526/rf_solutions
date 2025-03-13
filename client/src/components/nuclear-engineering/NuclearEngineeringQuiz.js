@@ -421,6 +421,37 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "ALARA stands for 'As Low As Reasonably Achievable.' It's a fundamental principle in radiation protection that aims to minimize radiation doses and releases of radioactive materials. While recognizing that some radiation exposure may be necessary, ALARA requires making every reasonable effort to minimize exposure, taking into account economic and social factors."
+      question: "What is the purpose of a biological shield in a nuclear reactor?",
+      options: [
+        "To protect reactor components from biological contaminants",
+        "To reduce radiation exposure to personnel and the environment",
+        "To prevent the release of radioactive biological agents",
+        "To support microbial decomposition of nuclear waste"
+      ],
+      correctAnswer: 1,
+      explanation: "A biological shield is a thick barrier (typically concrete, sometimes with steel or lead) surrounding a nuclear reactor that reduces radiation levels outside the shield to safe levels for personnel. It primarily attenuates gamma radiation and neutrons that escape the reactor vessel, allowing workers to safely operate in adjacent areas."
+    },
+    {
+      question: "What is the difference between boiling water reactors (BWRs) and pressurized water reactors (PWRs)?",
+      options: [
+        "BWRs use boiling water as coolant, while PWRs use pressurized gas",
+        "BWRs allow water to boil in the core, while PWRs maintain water under pressure to prevent boiling",
+        "BWRs operate at lower temperatures than PWRs",
+        "BWRs use enriched uranium, while PWRs use natural uranium"
+      ],
+      correctAnswer: 1,
+      explanation: "The key difference is that in BWRs, water is allowed to boil directly in the reactor core, and the resulting steam drives the turbine. In PWRs, the primary coolant (water) is kept under high pressure to prevent boiling, and heat is transferred to a secondary loop where steam is generated in steam generators. This design difference means PWRs have two separate water loops, while BWRs have only one."
+    },
+    {
+      question: "What is the function of a neutron source in reactor startup?",
+      options: [
+        "To provide a reliable source of neutrons to initiate the chain reaction",
+        "To absorb excess neutrons during initial criticality",
+        "To calibrate neutron detection instruments",
+        "To enhance neutron moderation in new fuel"
+      ],
+      correctAnswer: 0,
+      explanation: "A neutron source provides a reliable supply of neutrons during reactor startup. Without an artificial source, reactors would rely solely on spontaneous fission or cosmic rays for initial neutrons, making startups unpredictable. Common neutron sources include mixtures of beryllium with alpha-emitting materials (like americium) that produce neutrons through (α,n) reactions."
     }
   ],
   intermediate: [
@@ -874,6 +905,48 @@ const quizData = {
       ],
       correctAnswer: 2,
       explanation: "The reflector peak is a localized increase in neutron flux (and power density) that occurs near the interface between the reactor core and the reflector. It happens because neutrons that would otherwise escape are reflected back into the core, causing higher reaction rates in fuel elements near the boundary. This phenomenon must be accounted for in power distribution calculations and thermal margin assessments."
+      question: "What is the 'source term' in nuclear accident analysis?",
+      options: [
+        "The initial neutron source strength required for reactor startup",
+        "The location where the accident originated within the plant",
+        "The amount and isotopic composition of radioactive material released to the environment",
+        "The mathematical term in the neutron diffusion equation that represents the source"
+      ],
+      correctAnswer: 2,
+      explanation: "In nuclear accident analysis, the 'source term' refers to the amount, type, and timing of radioactive material released to the environment during an accident. It includes information about radionuclide composition, release rates, chemical forms, particle sizes, and release pathways. The source term is a crucial input for assessing potential radiation doses and environmental impacts."
+    },
+    {
+      question: "What is meant by 'subcooled boiling' in thermal hydraulics?",
+      options: [
+        "Water that is below its boiling point but still evaporating due to pressure reduction",
+        "Localized boiling at heated surfaces while the bulk fluid remains below saturation temperature",
+        "A cooling technique to keep water below its boiling point during upset conditions",
+        "The condensation of steam when it encounters surfaces below the saturation temperature"
+      ],
+      correctAnswer: 1,
+      explanation: "Subcooled boiling occurs when the heat flux at a surface is high enough to form vapor bubbles locally, even though the bulk fluid temperature is below its saturation point. This phenomenon is important in PWR cores, where nucleate boiling enhances heat transfer without developing into film boiling, which would reduce heat transfer efficiency and potentially lead to fuel damage."
+    },
+    {
+      question: "What is the 'prompt jump approximation' in reactor kinetics?",
+      options: [
+        "The assumption that prompt neutrons equilibrate instantly after a reactivity change",
+        "A method for estimating reactor power during a positive reactivity insertion",
+        "The immediate power increase following control rod ejection",
+        "A technique for measuring prompt neutron lifetime"
+      ],
+      correctAnswer: 0,
+      explanation: "The prompt jump approximation is a simplification used in reactor kinetics that assumes prompt neutrons reach equilibrium instantly after a reactivity change (compared to the longer timescale of delayed neutron precursors). This allows the separation of fast and slow response components, simplifying the solution of reactor kinetics equations for reactivity changes below prompt criticality."
+    },
+    {
+      question: "What is a 'decay ratio' in boiling water reactor stability analysis?",
+      options: [
+        "The ratio of decayed isotopes to original isotopes after shutdown",
+        "The fraction of power generated by decay heat versus fission",
+        "The ratio of successive amplitude peaks in power oscillations",
+        "The proportion of neutrons that decay before causing fission"
+      ],
+      correctAnswer: 2,
+      explanation: "In BWR stability analysis, the decay ratio is the ratio of successive amplitude peaks in power oscillations. A decay ratio less than 1.0 indicates damped oscillations that will eventually die out (stable), while a decay ratio greater than 1.0 indicates divergent oscillations (unstable). Regulatory guidelines typically require BWRs to operate with sufficient margin to instability, with decay ratios below 0.8."
     }
   ],
   advanced: [
@@ -1250,6 +1323,50 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "Reactivity insertion rate is the rate at which positive reactivity can be added to the reactor by control systems (primarily control rod withdrawal). It is strictly limited in reactor designs and operating procedures to ensure that any power increases occur slowly enough for negative temperature feedback to counteract the increase and for safety systems to respond if needed. Excessive reactivity insertion rates contributed to accidents like Chernobyl and SL-1."
+    },
+    {
+      question: "What is a 'Station Blackout' (SBO) in nuclear power plants?",
+      options: [
+        "A deliberate shutdown of all station equipment for maintenance",
+        "Loss of all AC power including both offsite power and emergency diesel generators",
+        "A complete failure of the instrumentation and control systems",
+        "The blocking of cooling water intakes by debris or ice"
+      ],
+      correctAnswer: 1,
+      explanation: "A Station Blackout (SBO) is the complete loss of both offsite AC power and emergency onsite AC power (typically from diesel generators). This condition leaves only battery-powered DC systems operational for a limited time. SBO is a significant safety concern as it compromises cooling systems, and was a key factor in the Fukushima accident. Modern plants have additional measures like backup generators and passive cooling systems to mitigate SBO consequences."
+    },
+    {
+      question: "What is 'anticipated transient without scram' (ATWS)?",
+      options: [
+        "A planned reactor shutdown without using control rods",
+        "A predicted operational occurrence with failure of the reactor protection system",
+        "A reactor startup without neutron source installation",
+        "A power reduction sequence that doesn't trigger safety systems"
+      ],
+      correctAnswer: 1,
+      explanation: "Anticipated Transient Without Scram (ATWS) refers to an expected operational occurrence (like loss of feedwater or load rejection) combined with a failure of the reactor protection system to automatically shut down (scram) the reactor. This scenario is considered in safety analyses because it can lead to more severe consequences than anticipated transients with successful scram. Special ATWS mitigation systems are required in many reactor designs."
+    },
+    {
+      question: "What is the difference between 'best-estimate' and 'conservative' approaches in safety analysis?",
+      options: [
+        "Best-estimate uses average values while conservative uses worst-case values",
+        "Best-estimate uses computerized models while conservative uses manual calculations",
+        "Best-estimate uses realistic models with uncertainty quantification, while conservative uses deliberate pessimistic assumptions",
+        "Best-estimate is used for new designs while conservative is used for existing plants"
+      ],
+      correctAnswer: 2,
+      explanation: "Best-estimate approaches use realistic physical models and input parameters, coupled with uncertainty quantification to establish confidence levels in the results. Conservative approaches deliberately use pessimistic assumptions and models that overestimate adverse consequences. Modern safety analysis often employs best-estimate plus uncertainty (BEPU) methodology, which provides more realistic assessments while maintaining appropriate safety margins."
+    },
+    {
+      question: "What is meant by 'diversity and defense-in-depth' in nuclear safety?",
+      options: [
+        "Using multiple identical safety systems in different locations within the plant",
+        "Training staff from diverse backgrounds and providing multi-layer management",
+        "Using different technologies and multiple independent barriers to prevent accidents and mitigate consequences",
+        "Diversifying nuclear fuel suppliers and maintaining depth in spent fuel storage"
+      ],
+      correctAnswer: 2,
+      explanation: "Diversity and defense-in-depth involve using different technologies (diversity) and multiple independent barriers and systems (defense-in-depth) to prevent accidents and mitigate consequences. Diversity helps prevent common-cause failures, while defense-in-depth ensures that multiple barriers must fail before significant consequences occur. This approach includes physical barriers (fuel, cladding, vessel, containment) and diverse safety systems with redundancy."
     }
   ],
   expert: [
@@ -1648,6 +1765,59 @@ const quizData = {
       ],
       correctAnswer: 0,
       explanation: "A Bonner sphere spectrometer is an instrument used to measure neutron energy spectra. It consists of a thermal neutron detector surrounded by moderating polyethylene spheres of different diameters. Each sphere configuration has different response functions to neutrons of various energies. By measuring counts with different sphere sizes and applying unfolding algorithms, the neutron energy spectrum can be determined, which is important for radiation protection and shielding design."
+      question: "What is the 'Westcott formalism' in reactor physics?",
+      options: [
+        "A method for calculating control rod worth",
+        "A technique for core flux mapping",
+        "A formalism for calculating reaction rates in non-ideal neutron spectra",
+        "A standard for emergency planning zones around nuclear plants"
+      ],
+      correctAnswer: 2,
+      explanation: "The Westcott formalism is a method for calculating reaction rates in non-ideal neutron spectra, particularly when the spectrum deviates from a pure Maxwellian distribution. It introduces correction factors (the 'g' and 's' factors) to account for epithermal neutron contributions. This formalism is particularly important for accurate activation analysis, dosimetry, and neutron detector calibration in research reactors and neutron irradiation facilities."
+    },
+    {
+      question: "What is the significance of the 'conversion ratio' in fast breeder reactors?",
+      options: [
+        "The ratio of thermal energy to electrical energy",
+        "The ratio of new fissile material produced to fissile material consumed",
+        "The ratio of fast neutrons to thermal neutrons",
+        "The efficiency of converting depleted uranium to reactor fuel"
+      ],
+      correctAnswer: 1,
+      explanation: "The conversion ratio (CR) is the ratio of new fissile material produced to fissile material consumed during reactor operation. When CR > 1, the reactor is a breeder, producing more fissile material than it consumes. Fast reactors can achieve breeding by converting fertile U-238 to fissile Pu-239. This parameter is crucial for evaluating fuel sustainability and the potential for closing the nuclear fuel cycle."
+    },
+    {
+      question: "What are 'threshold detectors' in neutron measurements?",
+      options: [
+        "Detectors that only activate after receiving a threshold radiation dose",
+        "Materials that undergo detectable reactions only with neutrons above specific energy thresholds",
+        "Instruments that trigger emergency responses when radiation exceeds safety thresholds",
+        "Monitoring devices that must exceed electronic noise thresholds to register counts"
+      ],
+      correctAnswer: 1,
+      explanation: "Threshold detectors are materials that undergo detectable nuclear reactions (typically activation) only with neutrons above specific energy thresholds. By using a set of materials with different energy thresholds, the neutron energy spectrum can be unfolded. Examples include S-32, In-115, and Ni-58, which respond primarily to fast neutrons. These detectors are important for reactor dosimetry, criticality accident dosimetry, and fusion neutronics measurements."
+    },
+    {
+      question: "What is the 'Beta-effective' parameter in reactor kinetics?",
+      options: [
+        "The percentage of electrons emitted during fission product decay",
+        "The effective delayed neutron fraction adjusted for neutron importance",
+        "The efficiency of beta particle detection in radiation monitoring",
+        "The coefficient used to calculate beta radiation doses from spent fuel"
+      ],
+      correctAnswer: 1,
+      explanation: "Beta-effective (βeff) is the effective delayed neutron fraction that accounts for both the actual fraction of delayed neutrons and their relative importance to the chain reaction compared to prompt neutrons. It's typically larger than the actual delayed neutron fraction because delayed neutrons are emitted at lower energies where they're more likely to cause fission. This parameter is crucial for reactor control and safety analyses."
+    },
+    {
+      question: "What is 'fuel shuffling' in nuclear reactors?",
+      options: [
+        "The rapid vibration of fuel pellets inside fuel rods during operation",
+        "The rearrangement of fuel assemblies to optimize burnup and power distribution",
+        "The mixing of different fuel types in a single core loading",
+        "The rotation of fuel rods to ensure even irradiation"
+      ],
+      correctAnswer: 1,
+      explanation: "Fuel shuffling is the strategic rearrangement of partially spent fuel assemblies within the reactor core during refueling outages. By moving fuel assemblies from high-power to low-power regions (and vice versa), operators can flatten the power distribution, improve fuel utilization, and extend cycle length. Advanced shuffling strategies are determined using sophisticated core design codes that optimize both safety parameters and economic performance."
     }
   ]
 };

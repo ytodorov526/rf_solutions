@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LaunchIcon from '@mui/icons-material/Launch';
 import {
   Box,
   Typography,
   Paper,
   Button,
+  Collapse,
   Grid,
   Divider,
   FormControl,
@@ -196,6 +199,9 @@ function a11yProps(index) {
 }
 
 function CoreLoadingPatternOptimizer() {
+  // State for UI visibility
+  const [showSimulator, setShowSimulator] = useState(false);
+  
   // State for core parameters
   const [parameters, setParameters] = useState(initialParameters);
   
@@ -222,6 +228,14 @@ function CoreLoadingPatternOptimizer() {
 
   // Canvas reference for exporting
   const canvasRef = useRef(null);
+  
+  // Effect to handle state cleanup when hiding simulator
+  useEffect(() => {
+    if (!showSimulator) {
+      // Clear any messages when the UI is collapsed
+      setMessages([]);
+    }
+  }, [showSimulator]);
   
   // Initialize loading pattern
   useEffect(() => {
@@ -817,7 +831,18 @@ function CoreLoadingPatternOptimizer() {
           or flatten power distribution. Arrange different fuel assembly types to create an optimized loading pattern.
         </Typography>
         
-        <Divider sx={{ my: 2 }} />
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={showSimulator ? <ExpandMoreIcon /> : <LaunchIcon />}
+          onClick={() => setShowSimulator(!showSimulator)}
+          sx={{ my: 2 }}
+        >
+          {showSimulator ? "Hide Simulator" : "Launch Simulator"}
+        </Button>
+        
+        <Collapse in={showSimulator} timeout="auto" unmountOnExit>
+          <Divider sx={{ my: 2 }} />
         
         {/* Messages */}
         {messages.length > 0 && (
@@ -1660,6 +1685,7 @@ function CoreLoadingPatternOptimizer() {
             </Box>
           </Paper>
         </TabPanel>
+        </Collapse>
       </Paper>
     </Box>
   );

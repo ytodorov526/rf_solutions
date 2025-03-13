@@ -15,6 +15,7 @@ import {
   Stack,
   Tooltip,
   IconButton,
+  Collapse,
   Table,
   TableBody,
   TableCell,
@@ -25,6 +26,8 @@ import {
   ToggleButtonGroup,
 } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LaunchIcon from '@mui/icons-material/Launch';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DownloadIcon from '@mui/icons-material/Download';
 import SaveIcon from '@mui/icons-material/Save';
@@ -302,6 +305,9 @@ const calculateAssemblyStats = (grid, pinTypes, assemblyData) => {
 };
 
 function FuelAssemblyDesigner() {
+  // State for UI visibility
+  const [showSimulator, setShowSimulator] = useState(false);
+  
   // Reference for the canvas element
   const canvasRef = useRef(null);
   
@@ -790,7 +796,18 @@ function FuelAssemblyDesigner() {
           configure pin arrangement, and analyze basic nuclear characteristics.
         </Typography>
         
-        <Divider sx={{ my: 2 }} />
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={showSimulator ? <ExpandMoreIcon /> : <LaunchIcon />}
+          onClick={() => setShowSimulator(!showSimulator)}
+          sx={{ my: 2 }}
+        >
+          {showSimulator ? "Hide Designer" : "Launch Designer"}
+        </Button>
+        
+        <Collapse in={showSimulator} timeout="auto" unmountOnExit>
+          <Divider sx={{ my: 2 }} />
         
         <Grid container spacing={3}>
           {/* Left column: Design controls */}
@@ -1057,6 +1074,7 @@ function FuelAssemblyDesigner() {
             </Paper>
           </Grid>
         </Grid>
+        </Collapse>
       </Paper>
     </Box>
   );
