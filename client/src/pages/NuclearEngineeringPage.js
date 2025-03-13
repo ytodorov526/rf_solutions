@@ -214,6 +214,11 @@ const simulatorsOverview = [
     title: "Reactor Physics Calculator",
     description: "Comprehensive calculator for neutron diffusion, multiplication factors, and core lifecycle analysis.",
     status: "Coming soon"
+  },
+  {
+    title: "Spent Fuel Management Simulator",
+    description: "Model spent nuclear fuel handling, storage options, and disposal strategies, including cooling, shielding, and long-term considerations.",
+    status: "Available Now"
   }
 ];
 
@@ -469,7 +474,7 @@ function NuclearEngineeringPage() {
                   </Grid>
                 </Paper>
                 
-                <Paper sx={{ p: 3, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9' }}>
+                <Paper sx={{ p: 3, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9', mb: 2 }}>
                   <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} md={8}>
                       <Typography variant="h6" gutterBottom color="success.main">
@@ -486,6 +491,31 @@ function NuclearEngineeringPage() {
                         onClick={() => {
                           const thermalSim = document.getElementById('thermal-hydraulics-simulator');
                           if (thermalSim) thermalSim.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Try It Now
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Paper>
+                
+                <Paper sx={{ p: 3, bgcolor: '#f0f7f0', border: '1px solid #c8e6c9' }}>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={8}>
+                      <Typography variant="h6" gutterBottom color="success.main">
+                        Spent Fuel Management Simulator
+                      </Typography>
+                      <Typography variant="body2">
+                        Our newest tool allows you to model spent nuclear fuel handling, storage options, and disposal strategies. Calculate decay heat, radiation levels, and storage requirements based on fuel type, burnup, and cooling time. Compare different storage technologies and analyze their long-term safety and economic impacts.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
+                      <Button 
+                        variant="outlined" 
+                        color="success"
+                        onClick={() => {
+                          setActiveTab(2);
+                          document.getElementById('spent-fuel-section').scrollIntoView({ behavior: 'smooth' });
                         }}
                       >
                         Try It Now
@@ -585,6 +615,23 @@ function NuclearEngineeringPage() {
                   }>
                     {React.createElement(
                       React.lazy(() => import('../components/nuclear-engineering/FuelAssemblyDesigner')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
+              </Box>
+              
+              <Box sx={{ mt: 4 }} id="spent-fuel-section">
+                {/* Include the spent fuel management simulator */}
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading Spent Fuel Management Simulator...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/SpentFuelManagementSimulator')),
                       {}
                     )}
                   </Suspense>
@@ -712,6 +759,45 @@ function NuclearEngineeringPage() {
                     </Box>
                   </Card>
                 </Grid>
+                
+                <Grid item xs={12} md={6}>
+                  <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography variant="h5" component="h3" gutterBottom>
+                        Spent Fuel Management Simulator
+                      </Typography>
+                      <Typography variant="body2" paragraph>
+                        Simulate spent nuclear fuel management strategies including storage, transportation, and disposal options. Analyze cooling requirements, radiation levels, and long-term safety considerations.
+                      </Typography>
+                      <Box 
+                        sx={{ 
+                          display: 'inline-block', 
+                          bgcolor: 'rgba(0, 100, 0, 0.08)', 
+                          px: 1.5, 
+                          py: 0.5, 
+                          borderRadius: 1,
+                          mt: 'auto'
+                        }}
+                      >
+                        <Typography variant="caption" fontWeight="medium" color="success.main">
+                          Status: Available Now
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                    <Box sx={{ p: 2, pt: 0 }}>
+                      <Button 
+                        variant="outlined" 
+                        fullWidth 
+                        onClick={() => {
+                          setActiveTab(2);
+                          document.getElementById('spent-fuel-section').scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Launch Simulator
+                      </Button>
+                    </Box>
+                  </Card>
+                </Grid>
               </Grid>
               
               <Box sx={{ mt: 6, bgcolor: '#f5f5f5', p: 3, borderRadius: 2 }}>
@@ -785,7 +871,7 @@ function NuclearEngineeringPage() {
               </Typography>
               
               <Grid container spacing={4}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={4}>
                   <Paper elevation={2} sx={{ p: 3, height: '100%' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                       <AutoGraphIcon color="primary" sx={{ mr: 1, fontSize: 28 }} />
@@ -816,7 +902,7 @@ function NuclearEngineeringPage() {
                   </Paper>
                 </Grid>
                 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={4}>
                   <Paper elevation={2} sx={{ p: 3, height: '100%' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                       <LightbulbIcon color="primary" sx={{ mr: 1, fontSize: 28 }} />
@@ -830,6 +916,34 @@ function NuclearEngineeringPage() {
                     <Typography variant="caption" display="block" sx={{ color: 'text.secondary' }}>
                       Status: Planning phase • Expected Q1 2026
                     </Typography>
+                  </Paper>
+                </Grid>
+                
+                <Grid item xs={12} md={4}>
+                  <Paper elevation={2} sx={{ p: 3, height: '100%' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <ScienceIcon color="primary" sx={{ mr: 1, fontSize: 28 }} />
+                      <Typography variant="h5" component="h3">
+                        Spent Fuel Management Simulator
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" paragraph>
+                      Model spent nuclear fuel decay heat, radiation levels, and storage requirements based on fuel type, burnup, and cooling time. Compare different storage options and analyze long-term safety considerations.
+                    </Typography>
+                    <Typography variant="caption" display="block" sx={{ color: 'success.main', fontWeight: 'bold' }}>
+                      Status: Available Now
+                    </Typography>
+                    <Button 
+                      variant="outlined" 
+                      color="primary"
+                      sx={{ mt: 1 }}
+                      onClick={() => {
+                        setActiveTab(2);
+                        document.getElementById('spent-fuel-section').scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      Launch Tool
+                    </Button>
                   </Paper>
                 </Grid>
               </Grid>
