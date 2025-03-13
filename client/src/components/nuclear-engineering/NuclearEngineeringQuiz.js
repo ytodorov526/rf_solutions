@@ -245,6 +245,182 @@ const quizData = {
       ],
       correctAnswer: 2,
       explanation: "Burnable poisons (like gadolinium or boron) are incorporated into some fuel elements to compensate for the high initial reactivity of fresh fuel. They 'burn up' (absorb neutrons and convert to non-absorbing isotopes) gradually as the fuel depletes, helping maintain relatively constant reactivity throughout the fuel cycle and allowing for longer periods between refueling."
+    },
+    {
+      question: "What is the role of a neutron reflector in a nuclear reactor?",
+      options: [
+        "To reflect radiation away from operators",
+        "To bounce neutrons back into the core to improve efficiency",
+        "To slow down fast neutrons",
+        "To prevent neutron-induced corrosion of the vessel"
+      ],
+      correctAnswer: 1,
+      explanation: "A neutron reflector surrounds the reactor core and reflects neutrons that would otherwise escape back into the core. This improves fuel utilization, reduces critical mass requirements, and helps flatten the neutron flux distribution across the core. Common reflector materials include beryllium, graphite, and water."
+    },
+    {
+      question: "What is the primary reason for using zirconium alloys as fuel cladding in nuclear reactors?",
+      options: [
+        "High melting point",
+        "Low cost",
+        "Low neutron absorption cross-section",
+        "Good thermal conductivity"
+      ],
+      correctAnswer: 2,
+      explanation: "Zirconium alloys are used as fuel cladding primarily due to their low neutron absorption cross-section, which allows more neutrons to remain available for the fission chain reaction. They also have good corrosion resistance in high-temperature water environments and adequate mechanical properties for containing the fuel and fission products."
+    },
+    {
+      question: "What is the difference between a nuclear chain reaction and radioactive decay?",
+      options: [
+        "Chain reactions release more energy, while decay is more dangerous",
+        "Chain reactions involve fission events triggering more fissions, while decay is spontaneous",
+        "Chain reactions only occur in reactors, while decay only occurs in waste",
+        "Chain reactions produce neutrons, while decay produces only gamma rays"
+      ],
+      correctAnswer: 1,
+      explanation: "A nuclear chain reaction is a process where neutrons released in fission trigger additional fission events, creating a self-sustaining reaction. In contrast, radioactive decay is a spontaneous process where unstable nuclei emit radiation to reach a more stable state. Chain reactions can be controlled and are the basis of nuclear power, while decay occurs at a fixed rate determined by the radioisotope's half-life."
+    },
+    {
+      question: "What is the purpose of shielding in nuclear facilities?",
+      options: [
+        "To prevent nuclear fuel from melting",
+        "To reduce radiation exposure to personnel and the environment",
+        "To increase the efficiency of the chain reaction",
+        "To protect against external attacks"
+      ],
+      correctAnswer: 1,
+      explanation: "Shielding in nuclear facilities is designed to reduce radiation exposure to personnel and the environment. Different materials are used to attenuate different types of radiation: high-density materials like lead or concrete for gamma rays, hydrogen-rich materials like water or polyethylene for neutrons, and thin layers of dense materials for beta particles."
+    },
+    {
+      question: "What is 'enrichment' in the context of nuclear fuel?",
+      options: [
+        "The process of increasing uranium's energy content",
+        "Adding nutrients to uranium to improve its quality",
+        "Increasing the concentration of uranium-235 relative to uranium-238",
+        "Adding burnable poisons to fresh fuel"
+      ],
+      correctAnswer: 2,
+      explanation: "Enrichment is the process of increasing the concentration of the fissile isotope uranium-235 relative to the more abundant uranium-238. Natural uranium contains only 0.7% U-235, but most commercial reactors require 3-5% U-235 to sustain a chain reaction. Enrichment technologies include gaseous diffusion, gas centrifuge, and newer laser-based methods."
+    },
+    {
+      question: "What is the main function of a steam generator in a nuclear power plant?",
+      options: [
+        "To generate steam directly from nuclear fission",
+        "To transfer heat from the primary coolant to produce steam in the secondary loop",
+        "To remove excess steam from the reactor core",
+        "To generate power for the plant's internal consumption"
+      ],
+      correctAnswer: 1,
+      explanation: "In a Pressurized Water Reactor (PWR), the steam generator transfers heat from the high-pressure, radioactive primary coolant to the non-radioactive secondary loop, producing steam to drive the turbine. This design creates a barrier between the radioactive and non-radioactive parts of the plant, enhancing safety by preventing the release of radioactive materials to the environment."
+    },
+    {
+      question: "What is the purpose of 'boron' in PWR primary coolant?",
+      options: [
+        "To prevent coolant from becoming radioactive",
+        "To inhibit corrosion of the primary system",
+        "To control reactivity by absorbing neutrons",
+        "To improve heat transfer properties of water"
+      ],
+      correctAnswer: 2,
+      explanation: "Boron (in the form of boric acid) is dissolved in the primary coolant of PWRs to control reactivity by absorbing neutrons. By adjusting boron concentration, operators can control long-term reactivity changes over the fuel cycle. This chemical shim complements control rods, allowing for more uniform power distribution and fewer control rod movements during operation."
+    },
+    {
+      question: "What is the purpose of a cooling tower at a nuclear power plant?",
+      options: [
+        "To cool the reactor core directly",
+        "To condense spent steam from the turbine back into water",
+        "To reduce radioactivity in the primary coolant",
+        "To provide emergency cooling during accidents"
+      ],
+      correctAnswer: 1,
+      explanation: "Cooling towers at nuclear power plants dissipate waste heat from the power conversion cycle by cooling the condenser water that has condensed steam from the turbine. They prevent thermal pollution of natural water bodies by transferring heat to the atmosphere rather than discharging hot water directly to lakes or rivers. Cooling towers are part of the tertiary loop and don't interact with radioactive systems."
+    },
+    {
+      question: "What is the main difference between a Pressurized Water Reactor (PWR) and a Boiling Water Reactor (BWR)?",
+      options: [
+        "PWRs use uranium fuel, while BWRs use plutonium",
+        "PWRs have higher power output than BWRs",
+        "In PWRs, water in the primary loop doesn't boil; in BWRs, it does",
+        "PWRs have containment buildings, while BWRs don't"
+      ],
+      correctAnswer: 2,
+      explanation: "The key difference between PWRs and BWRs is that in PWRs, water in the primary cooling loop (in contact with the core) is kept under pressure to prevent boiling, and a separate secondary loop generates steam. In BWRs, water is allowed to boil directly in the core, and the resulting steam is sent directly to the turbine. Both use similar fuel and have containment buildings."
+    },
+    {
+      question: "What is the purpose of a nuclear fuel pellet's central void?",
+      options: [
+        "To reduce the amount of uranium needed",
+        "To allow for fuel expansion and accommodate fission gases",
+        "To create a path for control rod insertion",
+        "To allow coolant to flow through the fuel"
+      ],
+      correctAnswer: 1,
+      explanation: "The central void (or 'plenum') in nuclear fuel pellets provides space to accommodate thermal expansion of the fuel and the buildup of fission gases released during operation. Without this void, excessive pressure could build up inside the fuel rod, potentially leading to cladding failure. The void also helps reduce the centerline temperature of the fuel by decreasing the conduction path length."
+    },
+    {
+      question: "What are the three primary 'barriers' designed to prevent radioactive release in nuclear power plants?",
+      options: [
+        "Containment building, reactor vessel, and turbine building",
+        "Fuel cladding, reactor coolant system, and containment building",
+        "Control rods, coolant, and concrete shielding",
+        "Fuel enrichment, waste storage, and site boundary"
+      ],
+      correctAnswer: 1,
+      explanation: "Nuclear power plants use a 'defense in depth' approach with three primary barriers to prevent radioactive release: 1) the fuel cladding, which contains the fuel and fission products; 2) the reactor coolant system pressure boundary, including the reactor vessel; and 3) the containment building, designed to contain radioactive materials if the first two barriers fail."
+    },
+    {
+      question: "What is 'background radiation'?",
+      options: [
+        "Radiation emitted by electronic devices",
+        "Naturally occurring radiation from cosmic rays, soil, and the human body",
+        "Residual radiation from past nuclear weapons tests",
+        "Low-level radiation leakage from nuclear facilities"
+      ],
+      correctAnswer: 1,
+      explanation: "Background radiation refers to naturally occurring radiation present in the environment from sources such as cosmic rays from space, terrestrial radiation from minerals in soil and building materials, and internal radiation from naturally radioactive elements in the human body (like potassium-40). The average person receives about 3.1 mSv annually from natural background radiation."
+    },
+    {
+      question: "What is the primary fuel in most commercial fusion reactor designs?",
+      options: [
+        "Uranium-235 and Plutonium-239",
+        "Deuterium and Tritium",
+        "Thorium-232",
+        "Helium-3 and Hydrogen-1"
+      ],
+      correctAnswer: 1,
+      explanation: "Most commercial fusion reactor designs plan to use deuterium (²H) and tritium (³H) as fuel. This combination has the highest reaction cross-section at achievable temperatures. Deuterium can be extracted from seawater, while tritium is radioactive with a short half-life and would need to be bred in the reactor using lithium. The fusion of these isotopes produces helium, a neutron, and significant energy."
+    },
+    {
+      question: "What is the function of the 'biological shield' in a nuclear reactor?",
+      options: [
+        "To shield marine life from reactor heat discharge",
+        "To protect plant workers from radiation exposure",
+        "To prevent biological contamination of the reactor core",
+        "To contain biological research specimens near the reactor"
+      ],
+      correctAnswer: 1,
+      explanation: "The biological shield is a thick layer of dense material (usually concrete, sometimes with steel or lead) that surrounds the reactor vessel to protect plant workers and equipment from radiation exposure. It attenuates both neutron and gamma radiation that escapes the reactor vessel. The biological shield is distinct from the containment structure, which serves to prevent release of radioactive materials to the environment."
+    },
+    {
+      question: "What is the difference between 'contamination' and 'irradiation'?",
+      options: [
+        "Contamination is from natural sources, irradiation is artificial",
+        "Contamination affects only living tissue, irradiation affects any material",
+        "Contamination involves radioactive material on/in an object, irradiation is exposure to radiation without material transfer",
+        "Contamination is temporary, irradiation causes permanent changes"
+      ],
+      correctAnswer: 2,
+      explanation: "Contamination occurs when radioactive material is deposited on or incorporated into an object or person. The object becomes a radiation source. Irradiation is exposure to radiation without the transfer of radioactive material, like getting an X-ray. An irradiated person is not radioactive, but a contaminated person is both irradiated by and a source of radiation."
+    },
+    {
+      question: "What does ALARA stand for in radiation protection?",
+      options: [
+        "Automatic Level Adjustment for Radiation Areas",
+        "As Low As Reasonably Achievable",
+        "Acceptable Limits for Radiation Absorption",
+        "Alarm Levels for Accidental Radiation Alerts"
+      ],
+      correctAnswer: 1,
+      explanation: "ALARA stands for 'As Low As Reasonably Achievable.' It's a fundamental principle in radiation protection that aims to minimize radiation doses and releases of radioactive materials. While recognizing that some radiation exposure may be necessary, ALARA requires making every reasonable effort to minimize exposure, taking into account economic and social factors."
     }
   ],
   intermediate: [
@@ -478,6 +654,226 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "A 'breed and burn' reactor concept refers to designs where fertile material (like U-238) is converted to fissile material (like Pu-239) in situ and then 'burned' (undergoes fission) without reprocessing. This allows for very efficient use of uranium resources, potentially extracting up to 60 times more energy from the same amount of uranium compared to conventional once-through fuel cycles."
+    },
+    {
+      question: "What is the purpose of a containment spray system in a nuclear power plant?",
+      options: [
+        "To spray water on hot components during normal operation",
+        "To clean contaminated air in the containment during normal operation",
+        "To reduce containment pressure and remove radionuclides during accidents",
+        "To prevent corrosion of metallic components"
+      ],
+      correctAnswer: 2,
+      explanation: "Containment spray systems are emergency safety features that activate during accidents to reduce pressure and temperature inside the containment building. The sprays also remove airborne radioactive particles and soluble gases like iodine from the containment atmosphere. This helps maintain containment integrity and reduces potential radioactive releases to the environment."
+    },
+    {
+      question: "What is the difference between a homogeneous and heterogeneous reactor core?",
+      options: [
+        "Homogeneous cores use a single fuel type, while heterogeneous use multiple fuel types",
+        "Homogeneous cores have uniform power distribution, while heterogeneous have varying power levels",
+        "Homogeneous cores have fuel and moderator mixed together, while heterogeneous have them physically separated",
+        "Homogeneous cores are small research reactors, while heterogeneous are large power reactors"
+      ],
+      correctAnswer: 2,
+      explanation: "In a homogeneous reactor, the fuel and moderator are mixed together in a single phase (often as a solution or slurry). In a heterogeneous reactor, the fuel and moderator are physically separated, with fuel typically in discrete elements surrounded by moderator. Most commercial power reactors are heterogeneous designs with solid fuel elements, which offer advantages in heat removal and operational control."
+    },
+    {
+      question: "What is 'load following' in the context of nuclear power plants?",
+      options: [
+        "Monitoring the weight load on structural components",
+        "Adjusting reactor power output to match varying electricity demand",
+        "Following a prescribed loading sequence for new fuel",
+        "Meeting the baseload power requirements of the grid"
+      ],
+      correctAnswer: 1,
+      explanation: "Load following refers to the ability of a power plant to adjust its output to match varying electricity demand throughout the day. While many nuclear plants traditionally operate as baseload units at constant power, some designs and operating strategies allow nuclear plants to operate in load-following mode, changing power levels to accommodate daily or seasonal changes in electricity demand."
+    },
+    {
+      question: "What is the primary function of a pressurizer in a Pressurized Water Reactor?",
+      options: [
+        "To generate steam for the turbine",
+        "To filter radioactive contaminants from the coolant",
+        "To control and maintain pressure in the primary coolant system",
+        "To pressurize the containment building during accidents"
+      ],
+      correctAnswer: 2,
+      explanation: "The pressurizer maintains and controls the pressure in the primary coolant system of a PWR. It contains both water and steam phases, with electric heaters that can increase pressure by creating more steam, and spray systems that can decrease pressure by condensing steam. This ensures the primary coolant remains in a liquid state throughout the reactor cooling system despite high temperatures."
+    },
+    {
+      question: "What is the 'reactivity temperature coefficient' in nuclear reactors?",
+      options: [
+        "The rate at which reactor temperature changes with power",
+        "How much reactivity changes with temperature variations",
+        "The coefficient used to calculate maximum operating temperature",
+        "The temperature at which a reactor becomes critical"
+      ],
+      correctAnswer: 1,
+      explanation: "The reactivity temperature coefficient describes how reactor reactivity changes with temperature variations. A negative coefficient (which is desirable) means reactivity decreases as temperature increases, providing an inherent safety mechanism. This occurs through effects like Doppler broadening in fuel and density changes in the moderator. A negative coefficient helps stabilize reactor operation by counteracting power excursions through natural feedback."
+    },
+    {
+      question: "What is 'fuel shuffling' in nuclear reactors?",
+      options: [
+        "Mixing different types of fuel in the same assembly",
+        "Relocating fuel assemblies to different positions during refueling",
+        "The vibration of fuel elements during operation",
+        "Transporting spent fuel to reprocessing facilities"
+      ],
+      correctAnswer: 1,
+      explanation: "Fuel shuffling is the practice of relocating fuel assemblies to different positions in the core during refueling outages. Partially burned fuel from high-flux regions is moved to lower-flux regions, while fresh fuel is placed in high-flux regions. This optimizes fuel utilization, flattens power distribution, and extends cycle length by positioning each assembly where its remaining reactivity can be best utilized."
+    },
+    {
+      question: "What is the 'effective delayed neutron fraction' (βeff) in reactor physics?",
+      options: [
+        "The fraction of neutrons that are delayed versus prompt",
+        "The fraction of delayed neutrons that effectively cause fission",
+        "The fraction of delayed neutrons weighted by their effectiveness in causing fission",
+        "The fraction of time a reactor operates in the delayed critical state"
+      ],
+      correctAnswer: 2,
+      explanation: "The effective delayed neutron fraction (βeff) is the fraction of delayed neutrons weighted by their importance in causing fission compared to prompt neutrons. It's slightly different from the physical delayed neutron fraction because delayed neutrons are typically born at lower energies and therefore have different effectiveness in causing fission. This parameter is crucial for reactor control and safety analysis."
+    },
+    {
+      question: "What is 'subcooled boiling' in a nuclear reactor cooling system?",
+      options: [
+        "Cooling the reactor below operating temperature during shutdown",
+        "Formation of steam bubbles at the heated surface while bulk fluid remains below saturation temperature",
+        "Using subcooled water to condense steam in the pressurizer",
+        "The cooling process used in spent fuel pools"
+      ],
+      correctAnswer: 1,
+      explanation: "Subcooled boiling occurs when steam bubbles form at heated surfaces (like fuel cladding) while the bulk coolant remains below its saturation temperature. These bubbles may condense when they detach and encounter cooler fluid. This phenomenon is important in thermal-hydraulic analysis because it affects heat transfer coefficients, flow patterns, and potentially reactivity in boiling water reactors."
+    },
+    {
+      question: "What is a 'rod drop accident' in a nuclear reactor?",
+      options: [
+        "Physical dropping of a fuel rod during handling",
+        "Unintentional insertion of a control rod causing power decrease",
+        "Unintentional withdrawal or ejection of a control rod causing power excursion",
+        "Mechanical failure causing a control rod to drop out of position"
+      ],
+      correctAnswer: 2,
+      explanation: "A rod drop (or rod ejection) accident refers to the unintentional rapid withdrawal or ejection of a control rod, which inserts positive reactivity causing a power excursion. This might result from mechanical failure or control system malfunction. It's one of the design basis accidents analyzed for safety, with acceptance criteria for fuel damage and energy deposition to ensure containment integrity is maintained."
+    },
+    {
+      question: "What is 'neutron fluence' in the context of reactor pressure vessel embrittlement?",
+      options: [
+        "The rate at which neutrons penetrate the vessel wall",
+        "The total number of neutrons that have passed through a unit area over time",
+        "The energy of neutrons striking the vessel wall",
+        "The ability of neutrons to cause fission in the vessel material"
+      ],
+      correctAnswer: 1,
+      explanation: "Neutron fluence is the time-integrated neutron flux, representing the total number of neutrons that have passed through a unit area over time. In reactor pressure vessels, high-energy neutron fluence causes embrittlement by creating lattice defects that reduce the material's ductility and increase its ductile-to-brittle transition temperature. This is a limiting factor in plant lifetime and is carefully monitored through surveillance programs."
+    },
+    {
+      question: "What is a 'reactivity insertion accident' in a nuclear reactor?",
+      options: [
+        "Adding too much reactive chemical to the primary coolant",
+        "An accident caused by incorrect fuel loading",
+        "An event where positive reactivity is added to the core faster than it can be controlled",
+        "Inserting too many control rods simultaneously"
+      ],
+      correctAnswer: 2,
+      explanation: "A reactivity insertion accident is an event where positive reactivity is added to the core more rapidly than it can be controlled by normal means, potentially leading to a power excursion. Causes might include control rod withdrawal errors, boron dilution, cold water injection, or control rod ejection. These accidents are analyzed in safety assessments to ensure protective systems can mitigate consequences."
+    },
+    {
+      question: "What is 'departure from nucleate boiling' (DNB) in a nuclear reactor?",
+      options: [
+        "The transition from single-phase to two-phase flow in the core",
+        "When steam bubbles merge to form an insulating film on fuel rods, reducing heat transfer",
+        "The point when boiling begins in a PWR pressure vessel",
+        "When coolant flow reverses direction due to steam formation"
+      ],
+      correctAnswer: 1,
+      explanation: "Departure from Nucleate Boiling (DNB) is a heat transfer phenomenon where steam bubbles on a heated surface (fuel cladding) coalesce to form an insulating vapor film, drastically reducing heat transfer efficiency. This can lead to a rapid increase in cladding temperature and potential fuel damage. The DNBR (DNB Ratio) is a critical safety parameter that indicates the margin to this condition."
+    },
+    {
+      question: "What is the purpose of a 'post-accident sampling system' in a nuclear power plant?",
+      options: [
+        "To monitor environmental radiation after an accident",
+        "To determine the extent of core damage and radioactive content in plant fluids",
+        "To test the structural integrity of components after an accident",
+        "To sample soil and water near the plant after a radiation release"
+      ],
+      correctAnswer: 1,
+      explanation: "A post-accident sampling system allows operators to safely obtain and analyze samples of reactor coolant and containment atmosphere following an accident. The samples help determine the extent of core damage, radionuclide concentrations, and chemical conditions, which guide accident management strategies and public protective actions. These systems are designed to function in high radiation environments with minimal personnel exposure."
+    },
+    {
+      question: "What is 'decay heat' in nuclear reactors?",
+      options: [
+        "Heat generated by the decomposition of reactor structural materials",
+        "Heat released by radioactive decay of fission products after shutdown",
+        "The gradual reduction in reactor temperature during cooldown",
+        "Heat lost to the environment during normal operation"
+      ],
+      correctAnswer: 1,
+      explanation: "Decay heat is the heat produced by the radioactive decay of fission products after a reactor is shut down. Even though the fission chain reaction has stopped, this decay continues to generate significant heat (initially about 7% of full power, decreasing over time). Removing decay heat is a critical safety function, as failure to do so can lead to core damage, as demonstrated in accidents like Fukushima."
+    },
+    {
+      question: "What is 'reactivity feedback' in nuclear reactors?",
+      options: [
+        "The process of measuring reactivity changes using instrument feedback",
+        "Reports from operators about reactor response to control inputs",
+        "Automatic changes in reactivity due to changes in operating conditions",
+        "The time delay between control rod movement and power change"
+      ],
+      correctAnswer: 2,
+      explanation: "Reactivity feedback refers to automatic changes in reactivity resulting from changes in operating conditions like temperature, pressure, or void fraction. Negative feedback mechanisms (like Doppler broadening and moderator temperature effects) are crucial for reactor stability and safety, as they tend to counteract power increases. Positive feedback mechanisms, if dominant, can make a reactor unstable."
+    },
+    {
+      question: "What is 'steam binding' in emergency core cooling systems?",
+      options: [
+        "The binding of steam generator tubes by excessive steam pressure",
+        "Formation of steam that prevents coolant from reaching the core",
+        "A design feature that uses steam to drive emergency cooling pumps",
+        "The condition where steam mixes with emergency coolant"
+      ],
+      correctAnswer: 1,
+      explanation: "Steam binding is a phenomenon where steam forms in the upper regions of a reactor cooling system and prevents liquid coolant from reaching the core. This can occur during certain accident scenarios when emergency core cooling water comes into contact with hot surfaces and flashes to steam. Steam binding can significantly reduce the effectiveness of emergency cooling systems and is an important consideration in safety analyses."
+    },
+    {
+      question: "What is a 'station blackout' in a nuclear power plant?",
+      options: [
+        "A total loss of AC power to the station, including offsite power and emergency generators",
+        "A deliberate shutdown of all electrical systems for maintenance",
+        "An unplanned reactor trip that causes a regional power blackout",
+        "A loss of lighting in the control room and emergency facilities"
+      ],
+      correctAnswer: 0,
+      explanation: "A station blackout (SBO) is the complete loss of both offsite AC power and emergency onsite AC power (backup diesel generators). This is a serious condition as many critical safety systems rely on AC power. Plants have coping strategies for SBO including battery-powered DC systems, alternate AC sources, and passive cooling methods. The Fukushima accident in 2011 demonstrated the severe consequences of an extended station blackout."
+    },
+    {
+      question: "What is the 'point kinetics equation' used for in nuclear engineering?",
+      options: [
+        "Calculating the critical point of nuclear fuel",
+        "Determining the exact location of neutron generation",
+        "Modeling the time-dependent behavior of reactor power",
+        "Computing the kinetic energy of fission fragments"
+      ],
+      correctAnswer: 2,
+      explanation: "The point kinetics equation is a simplified mathematical model that describes the time-dependent behavior of reactor power in response to reactivity changes. It treats the reactor as a 'point' (spatially uniform) and accounts for both prompt and delayed neutrons. While it neglects spatial effects, it provides reasonably accurate results for many transients and is widely used in reactor control system design and safety analyses."
+    },
+    {
+      question: "What is the 'hot channel factor' in nuclear reactor thermal design?",
+      options: [
+        "The temperature of the hottest coolant channel in the reactor",
+        "A measure of how much hotter the most severely heated channel is compared to the average",
+        "The ratio of hot to cold leg temperatures",
+        "The factor used to calculate the heat capacity of a heated channel"
+      ],
+      correctAnswer: 1,
+      explanation: "The hot channel factor (or peaking factor) is a measure of how much hotter the most severely heated fuel channel is compared to the core average. It accounts for manufacturing tolerances, operational variations, and design uncertainties. Nuclear plants maintain margins to safety limits by ensuring that even the hot channel remains below critical heat flux conditions during normal operation and anticipated operational occurrences."
+    },
+    {
+      question: "What is 'reflector peak' in a nuclear reactor?",
+      options: [
+        "The point of maximum neutron reflection in the core",
+        "A power spike caused by control rod movement",
+        "The increased neutron flux near the interface between the core and reflector",
+        "The peak temperature in the reflector material"
+      ],
+      correctAnswer: 2,
+      explanation: "The reflector peak is a localized increase in neutron flux (and power density) that occurs near the interface between the reactor core and the reflector. It happens because neutrons that would otherwise escape are reflected back into the core, causing higher reaction rates in fuel elements near the boundary. This phenomenon must be accounted for in power distribution calculations and thermal margin assessments."
     }
   ],
   advanced: [
@@ -634,6 +1030,160 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "The iodine pit refers to a period of minimum reactivity occurring about 9 hours after reactor shutdown, caused by the decay of iodine-135 into xenon-135 (a strong neutron absorber). While iodine-135 decays (half-life ~6.7 hours), xenon-135 continues to build up faster than it decays (half-life ~9.2 hours) until reaching equilibrium. This can prevent reactor restart for several hours after shutdown."
+    },
+    {
+      question: "What are 'passive safety systems' in advanced nuclear reactor designs?",
+      options: [
+        "Systems that only activate during passive operation modes",
+        "Safety systems that operate without operator intervention or active components",
+        "Backup systems that remain passive until emergency situations",
+        "Simplified safety systems that require less maintenance"
+      ],
+      correctAnswer: 1,
+      explanation: "Passive safety systems are designed to function without operator intervention, AC power, or active components like pumps. They rely on natural forces such as gravity, natural circulation, convection, or stored energy in batteries or compressed gases. These systems can provide cooling, pressure control, or containment functions during accidents, enhancing plant safety by reducing reliance on human actions and active components that could fail."
+    },
+    {
+      question: "What is 'flow-induced vibration' in nuclear reactor components?",
+      options: [
+        "Vibration of control rods when coolant flow adjusts reactor power",
+        "Mechanical vibration caused by coolant flow across or along structural components",
+        "A technique used to test coolant flow patterns during startup",
+        "Vibration of fuel assemblies that improves neutron moderation"
+      ],
+      correctAnswer: 1,
+      explanation: "Flow-induced vibration is a mechanical vibration caused by coolant flow across or along structural components in the reactor. It can result from fluid-elastic instability, vortex shedding, turbulent buffeting, or acoustic resonance. If not properly managed, it can lead to fatigue failure of components such as steam generator tubes, fuel rods, or in-core instrumentation. Advanced analysis and testing are performed to prevent such failures."
+    },
+    {
+      question: "What is a 'large break LOCA' in nuclear safety analysis?",
+      options: [
+        "Rupture of a large spent fuel container",
+        "Complete severance of a main coolant pipe",
+        "Major breach in the containment building",
+        "Failure of a large safety valve"
+      ],
+      correctAnswer: 1,
+      explanation: "A large break Loss-Of-Coolant Accident (LOCA) refers to a complete severance or equivalent major rupture of a primary coolant pipe, resulting in rapid loss of coolant inventory. This design basis accident causes rapid depressurization, coolant flashing to steam, and potential core uncovery within seconds. Emergency Core Cooling Systems must activate quickly to prevent fuel damage. It's one of the most challenging accidents from a thermal-hydraulic perspective."
+    },
+    {
+      question: "What is the 'thermal margin' in nuclear reactor operation?",
+      options: [
+        "The temperature difference between the coolant and its boiling point",
+        "The reserve capacity of the cooling system beyond normal needs",
+        "The distance between operating parameters and safety limits",
+        "The minimum temperature that must be maintained to prevent embrittlement"
+      ],
+      correctAnswer: 2,
+      explanation: "Thermal margin refers to the distance between actual operating parameters and safety limits established to prevent fuel damage. Parameters like Departure from Nucleate Boiling Ratio (DNBR) or Critical Power Ratio (CPR) quantify this margin. Maintaining adequate thermal margin ensures that even during transients or accidents, the core remains sufficiently cooled and fuel integrity is preserved. This margin is continuously monitored during operation."
+    },
+    {
+      question: "What is 'anticipated transient without scram' (ATWS) in nuclear safety?",
+      options: [
+        "A normal operational transient that doesn't require shutdown",
+        "An expected power fluctuation that stabilizes without intervention",
+        "An anticipated operational occurrence combined with failure of the reactor protection system",
+        "A transient caused by withdrawal of control rods"
+      ],
+      correctAnswer: 2,
+      explanation: "Anticipated Transient Without Scram (ATWS) refers to an expected operational occurrence (like loss of feedwater, load rejection, etc.) combined with a failure of the reactor protection system to automatically shut down the reactor. This beyond-design-basis event could lead to serious consequences, prompting regulatory requirements for diverse protection systems and analyses demonstrating acceptable outcomes even without immediate scram."
+    },
+    {
+      question: "What is the 'alpha-to-beta transformation' in uranium fuel?",
+      options: [
+        "The change from alpha particles to beta particles during radioactive decay",
+        "A crystalline phase transformation that occurs at high temperatures",
+        "The conversion of uranium oxide to uranium metal in fuel processing",
+        "The transformation from alpha emitters to beta emitters in spent fuel"
+      ],
+      correctAnswer: 1,
+      explanation: "The alpha-to-beta transformation is a crystalline phase change in uranium metal from the orthorhombic alpha phase to the tetragonal beta phase, occurring at about 668°C. This transformation involves a significant volume change and anisotropic growth that can cause distortion and cracking in uranium metal fuel. This limitation led to the adoption of uranium dioxide (UO₂) as the preferred fuel form for most commercial reactors."
+    },
+    {
+      question: "What is 'crud' in the context of nuclear reactor operation?",
+      options: [
+        "Carbon residue from decomposed lubricating oils",
+        "Corrosion products that circulate in the primary coolant and deposit on fuel surfaces",
+        "Control rod unintended drop events",
+        "Contaminated reactor undercooling deposits"
+      ],
+      correctAnswer: 1,
+      explanation: "In nuclear engineering, 'crud' (sometimes explained as Chalk River Unidentified Deposits, after their first observation) refers to corrosion products that circulate in the primary coolant and deposit on fuel cladding surfaces. These deposits can affect heat transfer, cause localized corrosion, become activated in the neutron flux creating additional radiation sources, and potentially contribute to axial power shifts during operation (crud-induced power shift or CIPS)."
+    },
+    {
+      question: "What is a 'multigroup approximation' in neutron transport theory?",
+      options: [
+        "Dividing reactor operations staff into multiple specialized groups",
+        "Categorizing nuclear accidents into different severity groups",
+        "Dividing the continuous neutron energy spectrum into discrete energy groups",
+        "Analyzing multiple groups of fission products separately"
+      ],
+      correctAnswer: 2,
+      explanation: "The multigroup approximation in neutron transport theory involves dividing the continuous neutron energy spectrum into discrete energy groups, with average nuclear properties defined for each group. This transforms the continuous-energy transport equation into a set of coupled equations for each energy group. The approximation makes complex neutron transport problems computationally tractable while still capturing the essential physics of neutron slowing down and interactions."
+    },
+    {
+      question: "What is 'Critical Heat Flux' (CHF) in nuclear thermal hydraulics?",
+      options: [
+        "The minimum heat flux needed to initiate nuclear fission",
+        "The heat flux at which fuel pellets begin to melt",
+        "The heat flux that initiates boiling in the coolant",
+        "The heat flux beyond which there is a sudden deterioration in heat transfer efficiency"
+      ],
+      correctAnswer: 3,
+      explanation: "Critical Heat Flux (CHF) represents the thermal limit beyond which there is a sudden deterioration in heat transfer efficiency due to the transition from nucleate boiling to film boiling. When this occurs on fuel rod surfaces, cladding temperatures can rise rapidly (departure from nucleate boiling in PWRs or dryout in BWRs), potentially leading to fuel damage. Maintaining margin to CHF is a fundamental safety requirement in reactor design and operation."
+    },
+    {
+      question: "What is a 'Regional Overpower Protection' system in CANDU reactors?",
+      options: [
+        "A system that limits power in specific geographic regions of the electrical grid",
+        "An emergency power reduction system that affects only one region of the core",
+        "A protection system using in-core detectors to prevent localized power excursions",
+        "A backup power supply system for different regions of the plant"
+      ],
+      correctAnswer: 2,
+      explanation: "Regional Overpower Protection (ROP) is a safety system in CANDU reactors that uses in-core detectors to monitor and protect against localized power excursions that could lead to fuel damage. The core is divided into zones with dedicated detectors, and the system will trigger a reactor trip if power in any zone exceeds safety limits. This is particularly important in large cores where power distribution can vary significantly across different regions."
+    },
+    {
+      question: "What is 'plutonium high burning' reactor concept?",
+      options: [
+        "A reactor designed to produce high-grade weapons plutonium",
+        "A reactor that burns highly enriched plutonium fuel",
+        "A reactor designed to maximize plutonium consumption rather than breeding",
+        "A high-temperature reactor that burns plutonium more efficiently"
+      ],
+      correctAnswer: 2,
+      explanation: "Plutonium high burning (or high consumption) reactor concepts aim to maximize plutonium consumption rather than breeding more plutonium. These designs typically use fuel configurations and neutron spectra that favor fission over capture in plutonium isotopes, reducing the net plutonium inventory. Such concepts are of interest for plutonium disposition programs and can contribute to reducing stockpiles of weapons-grade plutonium."
+    },
+    {
+      question: "What is the 'neutron wave' concept in advanced reactor designs?",
+      options: [
+        "A wave of neutron density that travels through the core during power changes",
+        "A standing wave pattern of neutron flux in the moderator",
+        "A traveling wave of breeding and burning that moves through the fuel over time",
+        "A neutron pulse technique used to measure reactor kinetics"
+      ],
+      correctAnswer: 2,
+      explanation: "The neutron wave concept (or traveling wave reactor) involves a wave of breeding and burning that slowly moves through the fuel over time. Starting with a small active region of fissile material surrounded by fertile material (like U-238), the neutrons breed new fuel (Pu-239) just ahead of the burning region, creating a self-sustaining wave that gradually progresses through the core over many years, potentially allowing decades of operation without refueling."
+    },
+    {
+      question: "What is 'temperature limited operation' in nuclear reactors?",
+      options: [
+        "Operating a reactor at reduced power during high ambient temperatures",
+        "A mode where reactor power is automatically controlled based on temperature feedback",
+        "Operation limited by specific component temperature constraints",
+        "An emergency cooling mode activated at high temperature conditions"
+      ],
+      correctAnswer: 2,
+      explanation: "Temperature limited operation refers to reactor operation where specific component temperature limits become the constraining factor for power output. This might involve fuel centerline temperature, cladding temperature, coolant temperature, or pressure vessel temperature limits. Rather than being limited by neutronics or thermal-hydraulic margins, the plant cannot operate at higher power without exceeding temperature limits on critical components."
+    },
+    {
+      question: "What is 'differential worth curve' for control rods?",
+      options: [
+        "The difference in monetary value between different types of control rods",
+        "The differential equation describing control rod motion",
+        "A curve showing how control rod reactivity worth varies with insertion position",
+        "The change in rod worth as a function of burnup"
+      ],
+      correctAnswer: 2,
+      explanation: "A differential worth curve shows how a control rod's reactivity worth (expressed as reactivity per unit length) varies with its position in the core. The worth is typically highest near the core center where neutron flux is greatest and decreases toward the periphery. This curve is crucial for reactor operation, as it determines how sensitively the reactor will respond to control rod movements at different insertion depths."
     },
     {
       question: "What is the primary function of a core catcher in advanced reactor designs?",
@@ -922,6 +1472,182 @@ const quizData = {
       ],
       correctAnswer: 2,
       explanation: "Committed dose is the integrated radiation dose to an organ or tissue over a specified time period (typically 50 years for adults or 70 years for children) following the intake of radioactive material. It accounts for continued exposure from radionuclides retained in the body, considering their biological half-lives and metabolic behavior. This concept is crucial for radiation protection since internal contamination can lead to prolonged exposure."
+    },
+    {
+      question: "What is the 'prompt jump approximation' in reactor kinetics?",
+      options: [
+        "An approximation that neglects delayed neutrons in transient analysis",
+        "A method for rapidly increasing reactor power during startup",
+        "A technique for approximating control rod worth during rapid insertion",
+        "The theoretical maximum power increase rate in a prompt critical reactor"
+      ],
+      correctAnswer: 0,
+      explanation: "The prompt jump approximation is a mathematical simplification used in reactor kinetics that assumes prompt neutrons reach equilibrium almost instantaneously following a reactivity change, while delayed neutron precursors respond more slowly. This allows separating the kinetics equations into fast (prompt) and slow (delayed) components, simplifying the analysis of reactor transients. The approximation is valid for reactivity changes below prompt criticality."
+    },
+    {
+      question: "What is the 'inhour equation' in reactor kinetics?",
+      options: [
+        "An equation relating reactor period to reactivity",
+        "A formula for calculating hourly power variations",
+        "The time-dependent neutron diffusion equation",
+        "The relationship between reactor power and control rod position"
+      ],
+      correctAnswer: 0,
+      explanation: "The inhour equation relates reactor period (the time for power to increase by a factor of e) to reactivity. It accounts for both prompt and delayed neutron effects, incorporating the delayed neutron fraction and decay constants for different precursor groups. The equation is used for reactor control and safety analyses, particularly for calculating how quickly power will change for a given reactivity insertion."
+    },
+    {
+      question: "What phenomenon does 'self-shielding' refer to in nuclear reactor physics?",
+      options: [
+        "Automatic activation of containment isolation during accidents",
+        "The ability of reactor materials to absorb their own radiation damage",
+        "Reduction in neutron flux in the interior of fuel or absorber materials",
+        "Reactor design features that provide inherent protection against external hazards"
+      ],
+      correctAnswer: 2,
+      explanation: "Self-shielding refers to the reduction in neutron flux (and thus reaction rate) in the interior of a material due to absorption in the outer layers. This is particularly important for strong neutron absorbers and for resonance absorption in U-238. Self-shielding effects must be carefully accounted for in reactor physics calculations, as they significantly impact neutron economy, power distribution, and isotopic depletion rates."
+    },
+    {
+      question: "What is a 'Monte Carlo N-Particle' (MCNP) code used for in nuclear engineering?",
+      options: [
+        "Simulating control rod movement sequences",
+        "Modeling particle interactions and transport using statistical methods",
+        "Monitoring neutron population in operating reactors",
+        "Calculating optimal fuel loading patterns"
+      ],
+      correctAnswer: 1,
+      explanation: "MCNP is a general-purpose Monte Carlo code that models the random walk and interactions of particles (neutrons, photons, electrons) through matter using statistical methods. It can model complex 3D geometries with exact representation and continuous-energy cross sections. MCNP is widely used for reactor physics calculations, shielding design, criticality safety, detector design, and medical physics applications."
+    },
+    {
+      question: "What does the 'Lewis number' represent in thermal-hydraulic analyses of nuclear systems?",
+      options: [
+        "The ratio of thermal diffusivity to mass diffusivity",
+        "The dimensionless number relating neutron population to thermal power",
+        "The coefficient used to calculate radiation heat transfer in reactor cores",
+        "The number of heat transfer tubes required in a steam generator"
+      ],
+      correctAnswer: 0,
+      explanation: "The Lewis number is the ratio of thermal diffusivity to mass diffusivity, representing the relative rates of heat and mass transfer in a fluid. In nuclear thermal-hydraulics, it's particularly important for analyzing phenomena involving both heat and mass transfer, such as condensation, evaporation, and hydrogen distribution in containment during severe accidents. It helps determine whether thermal or concentration gradients dominate in transport processes."
+    },
+    {
+      question: "What is 'Shannon entropy' as applied to nuclear criticality calculations?",
+      options: [
+        "A measure of the randomness of fission event timing",
+        "The uncertainty in neutron cross-section data",
+        "A measure of neutron population distribution convergence in Monte Carlo simulations",
+        "The information content in nuclear decay chains"
+      ],
+      correctAnswer: 2,
+      explanation: "In nuclear criticality calculations using Monte Carlo methods, Shannon entropy is used to assess the convergence of the fission source (neutron population) distribution. By dividing the geometry into cells and calculating the information-theoretic entropy of the source distribution, analysts can determine when the simulation has adequately converged. This is crucial for ensuring reliable results, especially in loosely coupled systems where convergence can be slow."
+    },
+    {
+      question: "What is the 'Bateman equation' used for in nuclear engineering?",
+      options: [
+        "Calculating reactor kinetics during transients",
+        "Determining shielding requirements for different radiation types",
+        "Modeling radioactive decay chains and buildup of daughter products",
+        "Analyzing stress distributions in reactor pressure vessels"
+      ],
+      correctAnswer: 2,
+      explanation: "The Bateman equations describe the time-dependent concentrations of nuclides in a radioactive decay chain. They account for both the decay of parent nuclides and the production from precursors. These equations are essential for nuclear fuel cycle analysis, spent fuel characterization, activation product calculations, and radiological assessments. While the general form can be complex for long chains, simplified versions are often applied to specific problems."
+    },
+    {
+      question: "What is 'burnup credit' in spent nuclear fuel management?",
+      options: [
+        "A financial credit given to utilities for highly burned fuel",
+        "Taking credit for reduced reactivity of spent fuel due to fissile depletion and poison buildup",
+        "The heat generation reduction credited in cooling system design",
+        "Crediting utilities for burning plutonium in mixed oxide fuel"
+      ],
+      correctAnswer: 1,
+      explanation: "Burnup credit refers to accounting for the reduced reactivity of spent nuclear fuel (due to fissile isotope depletion and neutron absorber buildup) in criticality safety analyses. Traditional approaches conservatively assumed fresh fuel composition, but burnup credit allows for more realistic assessments, enabling more efficient spent fuel storage, transport, and disposal while maintaining safety margins. It requires sophisticated depletion calculations and extensive validation."
+    },
+    {
+      question: "What is 'modal analysis' in nuclear reactor structural dynamics?",
+      options: [
+        "Analysis of different operational modes of a reactor",
+        "A method for analyzing vibration modes and natural frequencies of structures",
+        "A technique for categorizing reactor accident modes",
+        "Analysis of different neutron energy modes in the core"
+      ],
+      correctAnswer: 1,
+      explanation: "Modal analysis in structural dynamics is a technique used to determine the vibration characteristics (natural frequencies, mode shapes, and damping factors) of structures under dynamic loading. In nuclear plants, it's critical for evaluating how components respond to seismic events, flow-induced vibrations, or operational transients. It helps ensure that resonant frequencies are avoided during normal operation and that structures can withstand design basis events."
+    },
+    {
+      question: "What is the 'depletion defect' in nuclear reactor calculations?",
+      options: [
+        "The loss of computational accuracy over long depletion calculations",
+        "The design flaw that leads to accelerated depletion in certain regions",
+        "The difference between predicted and actual fuel depletion rates",
+        "The negative reactivity introduced by fuel depletion and fission product buildup"
+      ],
+      correctAnswer: 3,
+      explanation: "The depletion defect refers to the negative reactivity introduced by fuel depletion and fission product buildup during reactor operation. As fissile material is consumed and neutron absorbers accumulate, the core becomes less reactive. This reactivity deficit must be compensated for in the initial core design by incorporating excess reactivity (through higher enrichment, burnable absorbers, etc.) to achieve the desired cycle length."
+    },
+    {
+      question: "What does the 'Sievert integral' calculate in radiation shielding analysis?",
+      options: [
+        "The total radiation dose in Sieverts received by workers",
+        "The line-of-sight integral of gamma ray attenuation through shields",
+        "The cumulative effect of different radiation types weighted by their biological effectiveness",
+        "The integral of radiation streaming through shield penetrations"
+      ],
+      correctAnswer: 1,
+      explanation: "The Sievert integral (or exposure buildup factor) is used in gamma ray shielding calculations to account for scattered radiation. It represents the line-of-sight integral of gamma ray attenuation through a shield, accounting for both primary (unscattered) and secondary (scattered) radiation. This approach helps properly size radiation shields, as considering only primary radiation would significantly underestimate dose rates behind the shield."
+    },
+    {
+      question: "What is 'pin cell homogenization' in reactor physics calculations?",
+      options: [
+        "A manufacturing process to ensure uniform distribution of uranium in fuel pins",
+        "A computational technique that smears fuel, gap, and cladding into equivalent homogeneous materials",
+        "The physical mixing of different materials in experimental fuel pins",
+        "A quality control measure to verify uniform fuel enrichment"
+      ],
+      correctAnswer: 1,
+      explanation: "Pin cell homogenization is a computational technique in reactor physics that replaces the heterogeneous structure of a fuel pin (fuel, gap, cladding) with equivalent homogeneous materials that preserve reaction rates. This simplification allows more efficient whole-core calculations while maintaining adequate accuracy. It typically involves detailed transport calculations at the pin level to generate homogenized cross-sections for use in larger-scale models."
+    },
+    {
+      question: "What is 'subcritical multiplication' in nuclear systems?",
+      options: [
+        "The increase in neutron population when a subcritical system approaches criticality",
+        "A technique for extracting energy from subcritical assemblies",
+        "The mathematical formula for calculating subcritical reactivity",
+        "The process of breeding fissile material in subcritical blankets"
+      ],
+      correctAnswer: 0,
+      explanation: "Subcritical multiplication refers to the increase in neutron population when an external neutron source is present in a subcritical system. As the system approaches criticality (k approaches 1), the multiplication factor M = 1/(1-k) grows larger, amplifying the source neutrons. This phenomenon is the basis for subcritical reactivity measurements, startup neutron monitoring, and accelerator-driven subcritical system operation."
+    },
+    {
+      question: "What is the 'Nordheim-Fuchs model' used for in nuclear engineering?",
+      options: [
+        "Modeling reactor behavior during control rod movements",
+        "Analyzing prompt criticality excursions",
+        "Calculating neutron absorption in fuel rods",
+        "Predicting staff radiation dose during normal operation"
+      ],
+      correctAnswer: 1,
+      explanation: "The Nordheim-Fuchs model is a simplified analytical model used to analyze the behavior of prompt critical excursions and their self-limitation due to negative temperature feedback. It predicts the power trace, energy release, and maximum temperature during such events. While simplified, it provides important insights into criticality safety and accident analysis, particularly for research reactors, criticality accidents, and pulse reactors."
+    },
+    {
+      question: "What is 'mesh refinement study' in nuclear computational modeling?",
+      options: [
+        "Improving the quality of metal wire meshes in fuel assemblies",
+        "Analyzing the effect of mesh size on computational accuracy and convergence",
+        "A study of radiation shielding effectiveness of different mesh materials",
+        "Refinement of containment spray mesh patterns for optimal coverage"
+      ],
+      correctAnswer: 1,
+      explanation: "A mesh refinement study systematically analyzes how computational solution accuracy depends on the spatial discretization (mesh) used. By performing calculations with progressively finer meshes, engineers can establish convergence behavior, estimate discretization error, and determine the appropriate mesh density for achieving desired accuracy. This is crucial in safety-critical nuclear simulations involving neutronics, thermal-hydraulics, or structural mechanics."
+    },
+    {
+      question: "What is a 'Bonner sphere spectrometer' used for in nuclear engineering?",
+      options: [
+        "Measuring the energy spectrum of neutrons",
+        "Analyzing spherical fuel pellet properties",
+        "Determining the sphericity of containment structures",
+        "Testing bond strength between fuel and cladding"
+      ],
+      correctAnswer: 0,
+      explanation: "A Bonner sphere spectrometer is an instrument used to measure neutron energy spectra. It consists of a thermal neutron detector surrounded by moderating polyethylene spheres of different diameters. Each sphere configuration has different response functions to neutrons of various energies. By measuring counts with different sphere sizes and applying unfolding algorithms, the neutron energy spectrum can be determined, which is important for radiation protection and shielding design."
     }
   ]
 };
