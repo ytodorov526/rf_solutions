@@ -27,6 +27,17 @@ import ScienceIcon from '@mui/icons-material/Science';
 const quizData = {
   beginner: [
     {
+      question: "What is the principle behind nuclear energy generation?",
+      options: [
+        "Chemical reactions between uranium atoms",
+        "Nuclear fission or fusion reactions",
+        "Combustion of radioactive material",
+        "Electron excitation and relaxation"
+      ],
+      correctAnswer: 1,
+      explanation: "Nuclear energy is generated through nuclear reactions, either fission (splitting of large atoms like uranium) or fusion (combining of light atoms like hydrogen isotopes). These processes convert a small amount of mass into large amounts of energy according to Einstein's equation E=mc²."
+    },
+    {
       question: "What particle is responsible for carrying the electromagnetic force?",
       options: [
         "Neutron",
@@ -454,6 +465,118 @@ const quizData = {
       correctAnswer: 0,
       explanation: "A neutron source provides a reliable supply of neutrons during reactor startup. Without an artificial source, reactors would rely solely on spontaneous fission or cosmic rays for initial neutrons, making startups unpredictable. Common neutron sources include mixtures of beryllium with alpha-emitting materials (like americium) that produce neutrons through (α,n) reactions."
     }
+  ,
+    // Adding 10 more beginner questions
+    {
+      question: "What is the function of a 'core catcher' in advanced nuclear reactor designs?",
+      options: [
+        "A device that catches dropped fuel during refueling",
+        "A backup safety system to contain melted core material during severe accidents",
+        "A mechanism to catch radiation escaping from the core",
+        "A filter to catch impurities in the coolant"
+      ],
+      correctAnswer: 1,
+      explanation: "A core catcher is a safety feature in advanced nuclear reactor designs intended to contain, spread, and cool molten core material (corium) in the event of a severe accident with reactor vessel breach. This passive safety system helps prevent containment failure by ensuring the corium can be cooled and contained even in worst-case scenarios."
+    },
+    {
+      question: "What term describes the energy released after a reactor shutdown due to continuing radioactive decay?",
+      options: [
+        "Residual energy",
+        "Decay heat",
+        "Leftover power",
+        "Shutdown radiation"
+      ],
+      correctAnswer: 1,
+      explanation: "Decay heat refers to the heat produced by the radioactive decay of fission products after a reactor is shut down. Even though the fission chain reaction has stopped, radioactive decay continues to generate significant heat (initially about 7% of full power). Removing decay heat is crucial for preventing fuel damage, as demonstrated by accidents like Fukushima."
+    },
+    {
+      question: "Which material is commonly used as a neutron moderator in many nuclear reactors?",
+      options: [
+        "Lead",
+        "Water",
+        "Concrete",
+        "Steel"
+      ],
+      correctAnswer: 1,
+      explanation: "Water is commonly used as a neutron moderator in many nuclear reactors, particularly in Light Water Reactors (LWRs). The hydrogen atoms in water effectively slow down (moderate) fast neutrons to thermal energies, where they are more likely to cause fission in uranium-235. Other common moderators include heavy water and graphite."
+    },
+    {
+      question: "What does ALARA stand for in nuclear safety?",
+      options: [
+        "Automatic Level Alarm for Radioactive Areas",
+        "As Low As Reasonable Assessment",
+        "As Low As Reasonably Achievable",
+        "Acceptable Limits for Radiation Activation"
+      ],
+      correctAnswer: 2,
+      explanation: "ALARA stands for 'As Low As Reasonably Achievable.' It's a fundamental principle in radiation protection that aims to minimize radiation doses and releases of radioactive materials. While recognizing that some radiation exposure may be necessary, ALARA requires making every reasonable effort to minimize exposure, taking into account technological, economic, and social factors."
+    },
+    {
+      question: "What is the primary fissile isotope used in most commercial nuclear power plants?",
+      options: [
+        "Uranium-238",
+        "Uranium-235",
+        "Plutonium-239",
+        "Thorium-232"
+      ],
+      correctAnswer: 1,
+      explanation: "Uranium-235 is the primary fissile isotope used in most commercial nuclear power plants. It's the only naturally occurring fissile isotope, making up about 0.7% of natural uranium. Commercial reactors typically use uranium that has been enriched to 3-5% U-235 to sustain a chain reaction in light water reactors."
+    },
+    {
+      question: "What is the primary purpose of the biological shield in a nuclear reactor?",
+      options: [
+        "To prevent biological contamination of the reactor",
+        "To protect workers from radiation",
+        "To support the weight of the reactor vessel",
+        "To prevent bacteria growth in the coolant system"
+      ],
+      correctAnswer: 1,
+      explanation: "The biological shield is a thick barrier (typically concrete) surrounding the reactor that protects workers from radiation exposure. It attenuates both neutron and gamma radiation that escapes the reactor vessel, reducing radiation levels in accessible areas to safe levels for personnel."
+    },
+    {
+      question: "Which of the following would be classified as high-level radioactive waste?",
+      options: [
+        "Contaminated protective clothing",
+        "Used reactor coolant",
+        "Spent nuclear fuel",
+        "Filtered particulates from ventilation systems"
+      ],
+      correctAnswer: 2,
+      explanation: "Spent nuclear fuel is classified as high-level radioactive waste. It contains highly radioactive fission products, plutonium, and other actinides with long half-lives. High-level waste requires extensive shielding, cooling, and typically deep geological disposal due to its intense radioactivity and long-term hazards."
+    },
+    {
+      question: "What does it mean when a reactor is said to be 'critical'?",
+      options: [
+        "It's in a dangerous condition",
+        "It's producing electricity at maximum capacity",
+        "The nuclear chain reaction is self-sustaining",
+        "It has reached its maximum design temperature"
+      ],
+      correctAnswer: 2,
+      explanation: "A 'critical' reactor is one in which the nuclear chain reaction is exactly self-sustaining - each fission event leads, on average, to exactly one more fission event. This is the normal operating state of a nuclear reactor with stable power output. The term does not imply any dangerous condition; in fact, being 'critical' is necessary for steady power production."
+    },
+    {
+      question: "What is the typical thermal efficiency of a nuclear power plant compared to modern coal plants?",
+      options: [
+        "Much higher (50-60%)",
+        "Slightly higher (40-45%)",
+        "About the same (30-35%)",
+        "Lower (20-25%)"
+      ],
+      correctAnswer: 2,
+      explanation: "Nuclear power plants typically operate at thermal efficiencies of around 30-35%, which is about the same as traditional coal plants. This is lower than modern combined cycle natural gas plants (which can exceed 50%). The efficiency is limited by thermodynamic principles and the relatively low steam temperatures used to ensure safety and material longevity."
+    },
+    {
+      question: "What safety feature automatically shuts down a reactor by rapidly inserting control rods?",
+      options: [
+        "Emergency core cooling system",
+        "Containment spray",
+        "SCRAM system",
+        "Pressure relief valves"
+      ],
+      correctAnswer: 2,
+      explanation: "The SCRAM system (Safety Control Rod Axe Man) is designed to rapidly shut down a nuclear reactor by quickly inserting control rods into the core, stopping the nuclear chain reaction. A SCRAM can be initiated automatically by various safety parameters or manually by operators, and is a fundamental safety feature in all nuclear reactors."
+    }
   ],
   intermediate: [
     {
@@ -466,6 +589,95 @@ const quizData = {
       ],
       correctAnswer: 0,
       explanation: "The delayed neutron fraction (often denoted by β) is the fraction of neutrons that are not released immediately during fission but with a delay due to the decay of fission products. This fraction (about 0.65% for U-235) is crucial for reactor control, as it extends the neutron generation time and makes the reactor easier to control."
+    },
+    // Adding 8 more intermediate questions
+    {
+      question: "What is a 'Loss of Coolant Accident' (LOCA) in nuclear reactors?",
+      options: [
+        "When coolant becomes contaminated with radioactive particles",
+        "When coolant is deliberately drained for maintenance",
+        "When a breach in the reactor cooling system causes coolant to escape",
+        "When coolant flow is disrupted due to pump failure"
+      ],
+      correctAnswer: 2,
+      explanation: "A Loss of Coolant Accident (LOCA) occurs when there is a breach in the reactor cooling system that causes coolant to escape faster than makeup systems can replace it. This is a serious accident scenario that could potentially lead to core overheating and fuel damage if emergency cooling systems don't function properly. Nuclear plants have multiple emergency systems designed to prevent core damage during a LOCA."
+    },
+    {
+      question: "What is the purpose of 'burnable poisons' in nuclear fuel?",
+      options: [
+        "To prevent fuel damage during accident conditions",
+        "To make spent fuel less attractive for weapons use",
+        "To compensate for excess reactivity in fresh fuel",
+        "To reduce the amount of radioactive waste produced"
+      ],
+      correctAnswer: 2,
+      explanation: "Burnable poisons (like gadolinium or boron) are incorporated into fuel to compensate for the high initial reactivity of fresh fuel. They 'burn up' (absorb neutrons and convert to non-absorbing isotopes) gradually as the fuel depletes, helping maintain relatively constant reactivity throughout the fuel cycle and allowing for longer periods between refueling."
+    },
+    {
+      question: "What does 'void coefficient of reactivity' refer to in reactor physics?",
+      options: [
+        "The change in reactivity when control rod voids are filled",
+        "The change in reactivity when coolant forms voids or bubbles",
+        "The effect of empty spaces in the reactor core design",
+        "The reactivity inserted when a control rod position is voided"
+      ],
+      correctAnswer: 1,
+      explanation: "The void coefficient measures how reactor reactivity changes when voids (bubbles) form in the coolant. A positive void coefficient means reactivity increases with void formation (potentially destabilizing), while a negative void coefficient decreases reactivity (self-stabilizing). The Chernobyl reactor had a positive void coefficient, which contributed to its accident."
+    },
+    {
+      question: "Which of these is a passive safety feature in modern nuclear reactor designs?",
+      options: [
+        "Emergency diesel generators",
+        "Gravity-driven emergency cooling system",
+        "Containment spray pumps",
+        "Digital reactor protection system"
+      ],
+      correctAnswer: 1,
+      explanation: "A gravity-driven emergency cooling system is a passive safety feature that works without pumps, electricity, or operator action. If reactor pressure drops during an accident, water from elevated tanks automatically flows into the core using just gravity. Passive safety systems enhance reliability by reducing dependence on active components and external power sources."
+    },
+    {
+      question: "What is the main advantage of a 'fast neutron reactor' compared to a thermal reactor?",
+      options: [
+        "It operates at lower temperatures, reducing material stress",
+        "It produces less radioactive waste",
+        "It can breed more fuel than it consumes",
+        "It has inherently safer operating characteristics"
+      ],
+      correctAnswer: 2,
+      explanation: "Fast neutron reactors can breed more fissile material than they consume by converting fertile materials (like U-238) into fissile isotopes (like Pu-239). This dramatically improves fuel utilization compared to thermal reactors, potentially extracting up to 60 times more energy from the same amount of uranium and reducing long-lived waste through actinide transmutation."
+    },
+    {
+      question: "What is 'defense-in-depth' in nuclear safety?",
+      options: [
+        "The use of deep underground facilities for nuclear plants",
+        "Training operators to defend the plant against attacks",
+        "Multiple, independent safety barriers and systems to prevent accidents and mitigate consequences",
+        "Defending the design against regulatory challenges"
+      ],
+      correctAnswer: 2,
+      explanation: "Defense-in-depth is a fundamental safety philosophy involving multiple independent and redundant layers of protection, so if one layer fails, others remain effective. These layers include physical barriers (fuel cladding, reactor vessel, containment) and diverse safety systems, ensuring that no single failure can lead to a major release of radioactive material."
+    },
+    {
+      question: "What is 'fuel burnup' measured in?",
+      options: [
+        "Percentage of U-235 consumed",
+        "Years of operation",
+        "Gigawatt-days per metric ton of uranium (GWd/tU)",
+        "Kilograms of fission products produced"
+      ],
+      correctAnswer: 2,
+      explanation: "Fuel burnup is measured in gigawatt-days per metric ton of uranium (GWd/tU), representing the amount of energy extracted from a unit mass of fuel. Higher burnup (typically 40-60 GWd/tU in modern plants) indicates more efficient fuel utilization but also leads to greater fuel cladding stress and fission product inventory."
+    },
+    {
+      question: "What is the main function of a 'pressurizer' in a Pressurized Water Reactor?",
+      options: [
+        "To increase thermal efficiency by raising system pressure",
+        "To pressurize the containment building during accidents",
+        "To maintain and control primary coolant system pressure",
+        "To compress control rod drive mechanisms for faster insertion"
+      ],
+      correctAnswer: 2,
+      explanation: "The pressurizer maintains and controls pressure in the primary coolant system of a PWR. It contains both water and steam phases, with electric heaters and water spray systems that can increase or decrease pressure as needed. This ensures the primary coolant remains liquid throughout the system, preventing boiling in the core."
     },
     {
       question: "In a nuclear reactor, what does the term 'poisoning' refer to?",
@@ -964,6 +1176,73 @@ const quizData = {
       correctAnswer: 2,
       explanation: "The Chernobyl accident was primarily caused by the RBMK reactor's positive void coefficient combined with a positive graphite coefficient. As coolant water vaporized, it increased reactivity rather than decreasing it. When control rods with graphite tips were inserted from fully withdrawn positions, they initially displaced water with graphite (a better moderator), temporarily increasing reactivity before the absorber sections entered the core - a design flaw called the 'positive scram effect'."
     },
+    // Adding 6 more advanced questions
+    {
+      question: "What is the significance of the 'China Syndrome' in nuclear safety discussions?",
+      options: [
+        "A diplomatic crisis related to nuclear technology transfer to China",
+        "A hypothetical scenario where reactor core material melts through containment",
+        "The design philosophy of reactors sold to the Chinese market",
+        "A series of safety protocols developed after incidents at Chinese nuclear plants"
+      ],
+      correctAnswer: 1,
+      explanation: "The 'China Syndrome' refers to a hypothetical severe accident scenario where reactor core material (corium) melts through the reactor vessel and containment structures, potentially reaching the Earth's core (figuratively going to China). The term gained public attention through a 1979 film of the same name, which was released shortly before the Three Mile Island accident. Modern reactor designs include features like core catchers to prevent such scenarios."
+    },
+    {
+      question: "What is 'prompt criticality' in a nuclear reactor?",
+      options: [
+        "Starting up a reactor with the quickest possible procedure",
+        "When the chain reaction is sustained by prompt neutrons alone",
+        "The point at which a reactor first achieves a self-sustaining chain reaction",
+        "Reaching full power output in minimum time"
+      ],
+      correctAnswer: 1,
+      explanation: "Prompt criticality occurs when a reactor becomes critical on prompt neutrons alone, without needing delayed neutrons. This happens when reactivity exceeds the delayed neutron fraction (β). Prompt criticality can lead to extremely rapid power increases with periods of milliseconds rather than seconds or minutes, making the reactor uncontrollable by normal means. This condition is avoided in normal reactor operation."
+    },
+    {
+      question: "What is the 'neutron life cycle' in reactor physics?",
+      options: [
+        "The time between neutron birth and absorption",
+        "The sequence of events from neutron birth to the birth of new neutrons in the next generation",
+        "The half-life of neutron-emitting radioisotopes",
+        "The activation and decay sequence of neutron absorber materials"
+      ],
+      correctAnswer: 1,
+      explanation: "The neutron life cycle describes the sequence of events from the birth of a neutron from fission to the birth of new neutrons in the next generation. It includes processes like fast fission, fast leakage, slowing down (moderation), resonance absorption, thermal leakage, thermal absorption, and reproduction. Understanding this cycle is fundamental to reactor physics and is often analyzed using the 'six-factor formula'."
+    },
+    {
+      question: "What is a 'Station Blackout' (SBO) in nuclear power plant terminology?",
+      options: [
+        "A deliberate shutdown of all electrical systems for maintenance",
+        "A complete loss of AC power, including both offsite power and emergency generators",
+        "The darkening of a control room during emergency conditions",
+        "A radio communications failure during emergency operations"
+      ],
+      correctAnswer: 1,
+      explanation: "A Station Blackout (SBO) is the complete loss of both offsite AC power and emergency onsite AC power (backup diesel generators). This is a serious condition as many critical safety systems rely on AC power. Plants have coping strategies for SBO including battery-powered DC systems, alternate AC sources, and passive cooling methods. The Fukushima accident in 2011 demonstrated the severe consequences of an extended station blackout."
+    },
+    {
+      question: "What is 'Anticipated Transient Without Scram' (ATWS) in nuclear safety analysis?",
+      options: [
+        "An expected operational occurrence that doesn't require reactor shutdown",
+        "An emergency where operators anticipate but don't perform a manual scram",
+        "An anticipated transient combined with failure of the reactor protection system",
+        "A training scenario where operators practice handling transients"
+      ],
+      correctAnswer: 2,
+      explanation: "Anticipated Transient Without Scram (ATWS) refers to an expected operational occurrence (like loss of feedwater, load rejection, etc.) combined with a failure of the reactor protection system to automatically shut down (scram) the reactor. This beyond-design-basis event could lead to serious consequences, prompting regulatory requirements for diverse protection systems and analyses demonstrating acceptable outcomes even without immediate scram."
+    },
+    {
+      question: "What is 'neutron fluence' in the context of reactor pressure vessel embrittlement?",
+      options: [
+        "The rate at which neutrons penetrate the vessel wall",
+        "The total accumulated neutron exposure over time",
+        "The reflection of neutrons from the vessel walls",
+        "The minimum neutron energy that can cause damage"
+      ],
+      correctAnswer: 1,
+      explanation: "Neutron fluence is the time-integrated neutron flux, representing the total neutron exposure accumulated over time. In reactor pressure vessels, high-energy neutron fluence causes embrittlement by creating lattice defects that reduce the material's ductility and increase its ductile-to-brittle transition temperature. This is a limiting factor in plant lifetime and is carefully monitored through surveillance programs."
+    },
     {
       question: "Which of the following best describes the concept of 'defense in depth' in nuclear safety?",
       options: [
@@ -1383,6 +1662,73 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "The 1/v law states that for many nuclides, neutron absorption cross-sections are inversely proportional to neutron velocity (or equivalently, inversely proportional to the square root of energy). This is why thermal neutrons (slower) have higher absorption probabilities than fast neutrons for many isotopes, including key absorbers like B-10, which follows this law closely over a wide energy range."
+    },
+    // Adding 6 more expert questions
+    {
+      question: "What is the 'Wigner energy' phenomenon in graphite-moderated reactors?",
+      options: [
+        "Excess energy released during reactor startup due to neutron efficiency",
+        "The energy stored in graphite crystal lattice defects caused by neutron irradiation",
+        "The energy cost of extracting graphite for nuclear applications",
+        "The threshold energy for graphite to undergo neutron moderation"
+      ],
+      correctAnswer: 1,
+      explanation: "Wigner energy refers to the energy stored in graphite crystal lattice defects caused by neutron irradiation. When graphite is irradiated, carbon atoms are displaced from their lattice positions, storing potential energy. If the graphite later heats to a temperature higher than its irradiation temperature, this energy can be suddenly released, potentially causing dangerous temperature excursions. This phenomenon contributed to the 1957 Windscale fire in the UK."
+    },
+    {
+      question: "What is the 'Doppler broadening' effect in nuclear fuel?",
+      options: [
+        "The widening of neutron absorption resonance peaks due to thermal motion of target nuclei",
+        "The expansion of fuel pellets at high temperatures",
+        "The acceleration of fission products due to thermal effects",
+        "The spreading of neutron energy spectrum in hot fuel"
+      ],
+      correctAnswer: 0,
+      explanation: "Doppler broadening is the phenomenon where neutron absorption resonance peaks of fuel nuclei (especially U-238) widen as temperature increases due to the increased thermal motion of target nuclei. This results in greater neutron capture at resonance energies, providing a prompt negative temperature feedback mechanism crucial for reactor stability and safety, as it automatically reduces reactivity when fuel temperature rises."
+    },
+    {
+      question: "What is 'reactivity-initiated accident' (RIA) in nuclear safety analysis?",
+      options: [
+        "An accident caused by operator errors in reactivity management",
+        "A sudden addition of positive reactivity leading to power excursion",
+        "An accident initiated by the reactor's automatic protection system",
+        "The failure of reactivity measurement instruments"
+      ],
+      correctAnswer: 1,
+      explanation: "A reactivity-initiated accident (RIA) involves the sudden addition of positive reactivity that leads to a rapid power excursion. Examples include control rod ejection or rapid boron dilution. These events are analyzed to ensure that fuel design limits aren't exceeded and core coolability is maintained. RIA analysis considers factors like fuel burnup, pulse width, and power peaking factors to determine acceptable safety margins."
+    },
+    {
+      question: "What is the 'adjoint flux' in reactor physics?",
+      options: [
+        "The neutron flux adjacent to the core in the reflector region",
+        "The mathematical representation of neutron importance",
+        "The negative of the main neutron flux",
+        "The flux of neutrons traveling in the opposite direction"
+      ],
+      correctAnswer: 1,
+      explanation: "The adjoint flux (or importance function) is a mathematical representation of neutron importance - how much each neutron at a given position, energy, and direction contributes to the chain reaction. Mathematically, it's the solution to the adjoint of the neutron transport equation. The adjoint flux is essential for perturbation theory, calculating reactivity coefficients, optimizing detector placements, and variance reduction in Monte Carlo simulations."
+    },
+    {
+      question: "What are 'Separative Work Units' (SWU) in uranium enrichment?",
+      options: [
+        "The number of centrifuges in an enrichment facility",
+        "A measure of the effort required to separate uranium isotopes",
+        "Units of work performed by separation technicians",
+        "The capacity of uranium separation membranes"
+      ],
+      correctAnswer: 1,
+      explanation: "Separative Work Units (SWU) quantify the effort required to separate uranium isotopes during enrichment, regardless of the specific enrichment technology used. It's a measure of the thermodynamic work involved in transforming a quantity of uranium with one isotopic ratio to another with a different isotopic ratio. SWU capacity is a key parameter for enrichment facilities, with implications for both civilian nuclear power programs and nuclear nonproliferation."
+    },
+    {
+      question: "What is 'subcritical multiplication' in nuclear systems?",
+      options: [
+        "The amplification of a neutron source in a subcritical assembly",
+        "The production of subcritical isotopes through neutron activation",
+        "A technique for subcritical safety analysis",
+        "The reduction of neutron population below critical levels"
+      ],
+      correctAnswer: 0,
+      explanation: "Subcritical multiplication refers to the amplification of neutrons from an external source in a subcritical system (k < 1). As the system approaches criticality, the multiplication factor M = 1/(1-k) grows larger, amplifying the source neutrons. This phenomenon is important for subcritical reactivity measurements, startup neutron monitoring, and is the fundamental operating principle of accelerator-driven subcritical systems."
     },
     {
       question: "What is the 'point of adding heat' (POAH) in a nuclear reactor startup?",
