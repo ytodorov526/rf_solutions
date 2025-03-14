@@ -421,7 +421,8 @@ const quizData = {
       ],
       correctAnswer: 1,
       explanation: "ALARA stands for 'As Low As Reasonably Achievable.' It's a fundamental principle in radiation protection that aims to minimize radiation doses and releases of radioactive materials. While recognizing that some radiation exposure may be necessary, ALARA requires making every reasonable effort to minimize exposure, taking into account economic and social factors."
-      question: "What is the purpose of a biological shield in a nuclear reactor?",
+    },
+    {question: "What is the purpose of a biological shield in a nuclear reactor?",
       options: [
         "To protect reactor components from biological contaminants",
         "To reduce radiation exposure to personnel and the environment",
