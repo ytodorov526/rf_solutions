@@ -906,6 +906,8 @@ const quizData = {
       ],
       correctAnswer: 2,
       explanation: "The reflector peak is a localized increase in neutron flux (and power density) that occurs near the interface between the reactor core and the reflector. It happens because neutrons that would otherwise escape are reflected back into the core, causing higher reaction rates in fuel elements near the boundary. This phenomenon must be accounted for in power distribution calculations and thermal margin assessments."
+    },
+    {
       question: "What is the 'source term' in nuclear accident analysis?",
       options: [
         "The initial neutron source strength required for reactor startup",
@@ -1766,6 +1768,8 @@ const quizData = {
       ],
       correctAnswer: 0,
       explanation: "A Bonner sphere spectrometer is an instrument used to measure neutron energy spectra. It consists of a thermal neutron detector surrounded by moderating polyethylene spheres of different diameters. Each sphere configuration has different response functions to neutrons of various energies. By measuring counts with different sphere sizes and applying unfolding algorithms, the neutron energy spectrum can be determined, which is important for radiation protection and shielding design."
+    },
+    {
       question: "What is the 'Westcott formalism' in reactor physics?",
       options: [
         "A method for calculating control rod worth",
