@@ -143,7 +143,7 @@ function VVER1000ControlRoom() {
     if (scenarioId) {
       loadScenario(scenarioId);
     } else {
-      engineRef.current?.reset(initialState);
+      engineRef.current?.reset({...initialState});
     }
   }, [loadScenario]);
   
