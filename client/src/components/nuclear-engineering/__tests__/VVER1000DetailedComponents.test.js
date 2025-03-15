@@ -13,11 +13,7 @@ jest.mock('@react-three/fiber', () => ({
 jest.mock('@react-three/drei', () => ({
   OrbitControls: () => <div data-testid="orbit-controls"></div>,
   Text: ({ children, ...props }) => <div data-testid="text" {...props}>{children}</div>,
-  Html: ({ children }) => <div data-testid="html">{children}</div>,
-  useTexture: jest.fn(),
-  Environment: () => null,
-  ContactShadows: () => null,
-  useGLTF: jest.fn()
+  Html: ({ children }) => <div data-testid="html">{children}</div>
 }));
 
 jest.mock('three', () => ({

@@ -1,8 +1,10 @@
 // VVER1000DetailedComponents.js - Detailed component visualizations for the VVER-1000 simulator
 import React, { useState, useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Text, Html, useTexture, useGLTF, Environment, ContactShadows } from '@react-three/drei';
+import { OrbitControls, Text, Html } from '@react-three/drei';
 import * as THREE from 'three';
+// Explicitly import only what we need from Three.js to avoid compatibility issues
+import { Color, BufferAttribute } from 'three';
 import { Box, Typography, Paper, Grid, Button, IconButton, Tooltip, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { VVER1000 } from './VVER1000Constants';
 import InfoIcon from '@mui/icons-material/Info';
@@ -27,11 +29,11 @@ const PrimaryCircuit = ({ reactorPower, primaryTemp, primaryPressure, coolantFlo
   // Heat color based on temperature
   const getHeatColor = (value) => {
     // Value between 0-1
-    if (value < 0.2) return new THREE.Color(0x3333ff); // Blue (cold)
-    if (value < 0.4) return new THREE.Color(0x33ffff); // Cyan
-    if (value < 0.6) return new THREE.Color(0x33ff33); // Green
-    if (value < 0.8) return new THREE.Color(0xffff33); // Yellow
-    return new THREE.Color(0xff3333); // Red (hot)
+    if (value < 0.2) return new Color(0x3333ff); // Blue (cold)
+    if (value < 0.4) return new Color(0x33ffff); // Cyan
+    if (value < 0.6) return new Color(0x33ff33); // Green
+    if (value < 0.8) return new Color(0xffff33); // Yellow
+    return new Color(0xff3333); // Red (hot)
   };
   
   // Animation for the flow indicators and components
@@ -551,7 +553,7 @@ const SecondaryCircuit = ({ reactorPower, secondaryPressure, turbineRpm, gridCon
             color={gridConnected ? "#33aa33" : "#aa3333"} 
             metalness={0.7} 
             roughness={0.3}
-            emissive={gridConnected ? new THREE.Color(0x33aa33) : new THREE.Color(0)}
+            emissive={gridConnected ? new Color(0x33aa33) : new Color(0)}
             emissiveIntensity={0.5}
           />
         </mesh>
