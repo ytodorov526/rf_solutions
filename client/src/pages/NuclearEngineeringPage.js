@@ -196,24 +196,24 @@ const calculatorFormulas = [
 // Nuclear Engineering simulators overview
 const simulatorsOverview = [
   {
-    title: "Reactor Kinetics Simulator",
-    description: "Model the time-dependent behavior of neutron population in a reactor core, including delayed neutron effects and reactivity insertions.",
-    status: "Under development"
+    title: "VVER-1000 Control Room Simulator",
+    description: "Experience operating a VVER-1000 nuclear power plant as a control room operator with realistic scenarios and interactive controls.",
+    status: "Available Now"
   },
   {
-    title: "Fuel Assembly Designer",
-    description: "Interactive tool for designing nuclear fuel assemblies, calculating enrichment distributions, and thermal-hydraulic performance.",
-    status: "Under development"
+    title: "Reactor Kinetics Simulator",
+    description: "Model the time-dependent behavior of neutron population in a reactor core, including delayed neutron effects and reactivity insertions.",
+    status: "Available Now"
+  },
+  {
+    title: "Thermal-Hydraulics Simulator",
+    description: "Explore thermal-hydraulic behavior in nuclear reactors with different coolant types and core geometries.",
+    status: "Available Now"
   },
   {
     title: "Containment System Analyzer",
     description: "Simulate containment system response during accident scenarios, including pressure and temperature transients.",
-    status: "Coming soon"
-  },
-  {
-    title: "Reactor Physics Calculator",
-    description: "Comprehensive calculator for neutron diffusion, multiplication factors, and core lifecycle analysis.",
-    status: "Coming soon"
+    status: "Available Now"
   },
   {
     title: "Spent Fuel Management Simulator",
@@ -638,11 +638,67 @@ function NuclearEngineeringPage() {
                 </ErrorBoundary>
               </Box>
               
+              <Box sx={{ mt: 4 }} id="vver1000-control-room-section">
+                {/* Include the VVER-1000 Control Room Simulator */}
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4 }}>
+                      <CircularProgress size={24} />
+                      <Typography sx={{ ml: 2 }}>Loading VVER-1000 Control Room Simulator...</Typography>
+                    </Box>
+                  }>
+                    {React.createElement(
+                      React.lazy(() => import('../components/nuclear-engineering/VVER1000ControlRoom')),
+                      {}
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
+              </Box>
+              
               <Typography variant="h5" gutterBottom sx={{ mt: 6, mb: 3 }}>
                 Coming Soon: Additional Simulator Modules
               </Typography>
               
               <Grid container spacing={4}>
+                <Grid item xs={12} md={6}>
+                  <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography variant="h5" component="h3" gutterBottom>
+                        VVER-1000 Control Room Simulator
+                      </Typography>
+                      <Typography variant="body2" paragraph>
+                        Experience operating a VVER-1000 nuclear power plant as a control room operator with realistic scenarios and interactive controls. Manage reactor parameters to ensure safe and efficient operation.
+                      </Typography>
+                      <Box 
+                        sx={{ 
+                          display: 'inline-block', 
+                          bgcolor: 'rgba(0, 100, 0, 0.08)', 
+                          px: 1.5, 
+                          py: 0.5, 
+                          borderRadius: 1,
+                          mt: 'auto'
+                        }}
+                      >
+                        <Typography variant="caption" fontWeight="medium" color="success.main">
+                          Status: Available Now
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                    <Box sx={{ p: 2, pt: 0 }}>
+                      <Button 
+                        variant="outlined" 
+                        fullWidth 
+                        onClick={() => {
+                          setActiveTab(2);
+                          document.getElementById('vver1000-control-room-section').scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Launch Simulator
+                      </Button>
+                    </Box>
+                  </Card>
+                </Grid>
+                
                 <Grid item xs={12} md={6}>
                   <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                     <CardContent sx={{ flexGrow: 1 }}>
@@ -674,45 +730,6 @@ function NuclearEngineeringPage() {
                         onClick={() => {
                           setActiveTab(2);
                           document.getElementById('containment-section').scrollIntoView({ behavior: 'smooth' });
-                        }}
-                      >
-                        Launch Simulator
-                      </Button>
-                    </Box>
-                  </Card>
-                </Grid>
-                
-                <Grid item xs={12} md={6}>
-                  <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography variant="h5" component="h3" gutterBottom>
-                        Core Loading Pattern Optimizer
-                      </Typography>
-                      <Typography variant="body2" paragraph>
-                        Design and optimize nuclear reactor core loading patterns for maximum fuel utilization, cycle length, and balanced power distribution. Evaluate thermal margins and safety parameters.
-                      </Typography>
-                      <Box 
-                        sx={{ 
-                          display: 'inline-block', 
-                          bgcolor: 'rgba(0, 100, 0, 0.08)', 
-                          px: 1.5, 
-                          py: 0.5, 
-                          borderRadius: 1,
-                          mt: 'auto'
-                        }}
-                      >
-                        <Typography variant="caption" fontWeight="medium" color="success.main">
-                          Status: Available Now
-                        </Typography>
-                      </Box>
-                    </CardContent>
-                    <Box sx={{ p: 2, pt: 0 }}>
-                      <Button 
-                        variant="outlined" 
-                        fullWidth 
-                        onClick={() => {
-                          setActiveTab(2);
-                          document.getElementById('core-optimizer-section').scrollIntoView({ behavior: 'smooth' });
                         }}
                       >
                         Launch Simulator
