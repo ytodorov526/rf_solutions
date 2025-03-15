@@ -46,6 +46,12 @@ class VVER1000Engine {
       ...event,
       executed: false
     })) || [];
+    
+    // Initialize empty history arrays if they don't exist
+    if (!this.state.powerHistory) this.state.powerHistory = [];
+    if (!this.state.tempHistory) this.state.tempHistory = [];
+    if (!this.state.pressureHistory) this.state.pressureHistory = [];
+    
     this.onUpdate(this.state);
     this.emit('reset', { time: this.state.time });
   }
