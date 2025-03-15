@@ -23,7 +23,8 @@ import {
   TableContainer, 
   TableHead, 
   TableRow,
-  Link
+  Link,
+  Collapse
 } from '@mui/material';
 import { 
   InfoOutlined, 
@@ -36,7 +37,9 @@ import {
   AccessTime,
   Warning,
   BarChart,
-  PhotoLibrary
+  PhotoLibrary,
+  ExpandMore as ExpandMoreIcon,
+  Launch as LaunchIcon
 } from '@mui/icons-material';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
@@ -109,7 +112,8 @@ function TabPanel(props) {
 }
 
 const SpentFuelManagementSimulator = () => {
-  // State for tab management
+  // State for simulator visibility and tab management
+  const [showSimulator, setShowSimulator] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   
   // State for fuel parameters
@@ -549,15 +553,31 @@ const SpentFuelManagementSimulator = () => {
         </Tooltip>
       </Typography>
       
-      <Divider sx={{ mb: 3 }} />
+      <Typography variant="body2" color="text.secondary" paragraph>
+        Model spent nuclear fuel handling, storage options, and disposal strategies, 
+        including cooling requirements, radiation levels, and long-term safety considerations.
+      </Typography>
       
-      <Tabs value={tabValue} onChange={handleTabChange} centered sx={{ mb: 2 }}>
-        <Tab label="Fuel Parameters" />
-        <Tab label="Storage Options" />
-        <Tab label="Results & Projections" />
-        <Tab label="Isotope Inventory" />
-        <Tab label="Education" />
-      </Tabs>
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={showSimulator ? <ExpandMoreIcon /> : <LaunchIcon />}
+        onClick={() => setShowSimulator(!showSimulator)}
+        sx={{ my: 2 }}
+      >
+        {showSimulator ? "Hide Simulator" : "Launch Simulator"}
+      </Button>
+      
+      <Collapse in={showSimulator} timeout="auto" unmountOnExit>
+        <Divider sx={{ my: 2 }} />
+        
+        <Tabs value={tabValue} onChange={handleTabChange} centered sx={{ mb: 2 }}>
+          <Tab label="Fuel Parameters" />
+          <Tab label="Storage Options" />
+          <Tab label="Results & Projections" />
+          <Tab label="Isotope Inventory" />
+          <Tab label="Education" />
+        </Tabs>
       
       {/* Fuel Parameters Tab */}
       <TabPanel value={tabValue} index={0}>
@@ -1370,6 +1390,7 @@ const SpentFuelManagementSimulator = () => {
           </Grid>
         </Grid>
       </TabPanel>
+      </Collapse>
     </Paper>
   );
 };
