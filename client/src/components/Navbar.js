@@ -22,6 +22,7 @@ const pages = [
   { name: 'Projects', path: '/projects' },
   { name: 'Petrochemistry Games', path: '/educational-games' },
   { name: 'Nuclear Engineering', path: '/nuclear-engineering' },
+  { name: 'Electrical Engineering', path: '/electrical-engineering' },
   { name: 'Rocket Science', path: '/rocket-science' },
   { name: 'Contact', path: '/contact' },
 ];
