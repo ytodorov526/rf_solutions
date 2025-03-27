@@ -24,6 +24,7 @@ const pages = [
   { name: 'Nuclear Engineering', path: '/nuclear-engineering' },
   { name: 'Electrical Engineering', path: '/electrical-engineering' },
   { name: 'Rocket Science', path: '/rocket-science' },
+  { name: 'Health Optimization', path: '/health' },
   { name: 'Contact', path: '/contact' },
 ];
 
