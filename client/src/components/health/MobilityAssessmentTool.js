@@ -168,13 +168,32 @@ function MobilityAssessmentTool() {
   };
   
   const calculateTotalScore = () => {
-    return Object.values(scores).reduce((sum, curr) => sum + curr, 0);
+    try {
+      const values = Object.values(scores);
+      if (!values || values.length === 0) {
+        return 0;
+      }
+      return values.reduce((sum, curr) => {
+        // Make sure we're only adding numbers
+        const numValue = Number(curr);
+        return sum + (isNaN(numValue) ? 0 : numValue);
+      }, 0);
+    } catch (err) {
+      console.error("Error calculating total score:", err);
+      return 0;
+    }
   };
   
   const getInterpretation = (score) => {
+    if (typeof score !== 'number' || isNaN(score)) {
+      // Handle invalid score
+      return mobilityScoreInterpretation[2]; // Return "Average" range as default
+    }
+    
+    // Find matching interpretation or default to "Average" if none found
     return mobilityScoreInterpretation.find(
       (item) => score >= item.range[0] && score <= item.range[1]
-    );
+    ) || mobilityScoreInterpretation[2];
   };
   
   const isStepComplete = (step) => {
@@ -337,10 +356,10 @@ function MobilityAssessmentTool() {
                       {calculateTotalScore()}/25
                     </Typography>
                     <Typography variant="h6" align="center" gutterBottom>
-                      {getInterpretation(calculateTotalScore()).level} Mobility
+                      {getInterpretation(calculateTotalScore())?.level || 'Average'} Mobility
                     </Typography>
                     <Typography variant="body2" paragraph>
-                      {getInterpretation(calculateTotalScore()).description}
+                      {getInterpretation(calculateTotalScore())?.description || 'You have moderate mobility that could be improved with a structured mobility program.'}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -409,11 +428,15 @@ function MobilityAssessmentTool() {
                 </Typography>
                 
                 <Box component="ul" sx={{ pl: 2 }}>
-                  {getInterpretation(calculateTotalScore()).recommendations.map((rec, index) => (
+                  {getInterpretation(calculateTotalScore())?.recommendations?.map((rec, index) => (
                     <Typography component="li" variant="body1" key={index} paragraph>
                       {rec}
                     </Typography>
-                  ))}
+                  )) || (
+                    <Typography component="li" variant="body1" paragraph>
+                      Implement a daily 15-minute mobility routine focusing on problem areas.
+                    </Typography>
+                  )}
                 </Box>
                 
                 <Divider sx={{ my: 3 }} />
