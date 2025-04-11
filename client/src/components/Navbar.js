@@ -27,6 +27,7 @@ const pages = [
   { name: 'Health Optimization', path: '/health' },
   { name: 'Biochemistry', path: '/biochemistry' },
   { name: 'Contact', path: '/contact' },
+  { name: 'Molecular Biotechnology', path: '/molecular-biotechnology' }
 ];
 
 function Navbar() {
