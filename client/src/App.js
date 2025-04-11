@@ -17,6 +17,7 @@ const RocketSciencePage = lazy(() => import('./pages/RocketSciencePage'));
 const ElectricalEngineeringPage = lazy(() => import('./pages/ElectricalEngineeringPage'));
 const HealthPage = lazy(() => import('./pages/HealthPage'));
 const BiochemistryPage = lazy(() => import('./pages/BiochemistryPage'));
+const MolecularBiotechnologyPage = lazy(() => import('./pages/MolecularBiotechnologyPage'));
 
 // Components
 import Navbar from './components/Navbar';
@@ -55,6 +56,7 @@ function App() {
             <Route path="/rocket-science" element={<RocketSciencePage />} />
             <Route path="/health" element={<HealthPage />} />
             <Route path="/biochemistry" element={<BiochemistryPage />} />
+            <Route path="/molecular-biotechnology" element={<MolecularBiotechnologyPage />} />
           </Routes>
         </Suspense>
         <Footer />
