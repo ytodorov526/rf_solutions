@@ -129,7 +129,7 @@ const molecules = {
     { 
       id: 'cholesterol', 
       name: 'Cholesterol', 
-      description: 'Cholesterol is a waxy substance found in cells. It's vital for normal body function, as it's needed to build cell membranes, make hormones, and produce vitamin D.',
+      description: 'Cholesterol is a waxy substance found in cells. It\'s vital for normal body function, as it\'s needed to build cell membranes, make hormones, and produce vitamin D.',
       size: 'Small molecule (steroid)',
       function: 'Membrane structure, hormone precursor',
       formula: 'C27H46O'

@@ -26,7 +26,9 @@ const pages = [
   { name: 'Rocket Science', path: '/rocket-science' },
   { name: 'Health Optimization', path: '/health' },
   { name: 'Biochemistry', path: '/biochemistry' },
-  { name: 'Contact', path: '/contact' },
+  { name: 'Molecular Biotechnology', path: '/molecular-biotechnology' },
+  { name: 'Contact', path: '/contact' }
+  
 ];
 
 function Navbar() {
