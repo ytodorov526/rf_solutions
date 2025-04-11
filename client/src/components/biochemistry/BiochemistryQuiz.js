@@ -1631,7 +1631,6 @@ const quizQuestions = {
     }
   ]
 };
-};
 
 const BiochemistryQuiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
