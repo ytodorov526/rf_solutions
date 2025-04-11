@@ -25,6 +25,7 @@ const pages = [
   { name: 'Electrical Engineering', path: '/electrical-engineering' },
   { name: 'Rocket Science', path: '/rocket-science' },
   { name: 'Health Optimization', path: '/health' },
+  { name: 'Biochemistry', path: '/biochemistry' },
   { name: 'Contact', path: '/contact' },
 ];
 
