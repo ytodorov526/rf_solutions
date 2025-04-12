@@ -1550,9 +1550,8 @@ const BiotechnologyQuiz = ({ quizQuestions = defaultQuestions }) => {
     if (quizQuestions && quizQuestions.length > 0) {
       if (quizMode === 'random') {
         // Select a random subset of questions
-        const randomQuestions = [...quizQuestions]
-          .sort(() => 0.5 - Math.random())
-          .slice(0, Math.min(10, quizQuestions.length));
+        const shuffledQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+        const randomQuestions = shuffledQuestions.slice(0, 10);
         setSelectedQuestions(randomQuestions);
       } else {
         // Use all questions in sequential order
@@ -1648,9 +1647,8 @@ const BiotechnologyQuiz = ({ quizQuestions = defaultQuestions }) => {
     
     // Re-select questions if in random mode
     if (quizMode === 'random') {
-      const randomQuestions = [...quizQuestions]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.min(10, quizQuestions.length));
+      const shuffledQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+      const randomQuestions = shuffledQuestions.slice(0, 10);
       setSelectedQuestions(randomQuestions);
     }
   };
@@ -1658,12 +1656,36 @@ const BiotechnologyQuiz = ({ quizQuestions = defaultQuestions }) => {
   // Start the quiz
   const startQuiz = () => {
     setQuizStarted(true);
-    restartQuiz();
+    setCurrentQuestion(0);
+    setSelectedOption(null);
+    setAnswered(false);
+    setScore(0);
+    setProgress(0);
+    setQuizComplete(false);
+    setShowExplanation(false);
+    setAnsweredQuestions([]);
+    
+    // Use correct questions based on mode
+    if (quizMode === 'random') {
+      const shuffledQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+      const randomQuestions = shuffledQuestions.slice(0, 10);
+      setSelectedQuestions(randomQuestions);
+    } else {
+      setSelectedQuestions(quizQuestions);
+    }
   };
   
   // Change quiz mode
   const changeQuizMode = (mode) => {
     setQuizMode(mode);
+    // Pre-select questions based on mode to update the button display
+    if (mode === 'random') {
+      const shuffledQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+      const randomQuestions = shuffledQuestions.slice(0, 10);
+      setSelectedQuestions(randomQuestions);
+    } else {
+      setSelectedQuestions(quizQuestions);
+    }
   };
   
   // Calculate performance metrics
@@ -1712,12 +1734,16 @@ const BiotechnologyQuiz = ({ quizQuestions = defaultQuestions }) => {
             <Button 
               variant={quizMode === 'sequential' ? 'contained' : 'outlined'} 
               onClick={() => changeQuizMode('sequential')}
+              color="primary"
+              sx={{ minWidth: '200px' }}
             >
-              Full Quiz
+              Full Quiz ({quizQuestions.length} Questions)
             </Button>
             <Button 
               variant={quizMode === 'random' ? 'contained' : 'outlined'} 
               onClick={() => changeQuizMode('random')}
+              color="secondary"
+              sx={{ minWidth: '200px' }}
             >
               Quick Quiz (10 Random Questions)
             </Button>
