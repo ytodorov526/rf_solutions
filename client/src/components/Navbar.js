@@ -138,6 +138,15 @@ function Navbar() {
                 {page.name}
               </Button>
             ))}
+            <Button
+              color="inherit"
+              component={RouterLink}
+              to="/neuro-quiz"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Neuro Quiz
+            </Button>
           </Box>
         </Toolbar>
       </Container>

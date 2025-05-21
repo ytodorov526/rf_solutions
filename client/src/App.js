@@ -1,10 +1,12 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, AppBar, Toolbar, Typography, Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import NeuroQuiz from './components/NeuroQuiz';
 
 // Theme Provider
-import { ThemeContextProvider } from './theme/ThemeContext';
+import { ThemeContextProvider } from './context/ThemeContext';
 
+<<<<<<< Updated upstream
 // Pages with lazy loading
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ProductsPage = lazy(() => import('./pages/ProductsPage'));
@@ -18,29 +20,38 @@ const ElectricalEngineeringPage = lazy(() => import('./pages/ElectricalEngineeri
 const HealthPage = lazy(() => import('./pages/HealthPage'));
 const BiochemistryPage = lazy(() => import('./pages/BiochemistryPage'));
 const MolecularBiotechnologyPage = lazy(() => import('./pages/MolecularBiotechnologyPage'));
+=======
+// Lazy-loaded components
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Navbar = lazy(() => import('./components/Navbar'));
+const Footer = lazy(() => import('./components/Footer'));
+const ThemeSettings = lazy(() => import('./components/ThemeSettings'));
+>>>>>>> Stashed changes
 
-// Components
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import ThemeSettings from './components/ThemeSettings';
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+});
 
 // Loading component for suspense fallback
 const LoadingFallback = () => (
-  <Box 
-    sx={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      minHeight: '100vh'
-    }}
-  >
-    <CircularProgress size={60} thickness={4} />
+  <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+    <CircularProgress />
   </Box>
 );
 
 function App() {
   return (
     <ThemeContextProvider>
+<<<<<<< Updated upstream
       <BrowserRouter>
         <Navbar />
         <Suspense fallback={<LoadingFallback />}>
@@ -62,6 +73,24 @@ function App() {
         <Footer />
         <ThemeSettings />
       </BrowserRouter>
+=======
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <Navbar />
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/neuro-quiz" element={<NeuroQuiz />} />
+            </Routes>
+          </Suspense>
+          <Footer />
+          <ThemeSettings />
+        </BrowserRouter>
+      </ThemeProvider>
+>>>>>>> Stashed changes
     </ThemeContextProvider>
   );
 }
