@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
@@ -33,6 +33,31 @@ const pages = [
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElMore, setAnchorElMore] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(pages.length);
+  const containerRef = useRef();
+  const itemRefs = useRef([]);
+
+  // Measure and update visibleCount on mount and resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (!containerRef.current) return;
+      // const containerWidth = containerRef.current.offsetWidth;
+      // let usedWidth = 0;
+      // let fitCount = 0;
+      // for (let i = 0; i < pages.length; i++) {
+      //   const itemWidth = itemRefs.current[i]?.offsetWidth || 0;
+      //   usedWidth += itemWidth + 16;
+      //   if (usedWidth > containerWidth - 80) break;
+      //   fitCount++;
+      // }
+      // setVisibleCount(fitCount);
+      setVisibleCount(3); // Force only 3 items to show for testing
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -41,6 +66,17 @@ function Navbar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const handleOpenMoreMenu = (event) => {
+    setAnchorElMore(event.currentTarget);
+  };
+
+  const handleCloseMoreMenu = () => {
+    setAnchorElMore(null);
+  };
+
+  const mainPages = pages.slice(0, visibleCount);
+  const morePages = pages.slice(visibleCount);
 
   return (
     <AppBar position="static">
@@ -126,24 +162,54 @@ function Navbar() {
           </Typography>
 
           {/* Desktop menu */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
-            {pages.map((page) => (
+          <Box ref={containerRef} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, whiteSpace: 'nowrap', overflow: 'hidden', minWidth: 0, flexShrink: 1 }}>
+            {mainPages.map((page, i) => (
               <Button
                 key={page.name}
+                ref={el => itemRefs.current[i] = el}
                 component={RouterLink}
                 to={page.path}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'white', display: 'block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: 140 }}
               >
                 {page.name}
               </Button>
             ))}
+            {morePages.length > 0 && (
+              <>
+                <Button
+                  color="inherit"
+                  onClick={handleOpenMoreMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  More
+                </Button>
+                <Menu
+                  anchorEl={anchorElMore}
+                  open={Boolean(anchorElMore)}
+                  onClose={handleCloseMoreMenu}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                >
+                  {morePages.map((page) => (
+                    <MenuItem
+                      key={page.name}
+                      component={RouterLink}
+                      to={page.path}
+                      onClick={handleCloseMoreMenu}
+                    >
+                      {page.name}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            )}
             <Button
               color="inherit"
               component={RouterLink}
               to="/neuro-quiz"
               onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
+              sx={{ my: 2, color: 'white', display: 'block', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: 140 }}
             >
               Neuro Quiz
             </Button>
