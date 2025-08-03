@@ -54,17 +54,36 @@ import {
 
 // Import enhanced banking components
 import { BillPaymentComponent, StatementComponent, SecuritySettingsComponent } from '../components/BankingComponents';
-import { 
-  InvestmentPortfolioComponent, 
-  LoanCalculatorComponent, 
-  BudgetTrackerComponent, 
-  CustomerSupportComponent 
+import {
+  InvestmentPortfolioComponent,
+  LoanCalculatorComponent,
+  BudgetTrackerComponent,
+  CustomerSupportComponent
 } from '../components/EnhancedBankingFeatures';
 import {
   CryptoPortfolioComponent,
   InternationalTransferComponent,
   AIInsightsComponent
 } from '../components/AdvancedBankingFeatures';
+import GoalTracking from '../components/GoalTracking';
+import SavingsChallenges from '../components/SavingsChallenges';
+import FinancialWellnessScore from '../components/FinancialWellnessScore';
+import {
+  QRCodeGeneratorComponent,
+  QRCodeScannerComponent,
+  P2PTransferComponent,
+  MerchantPaymentComponent,
+  WalletTransactionHistoryComponent,
+  DigitalWalletDashboard,
+  mockWalletData
+} from '../components/DigitalWalletComponents';
+import {
+  PINManagementComponent,
+  SpendingLimitsComponent,
+  NotificationSettingsComponent,
+  SecurityActivityComponent,
+  WalletSecurityDashboard
+} from '../components/WalletSecurityComponents';
 
 // Mock data for the banking portal
 const mockUserData = {
@@ -84,7 +103,7 @@ const mockUserData = {
 };
 
 function BankingPortalPage() {
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(12); // Set to 12 to show the Personal Finance tab by default
   const [showBalance, setShowBalance] = useState(true);
   const [transferDialogOpen, setTransferDialogOpen] = useState(false);
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
@@ -98,6 +117,21 @@ function BankingPortalPage() {
   const [cryptoDialogOpen, setCryptoDialogOpen] = useState(false);
   const [internationalTransferDialogOpen, setInternationalTransferDialogOpen] = useState(false);
   const [aiInsightsDialogOpen, setAiInsightsDialogOpen] = useState(false);
+  
+  // Digital Wallet dialog states
+  const [qrGeneratorDialogOpen, setQrGeneratorDialogOpen] = useState(false);
+  const [qrScannerDialogOpen, setQrScannerDialogOpen] = useState(false);
+  const [p2pTransferDialogOpen, setP2pTransferDialogOpen] = useState(false);
+  const [merchantPaymentDialogOpen, setMerchantPaymentDialogOpen] = useState(false);
+  const [walletHistoryDialogOpen, setWalletHistoryDialogOpen] = useState(false);
+  const [addMoneyDialogOpen, setAddMoneyDialogOpen] = useState(false);
+  
+  // Wallet Security dialog states
+  const [pinManagementDialogOpen, setPinManagementDialogOpen] = useState(false);
+  const [spendingLimitsDialogOpen, setSpendingLimitsDialogOpen] = useState(false);
+  const [notificationSettingsDialogOpen, setNotificationSettingsDialogOpen] = useState(false);
+  const [securityActivityDialogOpen, setSecurityActivityDialogOpen] = useState(false);
+  
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [transferAmount, setTransferAmount] = useState("");
@@ -241,20 +275,23 @@ function BankingPortalPage() {
 
         {/* Tabs for different sections */}
         <Paper elevation={3}>
-          <Tabs value={tabValue} onChange={handleTabChange} sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tab label="Recent Transactions" />
-        <Tab label="Quick Actions" />
-        <Tab label="Investments" />
-        <Tab label="Loans & Credit" />
-        <Tab label="Budget & Analytics" />
-        <Tab label="Crypto & Digital Assets" />
-        <Tab label="International Banking" />
-        <Tab label="AI Insights" />
-        <Tab label="Account Security" />
-        <Tab label="Support" />
+          <Tabs value={tabValue} onChange={handleTabChange} sx={{ borderBottom: 1, borderColor: 'divider' }} variant="scrollable" scrollButtons="auto">
+            <Tab label="Recent Transactions" />
+            <Tab label="Quick Actions" />
+            <Tab label="Digital Wallet" />
+            <Tab label="Investments" />
+            <Tab label="Loans & Credit" />
+            <Tab label="Budget & Analytics" />
+            <Tab label="Crypto & Digital Assets" />
+            <Tab label="International Banking" />
+            <Tab label="AI Insights" />
+            <Tab label="Wallet Security" />
+            <Tab label="Account Security" />
+            <Tab label="Support" />
+            <Tab label="Personal Finance" />
           </Tabs>
-
-          {/* Recent Transactions Tab */}
+ 
+           {/* Recent Transactions Tab */}
           {tabValue === 0 && (
             <Box sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
@@ -365,8 +402,22 @@ function BankingPortalPage() {
             </Box>
           )}
 
-          {/* Investments Tab */}
+          {/* Digital Wallet Tab */}
           {tabValue === 2 && (
+            <Box sx={{ p: 0 }}>
+              <DigitalWalletDashboard
+                onQRGenerate={() => setQrGeneratorDialogOpen(true)}
+                onQRScan={() => setQrScannerDialogOpen(true)}
+                onP2PTransfer={() => setP2pTransferDialogOpen(true)}
+                onMerchantPay={() => setMerchantPaymentDialogOpen(true)}
+                onViewHistory={() => setWalletHistoryDialogOpen(true)}
+                onAddMoney={() => setAddMoneyDialogOpen(true)}
+              />
+            </Box>
+          )}
+
+          {/* Investments Tab */}
+          {tabValue === 3 && (
             <Box sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Investment Portfolio
@@ -417,7 +468,7 @@ function BankingPortalPage() {
           )}
 
           {/* Loans & Credit Tab */}
-          {tabValue === 3 && (
+          {tabValue === 4 && (
             <Box sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Loans & Credit
@@ -466,7 +517,7 @@ function BankingPortalPage() {
           )}
 
           {/* Budget & Analytics Tab */}
-          {tabValue === 4 && (
+          {tabValue === 5 && (
             <Box sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Budget & Analytics
@@ -506,8 +557,161 @@ function BankingPortalPage() {
             </Box>
           )}
 
+          {/* Crypto & Digital Assets Tab */}
+          {tabValue === 6 && (
+            <Box sx={{ p: 3 }}>
+              <Typography variant="h6" gutterBottom>Crypto Portfolio</Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <CurrencyBitcoin sx={{ fontSize: 40, color: 'primary.main', mr: 2 }} />
+                        <Box>
+                          <Typography variant="h6">Portfolio Value</Typography>
+                          <Typography variant="h4" color="primary">$7,609.82</Typography>
+                        </Box>
+                      </Box>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        +$1,234.56 (+19.4%) this month
+                      </Typography>
+                      <LinearProgress variant="determinate" value={75} sx={{ height: 8, borderRadius: 4 }} />
+                    </CardContent>
+                    <CardActions>
+                      <Button fullWidth onClick={() => setCryptoDialogOpen(true)}>
+                        Manage Portfolio
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>Top Performers</Typography>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                        <Typography variant="body2">Bitcoin (BTC)</Typography>
+                        <Typography variant="body2" color="success.main">+2.34%</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                        <Typography variant="body2">Solana (SOL)</Typography>
+                        <Typography variant="body2" color="success.main">+8.92%</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Cardano (ADA)</Typography>
+                        <Typography variant="body2" color="success.main">+5.67%</Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Box>
+          )}
+
+          {/* International Banking Tab */}
+          {tabValue === 7 && (
+            <Box sx={{ p: 3 }}>
+              <Typography variant="h6" gutterBottom>International Banking</Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <Language sx={{ fontSize: 40, color: 'primary.main', mr: 2 }} />
+                        <Box>
+                          <Typography variant="h6">Exchange Rates</Typography>
+                          <Typography variant="h4" color="primary">Live</Typography>
+                        </Box>
+                      </Box>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Real-time currency conversion
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button fullWidth onClick={() => setInternationalTransferDialogOpen(true)}>
+                        Send International Transfer
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>Supported Currencies</Typography>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                        <Chip label="EUR" size="small" />
+                        <Chip label="GBP" size="small" />
+                        <Chip label="JPY" size="small" />
+                        <Chip label="CAD" size="small" />
+                        <Chip label="AUD" size="small" />
+                        <Chip label="CHF" size="small" />
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Box>
+          )}
+
+          {/* AI Insights Tab */}
+          {tabValue === 8 && (
+            <Box sx={{ p: 3 }}>
+              <Typography variant="h6" gutterBottom>AI Financial Insights</Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <SmartToy sx={{ fontSize: 40, color: 'primary.main', mr: 2 }} />
+                        <Box>
+                          <Typography variant="h6">Financial Health</Typography>
+                          <Typography variant="h4" color="primary">85/100</Typography>
+                        </Box>
+                      </Box>
+                      <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Excellent financial health score
+                      </Typography>
+                      <LinearProgress variant="determinate" value={85} sx={{ height: 8, borderRadius: 4 }} />
+                    </CardContent>
+                    <CardActions>
+                      <Button fullWidth onClick={() => setAiInsightsDialogOpen(true)}>
+                        View Insights
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>Smart Recommendations</Typography>
+                      <Typography variant="body2" color="text.secondary" paragraph>
+                        AI-powered financial advice and spending insights
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Chip label="Spending Analysis" size="small" color="primary" />
+                        <Chip label="Savings Opportunities" size="small" color="success" />
+                        <Chip label="Investment Tips" size="small" color="info" />
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Box>
+          )}
+
+          {/* Wallet Security Tab */}
+          {tabValue === 9 && (
+            <Box sx={{ p: 0 }}>
+              <WalletSecurityDashboard
+                onManagePin={() => setPinManagementDialogOpen(true)}
+                onSpendingLimits={() => setSpendingLimitsDialogOpen(true)}
+                onNotificationSettings={() => setNotificationSettingsDialogOpen(true)}
+                onViewActivity={() => setSecurityActivityDialogOpen(true)}
+              />
+            </Box>
+          )}
+
           {/* Account Security Tab */}
-          {tabValue === 5 && (
+          {tabValue === 10 && (
             <Box sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Account Security
@@ -568,149 +772,8 @@ function BankingPortalPage() {
             </Box>
           )}
 
-                  {/* Crypto & Digital Assets Tab */}
-        {tabValue === 5 && (
-          <Box sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>Crypto Portfolio</Typography>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <CurrencyBitcoin sx={{ fontSize: 40, color: 'primary.main', mr: 2 }} />
-                      <Box>
-                        <Typography variant="h6">Portfolio Value</Typography>
-                        <Typography variant="h4" color="primary">$7,609.82</Typography>
-                      </Box>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      +$1,234.56 (+19.4%) this month
-                    </Typography>
-                    <LinearProgress variant="determinate" value={75} sx={{ height: 8, borderRadius: 4 }} />
-                  </CardContent>
-                  <CardActions>
-                    <Button fullWidth onClick={() => setCryptoDialogOpen(true)}>
-                      Manage Portfolio
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>Top Performers</Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                      <Typography variant="body2">Bitcoin (BTC)</Typography>
-                      <Typography variant="body2" color="success.main">+2.34%</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                      <Typography variant="body2">Solana (SOL)</Typography>
-                      <Typography variant="body2" color="success.main">+8.92%</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2">Cardano (ADA)</Typography>
-                      <Typography variant="body2" color="success.main">+5.67%</Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </Box>
-        )}
-
-        {/* International Banking Tab */}
-        {tabValue === 6 && (
-          <Box sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>International Banking</Typography>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Language sx={{ fontSize: 40, color: 'primary.main', mr: 2 }} />
-                      <Box>
-                        <Typography variant="h6">Exchange Rates</Typography>
-                        <Typography variant="h4" color="primary">Live</Typography>
-                      </Box>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      Real-time currency conversion
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button fullWidth onClick={() => setInternationalTransferDialogOpen(true)}>
-                      Send International Transfer
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>Supported Currencies</Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                      <Chip label="EUR" size="small" />
-                      <Chip label="GBP" size="small" />
-                      <Chip label="JPY" size="small" />
-                      <Chip label="CAD" size="small" />
-                      <Chip label="AUD" size="small" />
-                      <Chip label="CHF" size="small" />
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </Box>
-        )}
-
-        {/* AI Insights Tab */}
-        {tabValue === 7 && (
-          <Box sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>AI Financial Insights</Typography>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <SmartToy sx={{ fontSize: 40, color: 'primary.main', mr: 2 }} />
-                      <Box>
-                        <Typography variant="h6">Financial Health</Typography>
-                        <Typography variant="h4" color="primary">85/100</Typography>
-                      </Box>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      Excellent financial health score
-                    </Typography>
-                    <LinearProgress variant="determinate" value={85} sx={{ height: 8, borderRadius: 4 }} />
-                  </CardContent>
-                  <CardActions>
-                    <Button fullWidth onClick={() => setAiInsightsDialogOpen(true)}>
-                      View Insights
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>Smart Recommendations</Typography>
-                    <Typography variant="body2" color="text.secondary" paragraph>
-                      AI-powered financial advice and spending insights
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                      <Chip label="Spending Analysis" size="small" color="primary" />
-                      <Chip label="Savings Opportunities" size="small" color="success" />
-                      <Chip label="Investment Tips" size="small" color="info" />
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          </Box>
-        )}
-
-        {/* Support Tab */}
-        {tabValue === 8 && (
+                  {/* Support Tab */}
+                  {tabValue === 11 && (
             <Box sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Customer Support
@@ -757,9 +820,26 @@ function BankingPortalPage() {
               </Grid>
             </Box>
           )}
+          {/* Personal Finance Tab */}
+          {tabValue === 12 && (
+            <Box sx={{ p: 3 }}>
+              <Typography variant="h6" gutterBottom>Personal Finance Dashboard</Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <GoalTracking />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <SavingsChallenges />
+                </Grid>
+                <Grid item xs={12}>
+                  <FinancialWellnessScore />
+                </Grid>
+              </Grid>
+            </Box>
+          )}
         </Paper>
 
-        {/* Transfer Dialog */}
+          {/* Transfer Dialog */}
         <Dialog open={transferDialogOpen} onClose={() => setTransferDialogOpen(false)} maxWidth="sm" fullWidth>
           <DialogTitle>Transfer Money</DialogTitle>
           <DialogContent>
@@ -852,6 +932,85 @@ function BankingPortalPage() {
           open={aiInsightsDialogOpen}
           onClose={() => setAiInsightsDialogOpen(false)}
         />
+
+        {/* Digital Wallet Components */}
+        <QRCodeGeneratorComponent
+          open={qrGeneratorDialogOpen}
+          onClose={() => setQrGeneratorDialogOpen(false)}
+        />
+        <QRCodeScannerComponent
+          open={qrScannerDialogOpen}
+          onClose={() => setQrScannerDialogOpen(false)}
+        />
+        <P2PTransferComponent
+          open={p2pTransferDialogOpen}
+          onClose={() => setP2pTransferDialogOpen(false)}
+        />
+        <MerchantPaymentComponent
+          open={merchantPaymentDialogOpen}
+          onClose={() => setMerchantPaymentDialogOpen(false)}
+        />
+        <WalletTransactionHistoryComponent
+          open={walletHistoryDialogOpen}
+          onClose={() => setWalletHistoryDialogOpen(false)}
+        />
+
+        {/* Wallet Security Components */}
+        <PINManagementComponent
+          open={pinManagementDialogOpen}
+          onClose={() => setPinManagementDialogOpen(false)}
+        />
+        <SpendingLimitsComponent
+          open={spendingLimitsDialogOpen}
+          onClose={() => setSpendingLimitsDialogOpen(false)}
+        />
+        <NotificationSettingsComponent
+          open={notificationSettingsDialogOpen}
+          onClose={() => setNotificationSettingsDialogOpen(false)}
+        />
+        <SecurityActivityComponent
+          open={securityActivityDialogOpen}
+          onClose={() => setSecurityActivityDialogOpen(false)}
+        />
+
+        {/* Add Money Dialog (Simple implementation) */}
+        <Dialog open={addMoneyDialogOpen} onClose={() => setAddMoneyDialogOpen(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>Add Money to Wallet</DialogTitle>
+          <DialogContent>
+            <Typography variant="body2" color="text.secondary" paragraph>
+              Add money from your linked bank account to your digital wallet.
+            </Typography>
+            <TextField
+              fullWidth
+              label="Amount"
+              type="number"
+              sx={{ mb: 2, mt: 1 }}
+              InputProps={{
+                startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+              }}
+            />
+            <TextField
+              fullWidth
+              label="From Account"
+              value="Checking Account (****1234)"
+              disabled
+              helperText="Linked bank account"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setAddMoneyDialogOpen(false)}>Cancel</Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setSnackbarMessage('$100 added to your digital wallet successfully!');
+                setSnackbarOpen(true);
+                setAddMoneyDialogOpen(false);
+              }}
+            >
+              Add Money
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {/* Snackbar for notifications */}
         <Snackbar
