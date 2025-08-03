@@ -17,6 +17,7 @@ const HealthPage = lazy(() => import('./pages/HealthPage'));
 const BiochemistryPage = lazy(() => import('./pages/BiochemistryPage'));
 const MolecularBiotechnologyPage = lazy(() => import('./pages/MolecularBiotechnologyPage'));
 const NeuroQuiz = lazy(() => import('./components/NeuroQuiz'));
+const BankingPortalPage = lazy(() => import('./pages/BankingPortalPage'));
 
 // Components
 import Navbar from './components/Navbar';
@@ -57,6 +58,7 @@ function App() {
             <Route path="/biochemistry" element={<BiochemistryPage />} />
             <Route path="/molecular-biotechnology" element={<MolecularBiotechnologyPage />} />
             <Route path="/neuro-quiz" element={<NeuroQuiz />} />
+            <Route path="/banking-portal" element={<BankingPortalPage />} />
           </Routes>
         </Suspense>
         <Footer />

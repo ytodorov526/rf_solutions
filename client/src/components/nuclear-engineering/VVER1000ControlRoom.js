@@ -18,7 +18,14 @@ import {
   Snackbar,
   Alert,
   Tabs,
-  Tab
+  Tab,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Tooltip,
+  IconButton,
+  useTheme
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -27,6 +34,10 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import InfoIcon from '@mui/icons-material/Info';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
+import SchoolIcon from '@mui/icons-material/School';
+import ScienceIcon from '@mui/icons-material/Science';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import BiotechIcon from '@mui/icons-material/Biotech';
 
 // Import Chart.js components
 import {
@@ -49,7 +60,7 @@ import VVER1000DisplayPanel from './VVER1000DisplayPanel';
 import VVER1000Scenarios from './VVER1000Scenarios';
 import VVER1000ReactorCore3D from './VVER1000ReactorCore3D';
 import VVER1000DetailedComponents from './VVER1000DetailedComponents';
-import { initialState, VVER1000, SAFETY_LIMITS, SCENARIOS } from './VVER1000Constants';
+import { initialState, VVER1000, SAFETY_LIMITS, SCENARIOS, SIMULATION_MODES } from './VVER1000Constants';
 import { formatTime, chartOptions, prepareChartData } from './VVER1000Utils';
 
 // Register Chart.js components
@@ -78,6 +89,9 @@ function VVER1000ControlRoom() {
   const [operatorLogEntries, setOperatorLogEntries] = useState([]);
   const [notification, setNotification] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
+  const [simulationMode, setSimulationMode] = useState(SIMULATION_MODES.TRAINING.id);
+  const [showModeInfo, setShowModeInfo] = useState(false);
+  const theme = useTheme();
   
   // Simulation engine reference
   const engineRef = useRef(null);
@@ -277,9 +291,31 @@ function VVER1000ControlRoom() {
     }
   }, [showSimulator, isRunning]);
   
+  // Handle simulation mode change
+  const handleModeChange = (event) => {
+    const newMode = event.target.value;
+    setSimulationMode(newMode);
+    
+    // Update engine with new mode settings
+    engineRef.current?.setSimulationMode(newMode);
+    
+    // Add log entry
+    addLogEntry(`Switched to ${SIMULATION_MODES[newMode.toUpperCase()].name}`, 'info');
+  };
+  
   return (
     <Box>
-      <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          p: 3, 
+          mb: 4,
+          background: theme.palette.mode === 'dark' 
+            ? 'linear-gradient(45deg, #1a237e 30%, #0d47a1 90%)'
+            : 'linear-gradient(45deg, #e3f2fd 30%, #bbdefb 90%)',
+          color: theme.palette.mode === 'dark' ? 'white' : 'inherit'
+        }}
+      >
         <Typography variant="h4" gutterBottom>
           VVER-1000 Nuclear Power Plant Control Room Simulator
         </Typography>
@@ -288,6 +324,46 @@ function VVER1000ControlRoom() {
           Experience operating a VVER-1000 nuclear reactor as a control room operator. 
           Choose from various operational scenarios and manage reactor parameters to ensure safe and efficient operation.
         </Typography>
+        
+        {/* Simulation Mode Selection */}
+        <Box sx={{ mb: 3 }}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel>Simulation Mode</InputLabel>
+                <Select
+                  value={simulationMode}
+                  onChange={handleModeChange}
+                  label="Simulation Mode"
+                  startAdornment={
+                    <Box sx={{ mr: 1 }}>
+                      {simulationMode === 'educational' && <SchoolIcon />}
+                      {simulationMode === 'training' && <EngineeringIcon />}
+                      {simulationMode === 'expert' && <ScienceIcon />}
+                      {simulationMode === 'research' && <BiotechIcon />}
+                    </Box>
+                  }
+                >
+                  {Object.values(SIMULATION_MODES).map((mode) => (
+                    <MenuItem key={mode.id} value={mode.id}>
+                      {mode.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Button
+                variant="outlined"
+                startIcon={<InfoIcon />}
+                onClick={() => setShowModeInfo(true)}
+                fullWidth
+              >
+                Mode Information
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
         
         <Button
           variant="contained"
@@ -650,6 +726,56 @@ function VVER1000ControlRoom() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowOperatorLog(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+      
+      {/* Mode Information Dialog */}
+      <Dialog
+        open={showModeInfo}
+        onClose={() => setShowModeInfo(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Simulation Mode Information</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={3}>
+            {Object.values(SIMULATION_MODES).map((mode) => (
+              <Grid item xs={12} md={6} key={mode.id}>
+                <Card 
+                  variant="outlined"
+                  sx={{
+                    height: '100%',
+                    border: simulationMode === mode.id ? `2px solid ${theme.palette.primary.main}` : undefined
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      {mode.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" paragraph>
+                      {mode.description}
+                    </Typography>
+                    <Typography variant="subtitle2" gutterBottom>
+                      Features:
+                    </Typography>
+                    <ul style={{ paddingLeft: 20, margin: 0 }}>
+                      <li>Physics Model: {mode.features.simplifiedPhysics ? 'Simplified' : 'Full'}</li>
+                      <li>Guided Scenarios: {mode.features.guidedScenarios ? 'Yes' : 'No'}</li>
+                      <li>Detailed Explanations: {mode.features.detailedExplanations ? 'Yes' : 'No'}</li>
+                      <li>Safety Checks: {mode.features.safetyChecks ? 'Enabled' : 'Disabled'}</li>
+                      <li>Time Scale: {mode.features.timeScale}x</li>
+                      {mode.features.dataCollection && (
+                        <li>Data Collection: Enabled</li>
+                      )}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowModeInfo(false)}>Close</Button>
         </DialogActions>
       </Dialog>
       
