@@ -113,6 +113,7 @@ app.get('/api/products/:id', (req, res) => {
 const contactRoutes = require('./routes/contactRoutes');
 const productRoutes = require('./routes/productRoutes');
 const projectRoutes = require('./routes/projectRoutes');
+const roboAdvisorRoutes = require('./routes/roboAdvisorRoutes');
 
 // Check if we're in demo mode or production
 const DEMO_MODE = process.env.DEMO_MODE === 'true';
@@ -149,6 +150,7 @@ if (DEMO_MODE) {
   app.use('/api/contacts', contactRoutes);
   app.use('/api/products', productRoutes);
   app.use('/api/projects', projectRoutes);
+  app.use('/api', roboAdvisorRoutes);
 }
 
 // Serve static assets in production or for demo

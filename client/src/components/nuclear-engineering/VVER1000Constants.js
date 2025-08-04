@@ -1,5 +1,58 @@
 // VVER1000Constants.js - Configuration for the VVER-1000 simulation
 
+// Simulation modes with different levels of abstraction
+export const SIMULATION_MODES = {
+  EDUCATIONAL: {
+    id: 'educational',
+    name: 'Educational Mode',
+    description: 'Simplified physics model with focus on basic concepts and learning',
+    features: {
+      simplifiedPhysics: true,
+      guidedScenarios: true,
+      detailedExplanations: true,
+      safetyChecks: true,
+      timeScale: 0.5 // Slower simulation for learning
+    }
+  },
+  TRAINING: {
+    id: 'training',
+    name: 'Training Mode',
+    description: 'Realistic operation with training scenarios and feedback',
+    features: {
+      simplifiedPhysics: false,
+      guidedScenarios: true,
+      detailedExplanations: true,
+      safetyChecks: true,
+      timeScale: 1.0
+    }
+  },
+  EXPERT: {
+    id: 'expert',
+    name: 'Expert Mode',
+    description: 'Full physics simulation with advanced scenarios and minimal guidance',
+    features: {
+      simplifiedPhysics: false,
+      guidedScenarios: false,
+      detailedExplanations: false,
+      safetyChecks: true,
+      timeScale: 1.0
+    }
+  },
+  RESEARCH: {
+    id: 'research',
+    name: 'Research Mode',
+    description: 'Advanced simulation with detailed physics and data collection',
+    features: {
+      simplifiedPhysics: false,
+      guidedScenarios: false,
+      detailedExplanations: false,
+      safetyChecks: false,
+      timeScale: 2.0,
+      dataCollection: true
+    }
+  }
+};
+
 // VVER-1000 reactor parameters
 export const VVER1000 = {
   thermalPower: 3000, // MWth
@@ -16,6 +69,49 @@ export const VVER1000 = {
   fuelAssemblies: 163, // number of fuel assemblies
   turbineRpm: 3000, // RPM
   nominalFrequency: 50, // Hz
+  
+  // Enhanced parameters for detailed simulation
+  core: {
+    height: 3.55, // m
+    diameter: 3.12, // m
+    fuelEnrichment: 4.5, // % U-235
+    fuelCycle: 12, // months
+    burnupLimit: 60000, // MWd/tU
+    powerPeakingFactor: 1.4
+  },
+  
+  primaryCircuit: {
+    volume: 337, // m³
+    massFlowRate: 80000, // m³/h
+    pressureDrop: 0.5, // MPa
+    heatTransferArea: 50000, // m²
+    pressurizerVolume: 75, // m³
+    pressurizerHeaters: 84, // kW
+    pressurizerSpray: 230, // t/h
+  },
+  
+  secondaryCircuit: {
+    steamFlow: 5880, // t/h
+    feedwaterTemp: 220, // °C
+    condenserPressure: 0.005, // MPa
+    turbineEfficiency: 0.98,
+    generatorEfficiency: 0.99
+  },
+  
+  safetySystems: {
+    emergencyCoreCooling: {
+      highPressure: 4.0, // MPa
+      lowPressure: 0.5, // MPa
+      mediumPressure: 2.0, // MPa
+      injectionRate: 1000, // m³/h
+    },
+    containment: {
+      volume: 75000, // m³
+      designPressure: 0.5, // MPa
+      spraySystem: 2000, // m³/h
+      fanCoolers: 8, // units
+    }
+  }
 };
 
 // Safety limits
@@ -89,6 +185,46 @@ export const initialState = {
     pressurizer: true,  // Automatic pressurizer control
     feedwater: true,    // Automatic feedwater control
     turbineGovernor: true // Automatic turbine speed control
+  },
+  
+  // Enhanced state parameters
+  simulationMode: SIMULATION_MODES.TRAINING.id,
+  coreParameters: {
+    powerDistribution: Array(163).fill(0), // Power distribution in fuel assemblies
+    burnupDistribution: Array(163).fill(0), // Burnup distribution
+    temperatureDistribution: Array(163).fill(270), // Temperature distribution
+    neutronFlux: Array(163).fill(0), // Neutron flux distribution
+  },
+  primaryCircuit: {
+    loopTemperatures: Array(4).fill(270), // Temperature in each loop
+    loopFlowRates: Array(4).fill(20000), // Flow rate in each loop
+    pressurizerLevel: 50, // % full
+    pressurizerTemperature: 345, // °C
+  },
+  secondaryCircuit: {
+    steamGeneratorLevels: Array(4).fill(50), // Level in each steam generator
+    feedwaterFlow: 0, // t/h
+    steamFlow: 0, // t/h
+    condenserVacuum: 0.005, // MPa
+  },
+  safetySystems: {
+    emergencyCoreCooling: {
+      status: 'standby',
+      injectionRate: 0,
+      accumulatorPressure: 4.0,
+    },
+    containment: {
+      pressure: 0.1, // MPa
+      temperature: 30, // °C
+      spraySystem: 'standby',
+      fanCoolers: 'standby',
+    }
+  },
+  dataCollection: {
+    enabled: false,
+    parameters: [],
+    samplingRate: 1, // seconds
+    dataPoints: []
   }
 };
 

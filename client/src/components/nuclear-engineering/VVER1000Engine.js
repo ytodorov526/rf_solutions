@@ -1,5 +1,5 @@
 // VVER1000Engine.js - Core simulation engine for the VVER-1000 reactor
-import { VVER1000, SAFETY_LIMITS, SCRAM_CONDITIONS } from './VVER1000Constants';
+import { VVER1000, SAFETY_LIMITS, SCRAM_CONDITIONS, SIMULATION_MODES } from './VVER1000Constants';
 
 /**
  * VVER-1000 Nuclear Reactor Simulation Engine
@@ -14,6 +14,213 @@ class VVER1000Engine {
     this.isRunning = false;
     this.plannedEvents = [];
     this.eventListeners = {};
+    this.simulationMode = SIMULATION_MODES.TRAINING.id;
+    this.dataCollectionInterval = null;
+  }
+
+  // Set simulation mode
+  setSimulationMode(mode) {
+    this.simulationMode = mode;
+    const modeConfig = SIMULATION_MODES[mode.toUpperCase()];
+    
+    // Update time multiplier
+    this.state.timeMultiplier = modeConfig.features.timeScale;
+    
+    // Handle data collection
+    if (modeConfig.features.dataCollection) {
+      this.startDataCollection();
+    } else {
+      this.stopDataCollection();
+    }
+    
+    // Reset state if needed
+    if (modeConfig.features.simplifiedPhysics) {
+      this.simplifyPhysicsModel();
+    } else {
+      this.restoreFullPhysicsModel();
+    }
+  }
+
+  // Start data collection for research mode
+  startDataCollection() {
+    if (this.dataCollectionInterval) return;
+    
+    this.state.dataCollection.enabled = true;
+    this.state.dataCollection.parameters = [
+      'reactorPower',
+      'primaryPressure',
+      'primaryTemp',
+      'controlRodPosition',
+      'xenonLevel',
+      'powerRateOfChange'
+    ];
+    
+    this.dataCollectionInterval = setInterval(() => {
+      const dataPoint = {
+        timestamp: this.state.time,
+        values: {}
+      };
+      
+      this.state.dataCollection.parameters.forEach(param => {
+        dataPoint.values[param] = this.state[param];
+      });
+      
+      this.state.dataCollection.dataPoints.push(dataPoint);
+      
+      // Keep only last 1000 data points
+      if (this.state.dataCollection.dataPoints.length > 1000) {
+        this.state.dataCollection.dataPoints.shift();
+      }
+    }, this.state.dataCollection.samplingRate * 1000);
+  }
+
+  // Stop data collection
+  stopDataCollection() {
+    if (this.dataCollectionInterval) {
+      clearInterval(this.dataCollectionInterval);
+      this.dataCollectionInterval = null;
+    }
+    this.state.dataCollection.enabled = false;
+    this.state.dataCollection.dataPoints = [];
+  }
+
+  // Simplify physics model for educational mode
+  simplifyPhysicsModel() {
+    // Store original state for restoration
+    this.originalState = { ...this.state };
+    
+    // Simplify core parameters
+    this.state.coreParameters = {
+      powerDistribution: Array(163).fill(this.state.reactorPower / 100),
+      burnupDistribution: Array(163).fill(0),
+      temperatureDistribution: Array(163).fill(this.state.primaryTemp),
+      neutronFlux: Array(163).fill(this.state.reactorPower / 100)
+    };
+    
+    // Simplify primary circuit
+    this.state.primaryCircuit = {
+      loopTemperatures: Array(4).fill(this.state.primaryTemp),
+      loopFlowRates: Array(4).fill(this.state.coolantFlowRate / 4),
+      pressurizerLevel: 50,
+      pressurizerTemperature: this.state.primaryTemp + 75
+    };
+    
+    // Simplify secondary circuit
+    this.state.secondaryCircuit = {
+      steamGeneratorLevels: Array(4).fill(50),
+      feedwaterFlow: this.state.reactorPower * 17,
+      steamFlow: this.state.reactorPower * 17,
+      condenserVacuum: 0.005
+    };
+  }
+
+  // Restore full physics model
+  restoreFullPhysicsModel() {
+    if (this.originalState) {
+      this.state = { ...this.originalState };
+      this.originalState = null;
+    }
+  }
+
+  // Enhanced update method with mode-specific behavior
+  update(deltaTime) {
+    const modeConfig = SIMULATION_MODES[this.simulationMode.toUpperCase()];
+    
+    // Apply time scaling
+    const scaledDeltaTime = deltaTime * this.state.timeMultiplier;
+    
+    // Update reactor power based on mode
+    if (modeConfig.features.simplifiedPhysics) {
+      this.updateReactorPowerSimple(scaledDeltaTime);
+    } else {
+      this.updateReactorPowerDetailed(scaledDeltaTime);
+    }
+    
+    // Update other parameters
+    this.updatePrimaryCircuit(scaledDeltaTime);
+    this.updateSecondaryCircuit(scaledDeltaTime);
+    this.updateSafetySystems(scaledDeltaTime);
+    
+    // Check for alarms and SCRAM conditions
+    if (modeConfig.features.safetyChecks) {
+      this.checkSafetyConditions();
+    }
+    
+    // Update time
+    this.state.time += scaledDeltaTime;
+    
+    // Emit update event
+    this.onUpdate(this.state);
+  }
+
+  // Simple power update for educational mode
+  updateReactorPowerSimple(deltaTime) {
+    // Use same non-linear response as detailed mode for consistency
+    const rodReactivity = -0.15 * Math.pow(this.state.controlRodPosition, 1.2);
+    const targetPower = 100 * (1 - rodReactivity);
+    const powerChange = (targetPower - this.state.reactorPower) * (deltaTime / 20);
+    this.state.reactorPower += powerChange;
+    this.state.reactorPower = Math.max(0, Math.min(100, this.state.reactorPower));
+  }
+
+  // Detailed power update for advanced modes
+  updateReactorPowerDetailed(deltaTime) {
+    // Calculate reactivity based on control rod position with non-linear response
+    const rodReactivity = -0.15 * Math.pow(this.state.controlRodPosition, 1.2);
+    
+    // Calculate temperature feedback with reduced coefficient
+    const tempFeedback = -0.00005 * (this.state.primaryTemp - 290);
+    
+    // Calculate xenon feedback with reduced coefficient
+    const xenonFeedback = -0.0001 * this.state.xenonLevel;
+    
+    // Calculate total reactivity
+    const totalReactivity = rodReactivity + tempFeedback + xenonFeedback;
+    
+    // Calculate power change with improved response
+    const powerChange = totalReactivity * this.state.reactorPower * deltaTime;
+    
+    // Update power
+    this.state.reactorPower += powerChange;
+    this.state.reactorPower = Math.max(0, Math.min(100, this.state.reactorPower));
+    
+    // Update xenon level
+    this.updateXenonLevel(deltaTime);
+    
+    // Update power distribution
+    this.updatePowerDistribution();
+  }
+
+  // Update xenon level
+  updateXenonLevel(deltaTime) {
+    const xenonProduction = 0.1 * this.state.reactorPower;
+    const xenonDecay = 0.05 * this.state.xenonLevel;
+    this.state.xenonLevel += (xenonProduction - xenonDecay) * deltaTime;
+    this.state.xenonLevel = Math.max(0, this.state.xenonLevel);
+  }
+
+  // Update power distribution in core
+  updatePowerDistribution() {
+    const basePower = this.state.reactorPower / 100;
+    
+    // Calculate power distribution based on control rod position and xenon
+    for (let i = 0; i < 163; i++) {
+      const distanceFromCenter = Math.sqrt(
+        Math.pow(Math.floor(i / 13) - 6, 2) + 
+        Math.pow((i % 13) - 6, 2)
+      );
+      
+      // Power is higher in center and decreases with distance
+      const radialFactor = 1 - 0.03 * distanceFromCenter;
+      
+      // Control rod effect
+      const rodFactor = 1 - 0.5 * (this.state.controlRodPosition / 100);
+      
+      // Xenon effect
+      const xenonFactor = 1 - 0.2 * (this.state.xenonLevel / 100);
+      
+      this.state.coreParameters.powerDistribution[i] = basePower * radialFactor * rodFactor * xenonFactor;
+    }
   }
 
   // Start the simulation loop
@@ -74,44 +281,6 @@ class VVER1000Engine {
     this.animationFrameId = requestAnimationFrame(this.updateLoop.bind(this));
   }
 
-  // Update all simulation parameters based on the elapsed time
-  update(deltaTime) {
-    // Create a copy of current state to modify
-    const newState = { ...this.state };
-    
-    // Increment simulation time
-    newState.time += deltaTime;
-    
-    // Check for planned events
-    this.checkPlannedEvents(newState, deltaTime);
-    
-    // Physics simulation steps
-    this.updateReactorPower(newState, deltaTime);
-    this.updatePrimaryTemperature(newState, deltaTime);
-    this.updatePrimaryPressure(newState, deltaTime);
-    this.updateSecondaryPressure(newState, deltaTime);
-    this.updateTurbine(newState, deltaTime);
-    this.updateXenonEffects(newState, deltaTime);
-    
-    // Record history data for trends and charts
-    this.recordHistoryData(newState, deltaTime);
-    
-    // Check for alarms and safety conditions
-    this.checkAlarmConditions(newState);
-    if (this.checkScramConditions(newState)) {
-      this.triggerScram(newState);
-    }
-    
-    // Check for scenario completion
-    this.checkScenarioCompletion(newState);
-    
-    // Update the state
-    this.state = newState;
-    
-    // Emit tick event for listeners
-    this.emit('tick', { time: newState.time, deltaTime });
-  }
-
   // Check for planned scenario events
   checkPlannedEvents(newState, deltaTime) {
     if (!this.plannedEvents || this.plannedEvents.length === 0) return;
@@ -135,31 +304,6 @@ class VVER1000Engine {
         });
       }
     }
-  }
-
-  // Update reactor power based on control rod position
-  updateReactorPower(newState, deltaTime) {
-    // Calculate target power based on control rod position
-    // Simplified model: rod reactivity worth + time constant
-    const targetPower = 100 - Math.pow(newState.controlRodPosition, 1.5) / 10;
-    
-    // Time constant for power changes (slower = more realistic)
-    const powerTimeConstant = 20; // seconds for power changes to take effect
-    
-    // Calculate power change rate
-    const powerChange = (targetPower - newState.reactorPower) * (deltaTime / powerTimeConstant);
-    
-    // Account for xenon effects (negative reactivity)
-    const xenonEffect = newState.xenonLevel > 0 ? (newState.xenonLevel / 100) * 5 : 0;
-    
-    // Apply power change with xenon effects
-    newState.reactorPower += powerChange - xenonEffect * (deltaTime / 60);
-    
-    // Clamp to valid range
-    newState.reactorPower = Math.max(0, Math.min(100, newState.reactorPower));
-    
-    // Calculate power rate of change for monitoring
-    newState.powerRateOfChange = powerChange / deltaTime * 60; // % per minute
   }
 
   // Update primary coolant temperature based on power
@@ -535,8 +679,8 @@ class VVER1000Engine {
     // Stop any current simulation
     this.stop();
     
-    // Reset state with scenario initial state
-    this.reset(scenario.initialState);
+    // Merge initialState with scenario.initialState to ensure all properties are present
+    this.reset({ ...require('./VVER1000Constants').initialState, ...scenario.initialState });
     
     // Set the active scenario
     this.state.activeScenario = scenario;

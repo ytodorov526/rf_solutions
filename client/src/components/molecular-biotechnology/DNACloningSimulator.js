@@ -523,6 +523,21 @@ const DNACloningSimulator = () => {
                 </Button>
                 {loading && <LinearProgress sx={{ mt: 2 }} />}
               </Box>
+              {resultMessages.length > 0 && (
+                <Box sx={{ mt: 2 }}>
+                  {resultMessages.map((msg, idx) => (
+                    <Alert key={idx} severity={msg.toLowerCase().includes('success') ? 'success' : msg.toLowerCase().includes('optimal') ? 'info' : 'warning'} sx={{ mb: 1 }}>
+                      {msg}
+                    </Alert>
+                  ))}
+                  {/* Educational explanations for each step */}
+                  {activeStep === 0 && (
+                    <Alert severity="info" sx={{ mt: 2 }}>
+                      <strong>Did you know?</strong> Using two different restriction enzymes for directional cloning prevents the insert from ligating in the wrong orientation, increasing the chance of successful cloning.
+                    </Alert>
+                  )}
+                </Box>
+              )}
             </StepContent>
           </Step>
           
@@ -608,6 +623,21 @@ const DNACloningSimulator = () => {
                 </Button>
                 {loading && <LinearProgress sx={{ mt: 2 }} />}
               </Box>
+              {resultMessages.length > 0 && (
+                <Box sx={{ mt: 2 }}>
+                  {resultMessages.map((msg, idx) => (
+                    <Alert key={idx} severity={msg.toLowerCase().includes('success') ? 'success' : msg.toLowerCase().includes('optimal') ? 'info' : 'warning'} sx={{ mb: 1 }}>
+                      {msg}
+                    </Alert>
+                  ))}
+                  {/* Educational explanations for each step */}
+                  {activeStep === 1 && (
+                    <Alert severity="info" sx={{ mt: 2 }}>
+                      <strong>Tip:</strong> The optimal insert:vector ratio and ligase amount are crucial for maximizing ligation efficiency. Overnight incubation at 16°C is often used for sticky-end ligations.
+                    </Alert>
+                  )}
+                </Box>
+              )}
             </StepContent>
           </Step>
           
@@ -698,6 +728,21 @@ const DNACloningSimulator = () => {
                 </Button>
                 {loading && <LinearProgress sx={{ mt: 2 }} />}
               </Box>
+              {resultMessages.length > 0 && (
+                <Box sx={{ mt: 2 }}>
+                  {resultMessages.map((msg, idx) => (
+                    <Alert key={idx} severity={msg.toLowerCase().includes('success') ? 'success' : msg.toLowerCase().includes('optimal') ? 'info' : 'warning'} sx={{ mb: 1 }}>
+                      {msg}
+                    </Alert>
+                  ))}
+                  {/* Educational explanations for each step */}
+                  {activeStep === 2 && (
+                    <Alert severity="info" sx={{ mt: 2 }}>
+                      <strong>Fact:</strong> Transformation efficiency depends on cell competency, heat shock, and recovery. Only a fraction of cells will take up the plasmid, and not all will have the correct insert.
+                    </Alert>
+                  )}
+                </Box>
+              )}
             </StepContent>
           </Step>
           
@@ -830,6 +875,29 @@ const DNACloningSimulator = () => {
                   </Card>
                 </Grid>
               </Grid>
+              
+              <Box sx={{ mt: 3 }}>
+                <Alert severity="info">
+                  <Typography variant="subtitle2" gutterBottom>Cloning Summary</Typography>
+                  <Typography variant="body2">
+                    {simulationResults.digestionSuccess
+                      ? 'Restriction digestion was successful, and compatible ends were generated.'
+                      : 'Restriction digestion failed. Review your enzyme selection.'}
+                  </Typography>
+                  <Typography variant="body2">
+                    Ligation efficiency: <strong>{simulationResults.ligationEfficiency}%</strong>. {simulationResults.ligationEfficiency > 70 ? 'Excellent ligation conditions!' : 'Consider optimizing your ligation mix for better results.'}
+                  </Typography>
+                  <Typography variant="body2">
+                    Transformation efficiency: <strong>{simulationResults.transformationEfficiency}%</strong>. {simulationResults.transformationEfficiency > 70 ? 'Great transformation!' : 'Transformation could be improved by optimizing cell competency and conditions.'}
+                  </Typography>
+                  <Typography variant="body2">
+                    Colonies with correct insert: <strong>{simulationResults.positiveColonies}</strong> out of <strong>{simulationResults.colonies}</strong> total colonies.
+                  </Typography>
+                  <Typography variant="body2" sx={{ mt: 1 }}>
+                    <strong>Takeaway:</strong> Each step in the cloning process can be optimized. Troubleshooting involves checking enzyme compatibility, ligation ratios, and transformation protocols. Successful cloning is confirmed by screening colonies for the correct insert.
+                  </Typography>
+                </Alert>
+              </Box>
               
               <Box sx={{ mt: 3 }}>
                 <Button onClick={handleReset} variant="contained" color="primary">
