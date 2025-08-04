@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
-  CardContent, 
+import React, { useState, useEffect } from 'react'; // Import useEffect
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
   CardActions,
   Button,
   Paper,
@@ -25,7 +25,8 @@ import {
   TextField,
   Alert,
   Snackbar,
-  LinearProgress
+  LinearProgress,
+  CircularProgress
 } from '@mui/material';
 import {
   AccountBalance,
@@ -117,7 +118,12 @@ function BankingPortalPage() {
   const [cryptoDialogOpen, setCryptoDialogOpen] = useState(false);
   const [internationalTransferDialogOpen, setInternationalTransferDialogOpen] = useState(false);
   const [aiInsightsDialogOpen, setAiInsightsDialogOpen] = useState(false);
-  
+
+  // Robo-Advisor dialog states
+  const [profileSetupDialogOpen, setProfileSetupDialogOpen] = useState(false);
+  const [newRiskTolerance, setNewRiskTolerance] = useState('moderate');
+  const [newFinancialGoals, setNewFinancialGoals] = useState([{ name: '', targetAmount: '', targetDate: '' }]);
+
   // Digital Wallet dialog states
   const [qrGeneratorDialogOpen, setQrGeneratorDialogOpen] = useState(false);
   const [qrScannerDialogOpen, setQrScannerDialogOpen] = useState(false);
@@ -125,19 +131,136 @@ function BankingPortalPage() {
   const [merchantPaymentDialogOpen, setMerchantPaymentDialogOpen] = useState(false);
   const [walletHistoryDialogOpen, setWalletHistoryDialogOpen] = useState(false);
   const [addMoneyDialogOpen, setAddMoneyDialogOpen] = useState(false);
-  
+
   // Wallet Security dialog states
   const [pinManagementDialogOpen, setPinManagementDialogOpen] = useState(false);
   const [spendingLimitsDialogOpen, setSpendingLimitsDialogOpen] = useState(false);
   const [notificationSettingsDialogOpen, setNotificationSettingsDialogOpen] = useState(false);
   const [securityActivityDialogOpen, setSecurityActivityDialogOpen] = useState(false);
-  
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [transferAmount, setTransferAmount] = useState("");
   const [transferTo, setTransferTo] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
   const [paymentTo, setPaymentTo] = useState("");
+
+  // Robo-Advisor state and handlers
+  const [roboAdvisorProfile, setRoboAdvisorProfile] = useState(null);
+  const [roboAdvisorRecommendations, setRoboAdvisorRecommendations] = useState(null);
+  const [roboAdvisorPortfolio, setRoboAdvisorPortfolio] = useState(null); // Added for portfolio display
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Profile setup dialog handlers
+  const handleAddGoal = () => {
+    setNewFinancialGoals([...newFinancialGoals, { name: '', targetAmount: '', targetDate: '' }]);
+  };
+
+  // Corrected: Define userId and useEffect hook here
+  const userId = 'user123'; // Hardcoded for now, should come from auth context
+
+  useEffect(() => { // Use useEffect from React
+    if (tabValue === 13) { // Only fetch when the Robo-Advisor tab is active
+      const fetchRoboAdvisorData = async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+          // Fetch user profile
+          const profileResponse = await fetch(`/api/profile/${userId}`);
+          if (!profileResponse.ok) {
+            throw new Error(`Failed to fetch profile: ${profileResponse.statusText}`);
+          }
+          const profileData = await profileResponse.json();
+          setRoboAdvisorProfile(profileData);
+
+          // Fetch investment recommendations
+          const recommendationsResponse = await fetch(`/api/recommendations/${userId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId }), // Assuming the API expects userId in body for POST
+          });
+          if (!recommendationsResponse.ok) {
+            throw new Error(`Failed to fetch recommendations: ${recommendationsResponse.statusText}`);
+          }
+          const recommendationsData = await recommendationsResponse.json();
+          setRoboAdvisorRecommendations(recommendationsData);
+
+          // Fetch user portfolio (added for Step 6)
+          const portfolioResponse = await fetch(`/api/portfolio/${userId}`);
+          if (!portfolioResponse.ok) {
+            throw new Error(`Failed to fetch portfolio: ${portfolioResponse.statusText}`);
+          }
+          const portfolioData = await portfolioResponse.json();
+          setRoboAdvisorPortfolio(portfolioData);
+
+        } catch (err) {
+          console.error("Error fetching robo-advisor data:", err);
+          setError(err.message);
+          setRoboAdvisorProfile(null);
+          setRoboAdvisorRecommendations(null);
+          setRoboAdvisorPortfolio(null); // Clear portfolio on error
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchRoboAdvisorData();
+    }
+  }, [tabValue, userId]); // Re-fetch if tab changes or userId changes
+
+  // Original function definitions (keep these)
+  const handleRemoveGoal = (index) => {
+    const updatedGoals = newFinancialGoals.filter((_, i) => i !== index);
+    setNewFinancialGoals(updatedGoals);
+  };
+
+  const handleGoalChange = (index, field, value) => {
+    const updatedGoals = [...newFinancialGoals];
+    updatedGoals[index][field] = value;
+    setNewFinancialGoals(updatedGoals);
+  };
+
+  const handleSaveProfile = () => {
+    // In a real app, you'd get the userId from context or auth
+    // const userId = 'user123'; // userId is already defined above
+
+    // Basic validation
+    if (!newRiskTolerance || newFinancialGoals.some(goal => !goal.name || !goal.targetAmount || !goal.targetDate)) {
+      alert('Please fill in all fields for risk tolerance and financial goals.');
+      return;
+    }
+
+    const profileData = {
+      riskTolerance: newRiskTolerance,
+      financialGoals: newFinancialGoals.map(goal => ({
+        ...goal,
+        targetAmount: parseFloat(goal.targetAmount) // Ensure amount is a number
+      })),
+      // You might also want to update targetAllocation, rebalancingFrequency etc. here if needed
+    };
+
+    // Simulate API call
+    console.log('Saving profile:', profileData);
+    alert('Profile saved successfully! (Simulated)');
+    setProfileSetupDialogOpen(false);
+    // In a real app:
+    // fetch(`/api/profile/${userId}`, {
+    //   method: 'PUT',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(profileData),
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //   console.log('Profile updated:', data);
+    //   alert('Profile saved successfully!');
+    //   setProfileSetupDialogOpen(false);
+    // })
+    // .catch(error => {
+    //   console.error('Error saving profile:', error);
+    //   alert('Failed to save profile.');
+    // });
+  };
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -289,9 +412,10 @@ function BankingPortalPage() {
             <Tab label="Account Security" />
             <Tab label="Support" />
             <Tab label="Personal Finance" />
+            <Tab label="Robo-Advisor" /> {/* New Tab */}
           </Tabs>
- 
-           {/* Recent Transactions Tab */}
+
+          {/* Recent Transactions Tab */}
           {tabValue === 0 && (
             <Box sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
@@ -358,46 +482,46 @@ function BankingPortalPage() {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                                           <Button fullWidth onClick={() => setBillPaymentDialogOpen(true)}>
-                       Pay Now
-                     </Button>
-                   </CardActions>
-                 </Card>
-               </Grid>
+                      <Button fullWidth onClick={() => setBillPaymentDialogOpen(true)}>
+                        Pay Now
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
 
-               <Grid item xs={12} sm={6} md={3}>
-                 <Card>
-                   <CardContent sx={{ textAlign: 'center' }}>
-                     <Receipt sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
-                     <Typography variant="h6">Statements</Typography>
-                     <Typography variant="body2" color="text.secondary">
-                       View account statements
-                     </Typography>
-                   </CardContent>
-                   <CardActions>
-                     <Button fullWidth onClick={() => setStatementDialogOpen(true)}>
-                       View
-                     </Button>
-                   </CardActions>
-                 </Card>
-               </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Card>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Receipt sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
+                      <Typography variant="h6">Statements</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        View account statements
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button fullWidth onClick={() => setStatementDialogOpen(true)}>
+                        View
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
 
-               <Grid item xs={12} sm={6} md={3}>
-                 <Card>
-                   <CardContent sx={{ textAlign: 'center' }}>
-                     <Security sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
-                     <Typography variant="h6">Security</Typography>
-                     <Typography variant="body2" color="text.secondary">
-                       Manage account security
-                     </Typography>
-                   </CardContent>
-                   <CardActions>
-                     <Button fullWidth onClick={() => setSecurityDialogOpen(true)}>
-                       Manage
-                     </Button>
-                   </CardActions>
-                 </Card>
-               </Grid>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Card>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Security sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
+                      <Typography variant="h6">Security</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Manage account security
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button fullWidth onClick={() => setSecurityDialogOpen(true)}>
+                        Manage
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
               </Grid>
             </Box>
           )}
@@ -772,8 +896,8 @@ function BankingPortalPage() {
             </Box>
           )}
 
-                  {/* Support Tab */}
-                  {tabValue === 11 && (
+          {/* Support Tab */}
+          {tabValue === 11 && (
             <Box sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Customer Support
@@ -835,11 +959,97 @@ function BankingPortalPage() {
                   <FinancialWellnessScore />
                 </Grid>
               </Grid>
+              <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <Button variant="contained" onClick={() => setProfileSetupDialogOpen(true)}>
+                  Set Up Robo-Advisor Profile
+                </Button>
+              </Box>
+            </Box>
+          )}
+
+          {/* Robo-Advisor Tab */}
+          {tabValue === 13 && (
+            <Box sx={{ p: 3 }}>
+              <Typography variant="h6" gutterBottom>Robo-Advisor Dashboard</Typography>
+              {isLoading && <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}><CircularProgress /></Box>}
+              {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+              {!isLoading && !error && (
+                <>
+                  {/* Profile Card */}
+                  {roboAdvisorProfile && (
+                    <Card elevation={3} sx={{ mb: 3 }}>
+                      <CardContent>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                          <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}><AccountBalance /></Avatar>
+                          <Typography variant="h6">Your Investment Profile</Typography>
+                        </Box>
+                        <Typography variant="body1" sx={{ mb: 1 }}>
+                          <strong>Risk Tolerance:</strong> {roboAdvisorProfile.riskTolerance}
+                        </Typography>
+                        <Typography variant="body1">
+                          <strong>Financial Goals:</strong>
+                        </Typography>
+                        <List dense>
+                          {roboAdvisorProfile.financialGoals?.map((goal, index) => (
+                            <ListItem key={index}>
+                              <ListItemText
+                                primary={goal.name}
+                                secondary={`Target: $${goal.targetAmount} by ${goal.targetDate}`}
+                              />
+                            </ListItem>
+                          ))}
+                        </List>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Recommendations Card */}
+                  {roboAdvisorRecommendations && (
+                    <Card elevation={3} sx={{ mb: 3 }}>
+                      <CardContent>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                          <Avatar sx={{ bgcolor: 'success.main', mr: 2 }}><TrendingUp /></Avatar>
+                          <Typography variant="h6">Investment Recommendations</Typography>
+                        </Box>
+                        <Typography variant="body1" sx={{ mb: 1 }}>
+                          <strong>Target Allocation:</strong>
+                        </Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                          {Object.entries(roboAdvisorRecommendations.targetAllocation || {}).map(([asset, allocation]) => (
+                            <Chip key={asset} label={`${asset}: ${(allocation * 100).toFixed(0)}%`} color="primary" />
+                          ))}
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Portfolio Card */}
+                  {roboAdvisorPortfolio && (
+                    <Card elevation={3} sx={{ mb: 3 }}>
+                      <CardContent>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                          <Avatar sx={{ bgcolor: 'info.main', mr: 2 }}><ShowChart /></Avatar>
+                          <Typography variant="h6">Your Portfolio</Typography>
+                        </Box>
+                        <Typography variant="h4" color="primary" gutterBottom>
+                          Total Value: ${roboAdvisorPortfolio.getTotalValue ? roboAdvisorPortfolio.getTotalValue().toFixed(2) : 'N/A'}
+                        </Typography>
+                        {/* Add more portfolio details here if available, e.g., asset breakdown */}
+                      </CardContent>
+                    </Card>
+                  )}
+                </>
+              )}
+              {!isLoading && !error && !roboAdvisorProfile && !roboAdvisorRecommendations && !roboAdvisorPortfolio && (
+                <Typography variant="body1">
+                  Your personalized investment recommendations and portfolio will appear here once your profile is set up.
+                </Typography>
+              )}
             </Box>
           )}
         </Paper>
 
-          {/* Transfer Dialog */}
+        {/* Transfer Dialog */}
         <Dialog open={transferDialogOpen} onClose={() => setTransferDialogOpen(false)} maxWidth="sm" fullWidth>
           <DialogTitle>Transfer Money</DialogTitle>
           <DialogContent>
@@ -892,29 +1102,29 @@ function BankingPortalPage() {
         </Dialog>
 
         {/* Enhanced Banking Components */}
-        <BillPaymentComponent 
-          open={billPaymentDialogOpen} 
-          onClose={() => setBillPaymentDialogOpen(false)} 
+        <BillPaymentComponent
+          open={billPaymentDialogOpen}
+          onClose={() => setBillPaymentDialogOpen(false)}
         />
-        <StatementComponent 
-          open={statementDialogOpen} 
-          onClose={() => setStatementDialogOpen(false)} 
+        <StatementComponent
+          open={statementDialogOpen}
+          onClose={() => setStatementDialogOpen(false)}
         />
-        <SecuritySettingsComponent 
-          open={securityDialogOpen} 
-          onClose={() => setSecurityDialogOpen(false)} 
+        <SecuritySettingsComponent
+          open={securityDialogOpen}
+          onClose={() => setSecurityDialogOpen(false)}
         />
-        <InvestmentPortfolioComponent 
-          open={investmentDialogOpen} 
-          onClose={() => setInvestmentDialogOpen(false)} 
+        <InvestmentPortfolioComponent
+          open={investmentDialogOpen}
+          onClose={() => setInvestmentDialogOpen(false)}
         />
-        <LoanCalculatorComponent 
-          open={loanCalculatorDialogOpen} 
-          onClose={() => setLoanCalculatorDialogOpen(false)} 
+        <LoanCalculatorComponent
+          open={loanCalculatorDialogOpen}
+          onClose={() => setLoanCalculatorDialogOpen(false)}
         />
-        <BudgetTrackerComponent 
-          open={budgetTrackerDialogOpen} 
-          onClose={() => setBudgetTrackerDialogOpen(false)} 
+        <BudgetTrackerComponent
+          open={budgetTrackerDialogOpen}
+          onClose={() => setBudgetTrackerDialogOpen(false)}
         />
         <CustomerSupportComponent
           open={customerSupportDialogOpen}
@@ -1012,6 +1222,70 @@ function BankingPortalPage() {
           </DialogActions>
         </Dialog>
 
+        {/* Profile Setup Dialog */}
+        <Dialog open={profileSetupDialogOpen} onClose={() => setProfileSetupDialogOpen(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>Set Up Your Robo-Advisor Profile</DialogTitle>
+          <DialogContent>
+            <Typography variant="h6" gutterBottom>Risk Tolerance</Typography>
+            <TextField
+              select
+              fullWidth
+              label="Select Risk Tolerance"
+              value={newRiskTolerance}
+              onChange={(e) => setNewRiskTolerance(e.target.value)}
+              SelectProps={{ native: true }}
+              sx={{ mb: 3 }}
+            >
+              <option value="conservative">Conservative</option>
+              <option value="moderate">Moderate</option>
+              <option value="aggressive">Aggressive</option>
+            </TextField>
+
+            <Typography variant="h6" gutterBottom>Financial Goals</Typography>
+            {newFinancialGoals.map((goal, index) => (
+              <Box key={index} sx={{ border: '1px solid #ccc', p: 2, mb: 2, borderRadius: 1 }}>
+                <TextField
+                  fullWidth
+                  label="Goal Name"
+                  value={goal.name}
+                  onChange={(e) => handleGoalChange(index, 'name', e.target.value)}
+                  sx={{ mb: 1 }}
+                />
+                <TextField
+                  fullWidth
+                  label="Target Amount"
+                  type="number"
+                  value={goal.targetAmount}
+                  onChange={(e) => handleGoalChange(index, 'targetAmount', e.target.value)}
+                  sx={{ mb: 1 }}
+                  InputProps={{ startAdornment: <Typography sx={{ mr: 1 }}>$</Typography> }}
+                />
+                <TextField
+                  fullWidth
+                  label="Target Date"
+                  type="date"
+                  value={goal.targetDate}
+                  onChange={(e) => handleGoalChange(index, 'targetDate', e.target.value)}
+                  sx={{ mb: 1 }}
+                  InputLabelProps={{ shrink: true }}
+                />
+                {newFinancialGoals.length > 1 && (
+                  <Button size="small" color="error" onClick={() => handleRemoveGoal(index)}>
+                    Remove Goal
+                  </Button>
+                )}
+              </Box>
+            ))}
+            <Button onClick={handleAddGoal} startIcon={<Add />} sx={{ mb: 3 }}>
+              Add Another Goal
+            </Button>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setProfileSetupDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleSaveProfile} variant="contained">Save Profile</Button>
+          </DialogActions>
+        </Dialog>
+
         {/* Snackbar for notifications */}
         <Snackbar
           open={snackbarOpen}
@@ -1027,4 +1301,4 @@ function BankingPortalPage() {
   );
 }
 
-export default BankingPortalPage; 
+export default BankingPortalPage;
