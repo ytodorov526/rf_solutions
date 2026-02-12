@@ -8,7 +8,10 @@ node_modules/
 
 # Production
 /client/build
-/server/public
+
+# Cloudflare
+.wrangler/
+.dev.vars
 
 # Environment variables
 .env

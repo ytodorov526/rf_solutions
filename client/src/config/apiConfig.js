@@ -6,12 +6,11 @@
 // Determine the base URL based on environment
 const getBaseUrl = () => {
   const hostname = window.location.hostname;
-  
+
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:5000';
-  } else {
-    return 'https://rf-solutions1.azurewebsites.net';
+    return 'http://localhost:8788';  // Wrangler Pages dev server
   }
+  return '';  // Same origin in production (Cloudflare Pages)
 };
 
 // API endpoints

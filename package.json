@@ -1,0 +1,23 @@
+{
+  "name": "rf-solutions",
+  "version": "1.0.0",
+  "description": "RF Solutions - Advanced RF & Antenna Engineering (Cloudflare Pages)",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev client/build --d1=DB",
+    "build": "cd client && npm ci && npm run build",
+    "deploy": "wrangler pages deploy client/build --project-name=rf-solutions",
+    "d1:create": "wrangler d1 create rf-solutions-db",
+    "d1:migrate": "wrangler d1 execute rf-solutions-db --file=./server-lib/db/schema.sql",
+    "d1:seed": "wrangler d1 execute rf-solutions-db --file=./server-lib/db/seed.sql"
+  },
+  "dependencies": {
+    "hono": "^4.4.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.60.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

@@ -1,0 +1,8 @@
+name = "rf-solutions"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "./client/build"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rf-solutions-db"
+database_id = "placeholder-will-be-generated"
