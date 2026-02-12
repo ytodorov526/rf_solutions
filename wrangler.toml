@@ -5,4 +5,4 @@ pages_build_output_dir = "./client/build"
 [[d1_databases]]
 binding = "DB"
 database_name = "rf-solutions-db"
-database_id = "placeholder-will-be-generated"
+database_id = "401fd303-c846-4df9-9daa-3c8e1fb93c0a"
